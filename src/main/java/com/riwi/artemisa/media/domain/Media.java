@@ -1,5 +1,8 @@
-package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
+package com.riwi.artemisa.media.domain;
 
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Auditable;
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Medication;
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Media {
+public class Media extends Auditable {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -30,6 +33,6 @@ public class Media {
 
     @ManyToOne(targetEntity = Medication.class)
     @JoinColumn(name = "medication_id")
-    private Medication medication;
+    private Medication medicationId;
 
 }
