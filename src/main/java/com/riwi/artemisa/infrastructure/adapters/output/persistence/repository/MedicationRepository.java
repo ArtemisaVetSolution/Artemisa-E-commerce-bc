@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface MedicationRepository extends JpaRepository<Medication,String> {
+public interface MedicationRepository extends JpaRepository<Medication,Long> {
     Optional<Medication> findByNameIgnoreCase(String name);
 }

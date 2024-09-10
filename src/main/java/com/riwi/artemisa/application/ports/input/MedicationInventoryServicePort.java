@@ -1,4 +1,4 @@
-package com.riwi.artemisa.application.ports.input.category;
+package com.riwi.artemisa.application.ports.input;
 
 
 
