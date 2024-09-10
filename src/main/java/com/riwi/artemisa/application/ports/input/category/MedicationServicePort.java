@@ -1,4 +1,4 @@
-package com.riwi.artemisa.application.ports.input;
+package com.riwi.artemisa.application.ports.input.category;
 
 import com.riwi.artemisa.domain.models.Medication;
 
