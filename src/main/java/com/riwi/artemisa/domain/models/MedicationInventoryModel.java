@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class MedicationInventory {
+public class MedicationInventoryModel {
 
     private Long id;
     private LocalDate updateDate;
