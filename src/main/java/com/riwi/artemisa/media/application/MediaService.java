@@ -4,13 +4,14 @@ import com.riwi.artemisa.application.ports.input.category.MedicationInventorySer
 import com.riwi.artemisa.media.domain.Media;
 import com.riwi.artemisa.media.infrastructure.MediaDTONoId;
 import com.riwi.artemisa.media.infrastructure.MediaDTOWithId;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
 public class MediaService implements InputMediaUseCaseInterface {
     @Autowired
-    private MedicationInventoryServicePort medicationReposiroty;
+    private MedicationInventoryServicePort medicationRepository;
     @Autowired
     private final OutputMediaRepository outputMediaRepository;
 
@@ -19,19 +20,13 @@ public class MediaService implements InputMediaUseCaseInterface {
     }
 
     private MediaDTOWithId mapToMediaDTOWithId(Media media) {
-        MediaDTOWithId dto = new MediaDTOWithId();
-        dto.setId(media.getId());
-        dto.setUrl(media.getUrl());
-        dto.setType(media.getType());
-//        if (media.getProductId() != null) {
-//            dto.setProductId(media.getProductId().getId());
-//        }
-//        if (media.getMedicationId() != null) {
-//            Medication medication = medicationReposiroty.findById(media.getMedicationId())
-//                    .orElseThrow(() -> new EntityNotFoundException("Medication not found"));
-//            dto.setMedicationId(medication.getId());
-//        }
-        return dto;
+        return new MediaDTOWithId(
+                media.getId(),
+                media.getUrl(),
+                media.getType(),
+                media.getProductId() != null ? media.getProductId().getId() : null,
+                media.getMedicationId() != null ? media.getMedicationId().getId() : null
+        );
     }
     @Override
     public MediaDTONoId createMedia(MediaDTOWithId mediaDTOWithId) {
@@ -86,14 +81,19 @@ public class MediaService implements InputMediaUseCaseInterface {
 
     @Override
     public MediaDTOWithId updateMedia(Long id, MediaDTOWithId mediaDTOWithId) {
-        return null;
+        Media media = outputMediaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Media not found"));
+        media.setUrl(mediaDTOWithId.getUrl());
+        media.setType(mediaDTOWithId.getType());
+        media.setProductId(mediaDTOWithId.getProductId().getId());
+        media.setMedicationId(mediaDTOWithId.getMedicationId().getId());
+        outputMediaRepository.save(media);
+        return mapToMediaDTOWithId(media);
     }
 
     @Override
     public void deleteMedia(Long id) {
-
+        outputMediaRepository.deleteById(id);
     }
-
-
 
 }
