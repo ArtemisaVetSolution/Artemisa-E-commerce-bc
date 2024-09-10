@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Medication {
+public class MedicationModel extends Auditable{
     private Long id;
     private String name;
     private String description;

@@ -1,14 +1,14 @@
 package com.riwi.artemisa.application.ports.input;
 
-import com.riwi.artemisa.domain.models.Medication;
+import com.riwi.artemisa.domain.models.MedicationModel;
 
 import java.util.List;
 
-public interface MedicationServicePort {
+public interface MedicationServicePort{
 
-    Medication findByName(String name);
-    List<Medication> findAll();
-    Medication save(Medication medication);
-    Medication update(String name, Medication medication);
-    void deleteByName(String name);
+    MedicationModel findByName(String name);
+    List<MedicationModel> findAll();
+    MedicationModel save(MedicationModel medicationModel);
+    MedicationModel update(String name, MedicationModel medicationModel);
+
 }
