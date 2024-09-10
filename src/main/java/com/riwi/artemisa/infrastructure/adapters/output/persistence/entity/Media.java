@@ -1,6 +1,5 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,15 +11,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Media extends Auditable{
+public class Media extends Auditable {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "url", nullable = false)
     private String url;
 
-    @Column ( name = "type", nullable = false)
+    @Column(name = "type", nullable = false)
     private String type;
 
     @ManyToOne(targetEntity = Product.class)
@@ -29,5 +28,5 @@ public class Media extends Auditable{
 
     @ManyToOne(targetEntity = Medication.class)
     @JoinColumn(name = "medication_id")
-    private Medication medicationId;
+    private Medication medication;
 }
