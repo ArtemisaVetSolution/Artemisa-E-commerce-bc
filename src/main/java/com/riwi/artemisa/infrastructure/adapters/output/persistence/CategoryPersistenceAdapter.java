@@ -15,7 +15,6 @@ import java.util.Optional;
 public class CategoryPersistenceAdapter implements CategoryPersistencePort {
 
     private final CategoryRepository repository;
-
     private final CategoryPersistenceMapper mapper;
 
 
