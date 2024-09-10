@@ -1,4 +1,4 @@
-package com.riwi.artemisa.media.application;
+package com.riwi.artemisa.media.infrastructure;
 
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Medication;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Product;

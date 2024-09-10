@@ -1,6 +1,8 @@
 package com.riwi.artemisa.media.application;
 
-import java.lang.classfile.Interfaces;
+import com.riwi.artemisa.media.infrastructure.MediaDTONoId;
+import com.riwi.artemisa.media.infrastructure.MediaDTOWithId;
+
 import java.util.Optional;
 
 public interface InputMediaUseCaseInterface {

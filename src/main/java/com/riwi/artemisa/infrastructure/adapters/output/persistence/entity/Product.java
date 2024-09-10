@@ -42,4 +42,5 @@ public class Product {
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
 
+
 }

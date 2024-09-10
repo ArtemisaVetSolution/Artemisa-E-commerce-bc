@@ -10,5 +10,8 @@ public interface OutputMediaRepository {
     void deleteById(Long id);
     Optional<Media> findByProductId(Long id);
     Optional<Media> findByMedicationId(Long id);
-
+    // Para eliminar una URL asociada a un producto
+    void deleteByUrlAndProductId(String url, Long productId);
+    // Para eliminar una URL asociada a un medicamento
+    void deleteByUrlAndMedicationId(String url, Long medicationId);
 }
