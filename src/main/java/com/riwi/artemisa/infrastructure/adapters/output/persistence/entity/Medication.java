@@ -30,7 +30,7 @@ public class Medication extends Auditable {
 
     @ManyToOne(targetEntity = Category.class)
     @JoinColumn(name = "category_id")
-    private Category categoryId;
+    private Category category;
 
     @ManyToOne(targetEntity = MedicationInventory.class)
     @JoinColumn(name = "medication_inventory")

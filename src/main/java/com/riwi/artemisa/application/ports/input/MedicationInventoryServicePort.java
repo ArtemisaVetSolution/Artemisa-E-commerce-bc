@@ -2,8 +2,6 @@ package com.riwi.artemisa.application.ports.input;
 
 
 
-import com.riwi.artemisa.domain.models.MedicationInventoryModel;
-
 import java.util.List;
 
 public interface MedicationInventoryServicePort {
