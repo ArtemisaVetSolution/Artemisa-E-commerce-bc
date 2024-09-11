@@ -40,4 +40,5 @@ public class Medication extends Auditable {
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
-}
+
+

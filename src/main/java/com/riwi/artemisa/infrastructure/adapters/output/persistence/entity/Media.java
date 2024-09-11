@@ -1,6 +1,8 @@
+package com.riwi.artemisa.media.domain;
 
-package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
-
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Auditable;
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Medication;
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

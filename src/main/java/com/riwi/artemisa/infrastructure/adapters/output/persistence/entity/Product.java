@@ -1,16 +1,14 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity(name = "products")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
@@ -25,15 +23,14 @@ public class Product {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne(targetEntity = ProductInventory.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_inventory_id")
+    @OneToOne(mappedBy = "product", targetEntity = ProductInventory.class, fetch = FetchType.LAZY)
     private ProductInventory productInventory;  // Revisa este mapeo
 
-    @ManyToOne(targetEntity = Category.class)
+    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "media", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "media", fetch = FetchType.EAGER)
     private List<Media> media;
 
     @ManyToOne

@@ -11,6 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CategoryCreateRequest {
 
+    private Long id;
+
     @NotBlank(message = "name is required")
     private String name;
 

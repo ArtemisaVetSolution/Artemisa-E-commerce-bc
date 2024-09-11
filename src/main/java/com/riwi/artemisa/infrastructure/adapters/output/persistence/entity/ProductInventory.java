@@ -2,17 +2,15 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.sql.Date;
-import java.util.List;
+import java.time.LocalDate;
 
-@Entity(name = "product_inventoty")
+
+@Entity(name = "product_inventory")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductInventory {
@@ -25,7 +23,7 @@ public class ProductInventory {
     private int stock;
 
     @Column(name = "update_date")
-    private Date updateDate;
+    private LocalDate updateDate;
 
     @Column(name = "spplier", nullable = false)
     private String supplier;
@@ -37,12 +35,13 @@ public class ProductInventory {
     private float sellingPrice;
 
     @Column(name = "due_date")
-    private Date dueDate;
+    private LocalDate dueDate;
 
     @Column(name = "state_product", nullable = false)
     private boolean stateProduct;
 
-    @OneToMany(mappedBy = "productInventory",fetch = FetchType.LAZY)
-    private List<Product> product;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }
