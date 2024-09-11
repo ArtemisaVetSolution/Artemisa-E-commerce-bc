@@ -25,6 +25,7 @@ public class Medication extends Auditable {
     @Column(name = "description", nullable = false)
     private String description;
 
+
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY)  // Corrected mappedBy value
     private List<Media> medias;
 
@@ -39,4 +40,5 @@ public class Medication extends Auditable {
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
-}
+
+ 

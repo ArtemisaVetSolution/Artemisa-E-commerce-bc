@@ -1,3 +1,4 @@
+
 package com.riwi.artemisa.media.domain;
 
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Auditable;
@@ -33,6 +34,7 @@ public class Media extends Auditable {
 
     @ManyToOne(targetEntity = Medication.class)
     @JoinColumn(name = "medication_id")
-    private Medication medicationId;
+    private Medication medication;
 
 }
+
