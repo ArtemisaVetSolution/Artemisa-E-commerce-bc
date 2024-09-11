@@ -42,7 +42,7 @@ public class ProductInventory {
     @Column(name = "state_product", nullable = false)
     private boolean stateProduct;
 
-    @OneToMany(mappedBy = "productInventory",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productInventory",fetch = FetchType.LAZY)
     private List<Product> product;
 
 }

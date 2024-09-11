@@ -1,6 +1,5 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,20 +25,18 @@ public class Product {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne(targetEntity = ProductInventory.class)
+    @ManyToOne(targetEntity = ProductInventory.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_inventory_id")
-    private ProductInventory productInventory;
+    private ProductInventory productInventory;  // Revisa este mapeo
 
     @ManyToOne(targetEntity = Category.class)
     @JoinColumn(name = "category_id")
-    private Category categoryId;
+    private Category category;
 
-    @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
-    private List<StatusOrder.Media> media;
+    @OneToMany(mappedBy = "media", fetch = FetchType.LAZY)
+    private List<Media> media;
 
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
-
-
 }

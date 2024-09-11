@@ -25,6 +25,7 @@ public class Medication extends Auditable {
     @Column(name = "description", nullable = false)
     private String description;
 
+
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY)  // Corrected mappedBy value
     private List<Media> medias;
 

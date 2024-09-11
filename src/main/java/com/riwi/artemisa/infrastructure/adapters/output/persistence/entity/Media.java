@@ -1,8 +1,6 @@
-package com.riwi.artemisa.media.domain;
 
-import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Auditable;
-import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Medication;
-import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Product;
+package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +31,6 @@ public class Media extends Auditable {
 
     @ManyToOne(targetEntity = Medication.class)
     @JoinColumn(name = "medication_id")
-    private Medication medicationId;
+    private Medication medication;
 
 }

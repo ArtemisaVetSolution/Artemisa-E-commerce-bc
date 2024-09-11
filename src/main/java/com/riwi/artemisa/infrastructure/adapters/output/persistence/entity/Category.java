@@ -25,7 +25,7 @@ public class Category extends Auditable{
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "categoryId",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
     private List<Product> products;
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
