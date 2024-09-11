@@ -26,12 +26,12 @@ public class Medication extends Auditable {
     private String description;
 
 
-    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY)  // Corrected mappedBy value
-    private List<Media> medias;
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)  // Corrected mappedBy value
+    private List<Media> media;
 
-    @ManyToOne(targetEntity = Category.class)
+    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER) // Corrected mappedBy value
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category categoryId;
 
     @ManyToOne(targetEntity = MedicationInventory.class)
     @JoinColumn(name = "medication_inventory")
@@ -40,5 +40,7 @@ public class Medication extends Auditable {
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
+
+}
 
 

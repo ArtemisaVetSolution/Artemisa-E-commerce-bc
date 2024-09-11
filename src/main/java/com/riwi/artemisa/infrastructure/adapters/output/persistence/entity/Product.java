@@ -28,9 +28,9 @@ public class Product {
 
     @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category categoryId;
 
-    @OneToMany(mappedBy = "media", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productId", fetch = FetchType.EAGER)
     private List<Media> media;
 
     @ManyToOne

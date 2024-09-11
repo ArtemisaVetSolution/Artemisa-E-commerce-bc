@@ -13,6 +13,6 @@ public class MediaModel {
     private String type;
     private String url;
     private ProductModel productModel;
-    private Medication medication;
+    private MedicationModel medication;
 
 }

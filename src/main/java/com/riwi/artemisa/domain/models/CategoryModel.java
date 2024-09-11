@@ -15,9 +15,6 @@ public class CategoryModel extends Auditable{
     private String name;
     private String description;
     private List<ProductModel> products;
-    private List<Medication> medications;
+    private List<MedicationModel> medications;
 
-    public boolean isControlledSubstance() {
-        return name.toLowerCase().contains("controlled");
-    }
 }
