@@ -39,7 +39,7 @@ public class CategoryService implements CategoryServicePort {
                     categoryDB.setName(categoryModel.getName());
                     return persistencePort.save(categoryDB);
                 })
-                .orElseThrow();
+                .orElseThrow(CategoryNotFoundException::new);
     }
 
     @Override

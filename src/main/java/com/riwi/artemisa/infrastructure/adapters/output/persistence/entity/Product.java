@@ -1,7 +1,6 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,5 +37,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
+
 
 }

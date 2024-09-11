@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "categorys")
+@Entity(name = "category")
 @Getter
 @Setter
 @Builder
@@ -25,8 +25,9 @@ public class Category extends Auditable{
 
     @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
     private List<Product> products;
-
+  
     @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
+
     private List<Medication> medication;
 
 }

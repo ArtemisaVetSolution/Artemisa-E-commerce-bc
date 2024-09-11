@@ -43,11 +43,11 @@ public class MedicationInventory {
     @Column(name = "selling_price", nullable = false)
     private float sellingPrice;
 
-    @Column(name="due_date", nullable = false)
+    @Column(name="due_date")
     private Date dueDate;
 
     @Column(name="state_medication", nullable = false)
-    private boolean stateMedication;
+    private boolean stateMedication = true;
 
     @OneToMany(mappedBy="medicationInventory", fetch = FetchType.EAGER)
     private List<Medication> medication;

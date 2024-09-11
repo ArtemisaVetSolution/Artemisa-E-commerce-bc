@@ -1,7 +1,5 @@
 package com.riwi.artemisa.application.ports.input;
 
-
-
 import com.riwi.artemisa.domain.models.MedicationInventory;
 
 import java.util.List;
