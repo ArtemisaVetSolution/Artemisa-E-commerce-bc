@@ -35,10 +35,11 @@ public class Product {
     private Category categoryId;
 
     @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
-    private List<Media> media;
+    private List<StatusOrder.Media> media;
 
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
+
 
 }
