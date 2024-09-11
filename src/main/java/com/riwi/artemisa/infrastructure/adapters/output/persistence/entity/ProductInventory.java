@@ -25,7 +25,7 @@ public class ProductInventory {
     @Column(name = "update_date")
     private LocalDate updateDate;
 
-    @Column(name = "spplier", nullable = false)
+    @Column(name = "supplier", nullable = false)
     private String supplier;
 
     @Column(name = "supplier_price", nullable = false)

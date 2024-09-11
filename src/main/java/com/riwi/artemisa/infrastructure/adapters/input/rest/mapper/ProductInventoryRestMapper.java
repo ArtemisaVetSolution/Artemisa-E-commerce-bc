@@ -14,6 +14,9 @@ public interface ProductInventoryRestMapper {
 
     @Mapping(source = "product", target = "product")
     ProductInventoryModel toProductInventoryModel(ProductInventoryCreateRequest productInventoryCreateRequest);
+
+    @Mapping(source = "stateProduct", target = "stateProduct")
+    @Mapping(source = "updateDate", target = "updateDate")
     ProductInventoryResponse toProductInventoryResponse(ProductInventoryModel productInventoryModel);
     List<ProductInventoryResponse> toProductInventoryResponseList(List<ProductInventoryModel> productInventoryModels);
 

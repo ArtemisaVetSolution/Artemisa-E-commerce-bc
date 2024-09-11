@@ -1,5 +1,6 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Medication extends Auditable {
+public class Medication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +26,11 @@ public class Medication extends Auditable {
     @Column(name = "description", nullable = false)
     private String description;
 
-
     @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)  // Corrected mappedBy value
     private List<Media> media;
 
     @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER) // Corrected mappedBy value
+
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
@@ -42,5 +43,6 @@ public class Medication extends Auditable {
     private OrderDetails orderDetails;
 
 }
+
 
 
