@@ -1,7 +1,6 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
-import com.riwi.artemisa.media.domain.Media;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,9 +26,6 @@ public class Medication {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY)
-    private List<Media> medias;
-
     @ManyToOne(targetEntity = Category.class)
     @JoinColumn(name = "category_id")
     private Category categoryId;
@@ -41,5 +37,8 @@ public class Medication {
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
+
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)
+    private List<Media> media;
 
 }

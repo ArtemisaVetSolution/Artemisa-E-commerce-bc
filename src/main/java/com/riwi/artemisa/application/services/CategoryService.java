@@ -1,6 +1,6 @@
 package com.riwi.artemisa.application.services;
 
-import com.riwi.artemisa.application.ports.input.category.CategoryServicePort;
+import com.riwi.artemisa.application.ports.input.CategoryServicePort;
 import com.riwi.artemisa.application.ports.out.CategoryPersistencePort;
 import com.riwi.artemisa.domain.exception.CategoryNotFoundException;
 import com.riwi.artemisa.domain.models.CategoryModel;

@@ -1,6 +1,6 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.controller;
 
-import com.riwi.artemisa.application.ports.input.category.CategoryServicePort;
+import com.riwi.artemisa.application.ports.input.CategoryServicePort;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.CategoryCreateRequest;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.CategoryResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.mapper.CategoryRestMapper;

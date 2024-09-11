@@ -17,8 +17,8 @@
     public class OrderDetails {
     
         @Id
-        @GeneratedValue( strategy = GenerationType.UUID)
-        private String id;
+        @GeneratedValue( strategy = GenerationType.IDENTITY)
+        private Long id;
     
         @Column(name = "quantity", nullable = false)
         private int quantity;
