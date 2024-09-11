@@ -1,6 +1,7 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -14,6 +14,8 @@ import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.P
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -33,13 +35,14 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
 
         ProductInventory productInventory = ProductInventory.builder().
                 stock(productInventoryModel.getStock()).
-                updateDate(productInventoryModel.getUpdateDate()).
+                updateDate(LocalDate.now()).
                 supplier(productInventoryModel.getSupplier()).
                 supplierPrice(productInventoryModel.getSupplierPrice()).
                 sellingPrice(productInventoryModel.getSellingPrice()).
                 dueDate(productInventoryModel.getDueDate()).
                 stateProduct(true).
                 build();
+
 
         Product product = Product.builder().
                 name(productInventoryModel.getProduct().getName()).
