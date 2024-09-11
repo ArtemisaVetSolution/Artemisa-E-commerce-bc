@@ -40,7 +40,7 @@ public class ProductInventory {
     @Column(name = "state_product", nullable = false)
     private boolean stateProduct;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 

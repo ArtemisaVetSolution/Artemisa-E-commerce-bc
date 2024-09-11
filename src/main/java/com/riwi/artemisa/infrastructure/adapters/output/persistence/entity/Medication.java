@@ -26,7 +26,11 @@ public class Medication {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne(targetEntity = Category.class)
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)  // Corrected mappedBy value
+    private List<Media> media;
+
+    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER) // Corrected mappedBy value
+
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
@@ -38,7 +42,7 @@ public class Medication {
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
 
-    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)
-    private List<Media> media;
-
 }
+
+
+

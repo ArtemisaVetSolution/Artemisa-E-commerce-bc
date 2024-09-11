@@ -1,7 +1,5 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
-
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,8 +23,8 @@ public class Product {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToOne(mappedBy = "product", targetEntity = ProductInventory.class)
-    private ProductInventory productInventory;
+    @OneToOne(mappedBy = "product", targetEntity = ProductInventory.class, fetch = FetchType.LAZY)
+    private ProductInventory productInventory;  // Revisa este mapeo
 
     @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
@@ -38,6 +36,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails;
-
-
 }

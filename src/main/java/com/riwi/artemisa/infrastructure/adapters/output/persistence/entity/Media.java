@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-@Entity(name = "media")
+
+@Builder
+@Entity(name = "medias")
 @Getter
 @Setter
 @Builder
@@ -32,3 +34,4 @@ public class Media {
     private Medication medication;
 
 }
+
