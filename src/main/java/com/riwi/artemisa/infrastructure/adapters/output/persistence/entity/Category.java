@@ -1,6 +1,7 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,11 +24,11 @@ public class Category extends Auditable{
     @Column(name = "description", nullable = false)
     private String description;
 
+
     @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
     private List<Product> products;
   
     @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
-
     private List<Medication> medication;
 
 }

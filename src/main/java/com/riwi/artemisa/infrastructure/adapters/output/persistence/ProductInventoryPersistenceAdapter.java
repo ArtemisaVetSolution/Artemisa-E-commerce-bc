@@ -27,7 +27,6 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final MediaRepository mediaRepository;
-
     private final ProductInventoryPersistenceMapper productInventoryPersistenceMapper;
 
     @Override
@@ -50,22 +49,23 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
             .build();
 
 
-        Category category = categoryRepository.findById(productInventoryModel.getProduct().getCategory().getId()).orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryRepository.findById(
+                productInventoryModel
+                        .getProduct()
+                        .getCategory()
+                        .getId()).orElseThrow(RuntimeException::new);
 
         product.setCategoryId(category);
 
         List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
-                mediaModel -> {
-
-                    Media mediaEntity = Media.builder()
+                mediaModel ->Media.builder()
                             .type(mediaModel.getType())
                             .url(mediaModel.getUrl())
-                            .build();
+                            .build()
 
-                    return mediaRepository.save(mediaEntity);
-
-                }
         ).toList();
+
+        product.setMedia(mediaRepository.saveAll(media));
 
 
         product.setMedia(media);

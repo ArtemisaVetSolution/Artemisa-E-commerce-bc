@@ -2,13 +2,11 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+@Builder
 @Entity(name = "medications")
 @Getter
 @Setter
@@ -26,15 +24,14 @@ public class Medication {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)  // Corrected mappedBy value
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)
     private List<Media> media;
 
-    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER) // Corrected mappedBy value
-
+    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
-    @ManyToOne(targetEntity = MedicationInventory.class)
+    @OneToOne (targetEntity = MedicationInventory.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "medication_inventory")
     private MedicationInventory medicationInventory;
 

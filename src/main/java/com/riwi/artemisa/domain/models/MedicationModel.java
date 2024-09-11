@@ -10,10 +10,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicationModel extends Auditable{
+public class MedicationModel{
     private Long id;
     private String name;
     private String description;
-    private List<MedicationModel> medias;
+    private List<MediaModel> media;
     private CategoryModel category;
 }

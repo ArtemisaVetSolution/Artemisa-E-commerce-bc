@@ -1,6 +1,7 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,6 @@ import lombok.*;
 @Entity(name = "medias")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Media {
@@ -27,6 +27,7 @@ public class Media {
 
     @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product productId;
 
     @ManyToOne(targetEntity = Medication.class)

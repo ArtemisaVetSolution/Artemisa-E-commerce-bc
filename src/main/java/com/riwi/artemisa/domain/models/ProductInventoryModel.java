@@ -18,7 +18,7 @@ public class ProductInventoryModel {
     private float supplierPrice;
     private float sellingPrice;
     private LocalDate dueDate;
-    private boolean stateProduct;
+    private boolean stateProduct = true;
     private ProductModel product;
 
 }

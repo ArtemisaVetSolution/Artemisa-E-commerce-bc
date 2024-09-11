@@ -1,5 +1,6 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,12 +24,15 @@ public class Product {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToOne(mappedBy = "product", targetEntity = ProductInventory.class, fetch = FetchType.LAZY)
-    private ProductInventory productInventory;  // Revisa este mapeo
+    @OneToOne(targetEntity = ProductInventory.class)
+    @JoinColumn(name = "product_inventory")
+    private ProductInventory productInventory;
+
 
     @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category categoryId;
+
 
     @OneToMany(mappedBy = "productId", fetch = FetchType.EAGER)
     private List<Media> media;

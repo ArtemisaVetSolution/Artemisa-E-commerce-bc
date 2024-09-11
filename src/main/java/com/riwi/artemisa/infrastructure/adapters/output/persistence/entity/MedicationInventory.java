@@ -2,14 +2,12 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.List;
 
+@Builder
 @Entity(name = "medication_inventory")
 @Getter
 @Setter
@@ -49,7 +47,7 @@ public class MedicationInventory {
     @Column(name="state_medication", nullable = false)
     private boolean stateMedication = true;
 
-    @OneToMany(mappedBy="medicationInventory", fetch = FetchType.EAGER)
-    private List<Medication> medication;
+    @OneToOne(mappedBy="medicationInventory", fetch = FetchType.EAGER)
+    private Medication medication;
 
 }
