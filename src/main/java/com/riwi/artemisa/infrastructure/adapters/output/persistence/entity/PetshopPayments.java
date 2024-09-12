@@ -29,7 +29,6 @@ public class PetshopPayments {
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
-    @OneToMany(mappedBy = "petshopPayments", fetch = FetchType.LAZY)
-    private List<Order> purchase_order;
+//    private List<Order> purchase_order;
 
 }

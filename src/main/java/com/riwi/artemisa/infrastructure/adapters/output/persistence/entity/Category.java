@@ -1,7 +1,6 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends Auditable{
+public class Category{
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
@@ -24,11 +23,10 @@ public class Category extends Auditable{
     @Column(name = "description", nullable = false)
     private String description;
 
+//    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY)
+//    private List<Product> products;
 
-    @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
-    private List<Product> products;
-  
-    @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
-    private List<Medication> medication;
+//    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY)
+//    private List<Medication> medication;
 
 }

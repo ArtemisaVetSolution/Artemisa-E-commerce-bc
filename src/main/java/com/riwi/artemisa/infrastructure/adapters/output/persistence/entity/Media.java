@@ -1,16 +1,15 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 
-@Builder
 @Entity(name = "medias")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Media {
@@ -24,15 +23,6 @@ public class Media {
 
     @Column (name = "url", nullable = false)
     private String url;
-
-    @ManyToOne(targetEntity = Product.class)
-    @JoinColumn(name = "product_id")
-    @JsonBackReference
-    private Product productId;
-
-    @ManyToOne(targetEntity = Medication.class)
-    @JoinColumn(name = "medication_id")
-    private Medication medication;
 
 }
 

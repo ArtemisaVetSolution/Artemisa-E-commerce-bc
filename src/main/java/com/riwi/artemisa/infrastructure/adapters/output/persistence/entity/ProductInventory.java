@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 
 @Entity(name = "product_inventory")
+@Table(name = "product_inventory")
 @Getter
 @Setter
 @Builder
@@ -40,8 +41,8 @@ public class ProductInventory {
     @Column(name = "state_product", nullable = false)
     private boolean stateProduct;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @OneToOne
+    @JoinColumn(name = "productinventory_id")
     private Product product;
 
 }

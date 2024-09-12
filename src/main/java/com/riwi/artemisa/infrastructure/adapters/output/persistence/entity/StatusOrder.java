@@ -25,6 +25,5 @@ public class StatusOrder {
     @Enumerated()
     private StatesOrder state;
 
-    @OneToMany(mappedBy = "statusOrder")
-    private List<Order> purchase_order;
+//    private List<Order> purchase_order;
 }

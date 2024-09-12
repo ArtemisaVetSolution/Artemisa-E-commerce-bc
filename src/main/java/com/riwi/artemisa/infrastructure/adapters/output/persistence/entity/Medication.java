@@ -6,10 +6,10 @@ import lombok.*;
 
 import java.util.List;
 
-@Builder
 @Entity(name = "medications")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Medication {
@@ -24,22 +24,13 @@ public class Medication {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medication_id")
     private List<Media> media;
 
-    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
-    @OneToOne (targetEntity = MedicationInventory.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "medication_inventory")
-    private MedicationInventory medicationInventory;
-
-    @ManyToOne
-    @JoinColumn(name = "order_details_id")
-    private OrderDetails orderDetails;
 
 }
-
-
-

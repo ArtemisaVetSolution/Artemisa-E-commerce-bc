@@ -26,33 +26,7 @@ public class MedicationInventoryPersistenceAdapter implements MedicationInventor
     @Override
     public MedicationInventoryModel save(MedicationInventoryModel medicationInventoryModel) {
 
-        // Crear y guardar la entidad Medication
-        Medication medication = Medication.builder()
-                .name(medicationInventoryModel.getMedication().getName())
-                .description(medicationInventoryModel.getMedication().getDescription())
-                .build();
-
-        // Establecer la categoría
-        Category category = categoryRepository.findById(
-                        medicationInventoryModel.getMedication().getCategory().getId())
-                .orElseThrow(RuntimeException::new);
-        medication.setCategoryId(category);
-
-        // Guardar media
-        List<Media> media = medicationInventoryModel.getMedication().getMedia().stream()
-                .map(mediaModel -> Media.builder()
-                        .type(mediaModel.getType())
-                        .url(mediaModel.getUrl())
-                        .build())
-                .toList();
-        media = mediaRepository.saveAll(media);
-        medication.setMedia(media);
-
-        // Guardar el medicamento
-        Medication savedMedication = medicationRepository.save(medication);
-
-        // Crear y guardar la entidad MedicationInventory
-        MedicationInventory medicationInventory = MedicationInventory.builder()
+        MedicationInventory medicationInvetory = MedicationInventory.builder()
                 .updateDate(medicationInventoryModel.getUpdateDate())
                 .stock(medicationInventoryModel.getStock())
                 .methodUse(medicationInventoryModel.getMethodUse())
@@ -61,17 +35,39 @@ public class MedicationInventoryPersistenceAdapter implements MedicationInventor
                 .sellingPrice(medicationInventoryModel.getSellingPrice())
                 .dueDate(medicationInventoryModel.getDueDate())
                 .stateMedication(true)
-                .medication(savedMedication) // Establece la relación con Medication
                 .build();
 
-        // Guardar el inventario de medicamentos
-        MedicationInventory savedMedicationInventory = repository.save(medicationInventory);
+        Medication medication = Medication.builder()
+                .name(medicationInventoryModel.getMedication().getName())
+                .description(medicationInventoryModel.getMedication().getDescription())
 
-        // Establecer la relación bidireccional
-        savedMedication.setMedicationInventory(savedMedicationInventory);
-        medicationRepository.save(savedMedication); // Actualizar el medicamento con la relación
+                .build();
 
-        // Mapear el inventario guardado al modelo
-        return mapper.toMedicationInventoryModel(savedMedicationInventory);
+        Category category = categoryRepository.findById(
+                medicationInventoryModel
+                        .getMedication()
+                        .getCategory()
+                        .getId())
+                .orElseThrow(RuntimeException::new);
+
+        medication.setCategoryId(category);
+
+        List<Media> media = medicationInventoryModel.getMedication().getMedia().stream().map(
+                mediaModel -> Media.builder()
+                            .type(mediaModel.getType())
+                            .url(mediaModel.getUrl())
+                            .build()
+        ).toList();
+
+        medication.setMedia(mediaRepository.saveAll(media));
+
+
+        medication.setMedia(media);
+
+        Medication savedMedication = medicationRepository.save(medication);
+
+        medicationInvetory.setMedication(savedMedication);
+
+        return mapper.toMedicationInventoryModel(repository.save(medicationInvetory));
     }
 }
