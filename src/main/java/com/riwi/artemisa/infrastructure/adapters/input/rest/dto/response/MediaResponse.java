@@ -11,5 +11,7 @@ public class MediaResponse {
 
     private Long id;
     private String url;
+    private ProductResponse product;
+    private MedicationResponse medication;
 
 }
