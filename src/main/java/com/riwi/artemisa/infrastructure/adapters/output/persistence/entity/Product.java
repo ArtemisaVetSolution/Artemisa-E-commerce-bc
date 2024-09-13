@@ -1,11 +1,15 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "products")
+@Entity
+@Table(name = "products")
 @Getter
 @Setter
 @Builder
@@ -23,17 +27,11 @@ public class Product {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToOne(mappedBy = "product", targetEntity = ProductInventory.class, fetch = FetchType.LAZY)
-    private ProductInventory productInventory;  // Revisa este mapeo
-
-    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
-    @OneToMany(mappedBy = "productId", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private List<Media> media;
-
-    @ManyToOne
-    @JoinColumn(name = "order_details_id")
-    private OrderDetails orderDetails;
 }

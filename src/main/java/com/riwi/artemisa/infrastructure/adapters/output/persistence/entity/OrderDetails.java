@@ -9,7 +9,8 @@
     
     import java.util.List;
     
-    @Entity(name = "order_details")
+    @Entity
+    @Table(name = "order_details")
     @Getter
     @Setter
     @AllArgsConstructor
@@ -28,15 +29,9 @@
     
         @Column(name = "total_price_product", nullable = false)
         private float totalPriceProduct;
-
-        @OneToMany(mappedBy = "orderDetails", fetch = FetchType.LAZY)
-        private List<Product> products;
-    
-        @OneToMany(mappedBy = "orderDetails", fetch = FetchType.LAZY)
-        private List<Medication> medications;
-
-        @ManyToOne
-        @JoinColumn(name = "order_id")
-        private Order order;
+//
+//        private List<Product> products;
+//
+//        private List<Medication> medications;
     
     }

@@ -10,7 +10,8 @@ import lombok.Setter;
 import java.sql.Date;
 import java.util.List;
 
-@Entity(name = "purchase_orders")
+@Entity
+@Table(name = "purchase_orders")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,15 +28,6 @@ public class Order {
     @Column(name = "total_order", nullable = false)
     private float totalOrder;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetails> orderDetails;
-
-    @ManyToOne(targetEntity = PetshopPayments.class)
-    @JoinColumn(name = "petshop_payments")
-    private PetshopPayments petshopPayments;
-
-    @ManyToOne(targetEntity = StatusOrder.class)
-    @JoinColumn(name = "status_order")
-    private StatusOrder statusOrder;
+//    private List<OrderDetails> orderDetails;
 
 }

@@ -11,7 +11,8 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity(name = "status_order")
+@Entity
+@Table(name = "status_order")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,6 +26,5 @@ public class StatusOrder {
     @Enumerated()
     private StatesOrder state;
 
-    @OneToMany(mappedBy = "statusOrder")
-    private List<Order> purchase_order;
+//    private List<Order> purchase_order;
 }

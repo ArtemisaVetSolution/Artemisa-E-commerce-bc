@@ -7,7 +7,8 @@ import lombok.*;
 import java.time.LocalDate;
 
 
-@Entity(name = "product_inventory")
+@Entity
+@Table(name = "product_inventory")
 @Getter
 @Setter
 @Builder
@@ -40,7 +41,7 @@ public class ProductInventory {
     @Column(name = "state_product", nullable = false)
     private boolean stateProduct;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

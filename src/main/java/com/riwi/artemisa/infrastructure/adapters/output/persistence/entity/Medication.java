@@ -9,7 +9,8 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity(name = "medications")
+@Entity
+@Table(name = "medications")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,21 +27,14 @@ public class Medication {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)  // Corrected mappedBy value
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medication_id")
     private List<Media> media;
 
-    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER) // Corrected mappedBy value
-
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
-    @ManyToOne(targetEntity = MedicationInventory.class)
-    @JoinColumn(name = "medication_inventory")
-    private MedicationInventory medicationInventory;
-
-    @ManyToOne
-    @JoinColumn(name = "order_details_id")
-    private OrderDetails orderDetails;
 
 }
 

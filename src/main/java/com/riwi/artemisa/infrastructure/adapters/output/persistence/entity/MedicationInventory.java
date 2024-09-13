@@ -10,7 +10,8 @@ import lombok.Setter;
 import java.sql.Date;
 import java.util.List;
 
-@Entity(name = "medication_inventory")
+@Entity
+@Table(name = "medication_inventory")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -49,7 +50,8 @@ public class MedicationInventory {
     @Column(name="state_medication", nullable = false)
     private boolean stateMedication = true;
 
-    @OneToMany(mappedBy="medicationInventory", fetch = FetchType.EAGER)
-    private List<Medication> medication;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "medicationinventory_id")
+    private Medication medication;
 
 }

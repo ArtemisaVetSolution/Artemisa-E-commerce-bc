@@ -5,12 +5,12 @@ import lombok.*;
 
 import java.util.List;
 
-@Builder
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicationModel extends Auditable{
+public class MedicationModel{
     private Long id;
     private String name;
     private String description;
