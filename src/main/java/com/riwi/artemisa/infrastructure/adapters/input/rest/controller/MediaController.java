@@ -20,24 +20,24 @@ public class MediaController {
     private final MediaServicePort servicePort;
     private final MediaRestMapper restMapper;
 
-    @GetMapping("/v1/api")
+    @GetMapping("/v1/api/all")
     public List<MediaResponse> findAll(){
         return restMapper.toMediaResponseList(servicePort.findAll());
     }
 
-    @GetMapping("/v1/api/{id}")
+    @GetMapping("/v1/api/search/{id}")
     public MediaResponse findById(@PathVariable Long id){
         return restMapper.toMediaResponse(servicePort.findById(id));
     }
 
-    @PostMapping("/v1/api")
+    @PostMapping("/v1/api/create")
     public ResponseEntity<MediaResponse> save(@Valid @RequestBody MediaCreateRequest request){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(restMapper.toMediaResponse(
                         servicePort.save(restMapper.toMediaModel(request))));
     }
 
-    @DeleteMapping("/v1/api/{id}")
+    @DeleteMapping("/v1/api/delete/{id}")
     public void delete(@PathVariable Long id){
         servicePort.deletebyId(id);
     }
