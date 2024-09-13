@@ -6,4 +6,6 @@ import com.riwi.artemisa.domain.models.MedicationModel;
 
 public interface MedicationPersistencePort extends
         Save<MedicationModel> {
+        MedicationModel save(MedicationModel medicationModel);
+
 }

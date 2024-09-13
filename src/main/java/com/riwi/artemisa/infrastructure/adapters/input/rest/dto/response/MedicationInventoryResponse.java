@@ -11,6 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 public class MedicationInventoryResponse {
 
+    private Long id;
     private boolean prescribed;
     private int stock;
     private String methodUse;

@@ -19,9 +19,6 @@ public class MedicationInventory {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "update_date")
-    private Date updateDate;
-
     @Column(name = "prescribed", nullable = false)
     private boolean prescribed;
 

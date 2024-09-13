@@ -27,7 +27,6 @@ public class MedicationInventoryPersistenceAdapter implements MedicationInventor
     public MedicationInventoryModel save(MedicationInventoryModel medicationInventoryModel) {
 
         MedicationInventory medicationInvetory = MedicationInventory.builder()
-                .updateDate(medicationInventoryModel.getUpdateDate())
                 .stock(medicationInventoryModel.getStock())
                 .methodUse(medicationInventoryModel.getMethodUse())
                 .supplier(medicationInventoryModel.getSupplier())
@@ -40,7 +39,6 @@ public class MedicationInventoryPersistenceAdapter implements MedicationInventor
         Medication medication = Medication.builder()
                 .name(medicationInventoryModel.getMedication().getName())
                 .description(medicationInventoryModel.getMedication().getDescription())
-
                 .build();
 
         Category category = categoryRepository.findById(

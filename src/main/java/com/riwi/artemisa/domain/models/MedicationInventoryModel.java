@@ -12,7 +12,6 @@ import java.sql.Date;
 public class MedicationInventoryModel {
 
     private long id;
-    private Date updateDate;
     private boolean prescribed;
     private int stock;
     private String methodUse;
