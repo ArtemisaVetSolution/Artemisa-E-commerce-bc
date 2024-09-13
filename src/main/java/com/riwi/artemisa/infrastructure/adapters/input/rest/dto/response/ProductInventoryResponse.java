@@ -14,9 +14,7 @@ public class ProductInventoryResponse {
 
     private Long id;
     private int stock;
-    private LocalDate updateDate;
     private float sellingPrice;
-    private boolean stateProduct;
     private ProductResponse product;
 
 }

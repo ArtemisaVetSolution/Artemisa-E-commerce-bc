@@ -12,12 +12,24 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductInventoryRestMapper {
 
+    //Admin
+
     @Mapping(source = "product", target = "product")
     ProductInventoryModel toProductInventoryModel(ProductInventoryCreateRequest productInventoryCreateRequest);
 
-    @Mapping(source = "stateProduct", target = "stateProduct")
-    @Mapping(source = "updateDate", target = "updateDate")
+    @Mapping(source = "product", target = "product")
+    ProductInventoryCreateRequest toProductInventoryCreateRequest(ProductInventoryModel productInventoryModel);
+
+    List<ProductInventoryCreateRequest> toProductInventoryCreateRequestList(List<ProductInventoryModel> productInventoryModels);
+
+    //User
+
+    @Mapping(source = "product", target = "product")
     ProductInventoryResponse toProductInventoryResponse(ProductInventoryModel productInventoryModel);
+
+    @Mapping(source = "product", target = "product")
+    ProductInventoryModel toProductInventoryModel(ProductInventoryResponse productInventoryResponse);
+
     List<ProductInventoryResponse> toProductInventoryResponseList(List<ProductInventoryModel> productInventoryModels);
 
 }

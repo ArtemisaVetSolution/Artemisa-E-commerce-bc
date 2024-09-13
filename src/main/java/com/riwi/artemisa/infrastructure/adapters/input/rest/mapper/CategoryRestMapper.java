@@ -11,9 +11,20 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategoryRestMapper {
 
+    //Request
+
     CategoryModel toCategory(CategoryCreateRequest request);
+
+    CategoryCreateRequest toCategoryCreateRequest(CategoryModel categoryModel);
+
+    List<CategoryCreateRequest> toCategoryCreateRequestList(List<CategoryModel> categoryList);
+
+    //Response
 
     CategoryResponse toCategoryResponse(CategoryModel category);
 
+    CategoryModel toCategoryModel(CategoryResponse categoryResponse);
+
     List<CategoryResponse> toCategoryResponseList(List<CategoryModel> categoryList);
+
 }

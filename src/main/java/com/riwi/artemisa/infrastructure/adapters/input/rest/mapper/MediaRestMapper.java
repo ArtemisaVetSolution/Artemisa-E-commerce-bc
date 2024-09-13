@@ -11,8 +11,19 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MediaRestMapper {
 
+    //Request
+
     MediaModel toMediaModel(MediaCreateRequest mediaCreateRequest);
+    MediaCreateRequest toMediaCreateRequest(MediaModel mediaModel);
+    List<MediaCreateRequest> toMediaCreateRequestList(List<MediaModel> mediaModel);
+
+    //Response
+
+    MediaModel toMediaModel(MediaResponse mediaResponse);
+
     MediaResponse toMediaResponse(MediaModel mediaModel);
+
     List<MediaResponse> toMediaResponseList(List<MediaModel> mediaModel);
+
 
 }

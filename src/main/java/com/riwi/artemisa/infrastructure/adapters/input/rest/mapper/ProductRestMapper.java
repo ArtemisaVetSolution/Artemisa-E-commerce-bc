@@ -12,7 +12,17 @@ import java.util.List;
 public interface ProductRestMapper {
 
     ProductModel toProductModel(ProductCreateRequest productCreateRequest);
+
+    ProductCreateRequest toProductInventoryCreateRequest(ProductModel productModel);
+
+    List<ProductCreateRequest> toProductCreateRequestList(List<ProductModel> productModels);
+
+    //Response
+
+    ProductModel toPtoductModel(ProductResponse productResponse);
+
     ProductResponse toProductResponse(ProductModel productModel);
+
     List<ProductResponse> toProductResponseList(List<ProductModel> productModels);
 
 }
