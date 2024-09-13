@@ -5,6 +5,6 @@ import com.riwi.artemisa.domain.models.MediaModel;
 import java.util.Optional;
 
 public interface ReadById<Entity,ID>{
-    Optional<MediaModel> findById(ID id);
+    Optional<Entity> findById(ID id);
 
 }

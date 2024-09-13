@@ -2,6 +2,8 @@ package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @Setter
@@ -12,3 +14,4 @@ public class CategoryResponse {
     private String name;
     private String description;
 }
+

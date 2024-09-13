@@ -1,12 +1,8 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.controller;
 
 import com.riwi.artemisa.application.ports.input.MediaServicePort;
-import com.riwi.artemisa.domain.exception.MediaNotFoundException;
-import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.CategoryCreateRequest;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.MediaCreateRequest;
-import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.CategoryResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MediaResponse;
-import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MedicationResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.mapper.MediaRestMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

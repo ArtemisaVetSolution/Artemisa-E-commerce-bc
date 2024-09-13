@@ -1,6 +1,7 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.riwi.artemisa.domain.models.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category{
+public class Category extends Auditable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
