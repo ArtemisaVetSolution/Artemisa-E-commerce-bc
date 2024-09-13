@@ -2,16 +2,20 @@ package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
 import lombok.*;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MediaResponse {
+public class MedicationInventoryResponse {
 
     private Long id;
-    private String url;
-    private ProductResponse product;
+    private boolean prescribed;
+    private int stock;
+    private String methodUse;
+    private float sellingPrice;
+    private boolean StateMedication;
     private MedicationResponse medication;
-
 }

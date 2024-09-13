@@ -14,6 +14,6 @@ public class MedicationModel{
     private Long id;
     private String name;
     private String description;
-    private List<MedicationModel> medias;
+    private List<MediaModel> media;
     private CategoryModel category;
 }

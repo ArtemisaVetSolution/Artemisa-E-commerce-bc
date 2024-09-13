@@ -7,6 +7,9 @@ import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.M
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class MediaPersisterAdapter implements MediaPersistenPort {
@@ -17,5 +20,26 @@ public class MediaPersisterAdapter implements MediaPersistenPort {
     @Override
     public MediaModel save(MediaModel mediaModel) {
         return mapper.toMediaModel(repository.save(mapper.toMedia(mediaModel)));
+    }
+
+
+    @Override
+    public String deletebyId(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public List<MediaModel> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public MediaModel readById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public MediaModel update(Long aLong, MediaModel mediaModel) {
+        return null;
     }
 }

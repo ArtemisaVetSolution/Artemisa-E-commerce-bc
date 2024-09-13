@@ -2,10 +2,7 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @Table(name = "medication_inventory")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedicationInventory {
@@ -21,9 +19,6 @@ public class MedicationInventory {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "update_date")
-    private Date updateDate;
 
     @Column(name = "prescribed", nullable = false)
     private boolean prescribed;

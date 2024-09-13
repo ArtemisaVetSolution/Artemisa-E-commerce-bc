@@ -7,6 +7,7 @@ import com.riwi.artemisa.domain.models.CategoryModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,38 +16,35 @@ public class CategoryService implements CategoryServicePort {
 
     private final CategoryPersistencePort persistencePort;
 
-    @Override
-    public CategoryModel findByName(String name) {
-        return persistencePort.findByName(name)
-                .orElseThrow(CategoryNotFoundException::new);
-    }
 
     @Override
-    public List<CategoryModel> findAll() {
-        return persistencePort.findAll();
-    }
-
-    @Override
-    public CategoryModel save(CategoryModel categoryModel) {
+    public CategoryModel createCategory(CategoryModel categoryModel) {
         return persistencePort.save(categoryModel);
     }
 
     @Override
-    public CategoryModel update(String name, CategoryModel categoryModel) {
-        return persistencePort.findByName(name)
-                .map(categoryDB ->{
-                    categoryDB.setDescription(categoryModel.getDescription());
-                    categoryDB.setName(categoryModel.getName());
-                    return persistencePort.save(categoryDB);
-                })
-                .orElseThrow(CategoryNotFoundException::new);
+    public CategoryModel editCategory(Long id, CategoryModel categoryModel) {
+        CategoryModel existingCategory = getCategoryById(id);
+        existingCategory.setName(categoryModel.getName());
+        existingCategory.setDescription(categoryModel.getDescription());
+        return persistencePort.save(existingCategory);
     }
 
     @Override
-    public void deleteByName(String name) {
-        if (persistencePort.findByName(name).isEmpty()){
-            throw new CategoryNotFoundException();
-        }
-        persistencePort.deleteByName(name);
+    public void deleteCategory(Long id) {
+        CategoryModel categoryModel = getCategoryById(id);
+        categoryModel.setDeletedAt(LocalDateTime.now());
+        categoryModel.setDeleted(true);
+        persistencePort.save(categoryModel);
+    }
+
+    @Override
+    public List<CategoryModel> getAllCategories() {
+        return persistencePort.findAll();
+    }
+
+    @Override
+    public CategoryModel getCategoryById(Long id) {
+       return persistencePort.findById(id).orElseThrow(CategoryNotFoundException::new);
     }
 }

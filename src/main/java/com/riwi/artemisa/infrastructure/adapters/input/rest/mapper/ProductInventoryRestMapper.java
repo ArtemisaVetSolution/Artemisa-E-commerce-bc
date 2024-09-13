@@ -33,3 +33,4 @@ public interface ProductInventoryRestMapper {
     List<ProductInventoryResponse> toProductInventoryResponseList(List<ProductInventoryModel> productInventoryModels);
 
 }
+

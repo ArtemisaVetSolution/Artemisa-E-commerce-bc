@@ -20,33 +20,33 @@ public class CategoryController {
     private final CategoryServicePort servicePort;
     private final CategoryRestMapper restMapper;
 
-    @GetMapping("/v1/api")
+    @GetMapping("/v1/api/all")
     public List<CategoryResponse> findAll(){
-        return restMapper.toCategoryResponseList(servicePort.findAll());
+        return restMapper.toCategoryResponseList(servicePort.getAllCategories());
     }
 
-    @GetMapping("/v1/api/{name}")
-    public CategoryResponse findByName(@PathVariable String name){
-        return restMapper.toCategoryResponse(servicePort.findByName(name));
+    @GetMapping("/v1/api/search/{id}")
+    public CategoryResponse findByName(@PathVariable Long id){
+        return restMapper.toCategoryResponse(servicePort.getCategoryById(id));
     }
 
-    @PostMapping("/v1/api")
+    @PostMapping("/v1/api/create")
     public ResponseEntity<CategoryResponse> save(@Valid @RequestBody CategoryCreateRequest request){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(restMapper.toCategoryResponse(
-                        servicePort.save(restMapper.toCategory(request))));
+                        servicePort.createCategory(restMapper.toCategory(request))));
     }
 
 
-    @PutMapping("/v1/api/{name}")
-    public CategoryResponse update(@PathVariable String name, @Valid @RequestBody CategoryCreateRequest request){
+    @PutMapping("/v1/api/update/{id}")
+    public CategoryResponse update(@PathVariable Long id, @Valid @RequestBody CategoryCreateRequest request){
         return restMapper.toCategoryResponse(
-                servicePort.update(name,restMapper.toCategory(request)));
+                servicePort.editCategory(id,restMapper.toCategory(request)));
     }
 
-    @DeleteMapping("/v1/api/{name}")
-    public void delete(@PathVariable String name){
-        servicePort.deleteByName(name);
+    @DeleteMapping("/v1/api/delete/{id}")
+    public void delete(@PathVariable Long id){
+        servicePort.deleteCategory(id);
     }
 
 

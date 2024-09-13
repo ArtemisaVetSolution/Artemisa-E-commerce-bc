@@ -26,5 +26,4 @@ public interface CategoryRestMapper {
     CategoryModel toCategoryModel(CategoryResponse categoryResponse);
 
     List<CategoryResponse> toCategoryResponseList(List<CategoryModel> categoryList);
-
 }

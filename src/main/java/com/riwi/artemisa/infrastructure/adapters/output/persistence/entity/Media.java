@@ -6,8 +6,8 @@ import lombok.*;
 
 
 
-@Entity
-@Table(name = "medias")
+
+@Entity(name = "medias")
 @Getter
 @Setter
 @Builder
@@ -24,6 +24,14 @@ public class Media {
 
     @Column (name = "url", nullable = false)
     private String url;
+
+    @ManyToOne(targetEntity = Product.class)
+    @JoinColumn(name = "product_id")
+    private Product productId;
+
+    @ManyToOne(targetEntity = Medication.class)
+    @JoinColumn(name = "medication_id")
+    private Medication medication;
 
 }
 

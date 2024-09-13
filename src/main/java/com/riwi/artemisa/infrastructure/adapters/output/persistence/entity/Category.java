@@ -1,21 +1,19 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.riwi.artemisa.domain.models.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-@Entity
-@Table(name = "category")
+@Entity(name = "category")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category{
+public class Category extends Auditable{
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,10 +24,10 @@ public class Category{
     @Column(name = "description", nullable = false)
     private String description;
 
-//    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "categoryId",fetch = FetchType.LAZY)
 //    private List<Product> products;
-
-//    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY)
+//
+//    @OneToMany(mappedBy = "categoryId",fetch = FetchType.LAZY)
 //    private List<Medication> medication;
 
 }
