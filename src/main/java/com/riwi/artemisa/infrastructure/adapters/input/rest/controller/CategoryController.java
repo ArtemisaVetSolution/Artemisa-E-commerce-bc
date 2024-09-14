@@ -1,13 +1,12 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.controller;
 
 import com.riwi.artemisa.application.ports.input.CategoryServicePort;
+import com.riwi.artemisa.domain.models.CategoryModel;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.CategoryCreateRequest;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.CategoryResponse;
+import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.CategoryResponseAdmin;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.mapper.CategoryRestMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,35 +19,55 @@ public class CategoryController {
     private final CategoryServicePort servicePort;
     private final CategoryRestMapper restMapper;
 
-    @GetMapping("/v1/api/all")
-    public List<CategoryResponse> findAll(){
-        return restMapper.toCategoryResponseList(servicePort.getAllCategories());
+    //Controllers admin------------------------
+
+    @PostMapping("v1/api/admin/create")
+    public CategoryResponseAdmin save(@RequestBody CategoryCreateRequest request){
+        CategoryModel savedCategory = servicePort.save(restMapper.toCategory(request));
+        return restMapper.toCategoryResponseAdmin(savedCategory);
     }
 
-    @GetMapping("/v1/api/search/{id}")
-    public CategoryResponse findByName(@PathVariable Long id){
-        return restMapper.toCategoryResponse(servicePort.getCategoryById(id));
+    @PutMapping("v1/api/admin/update/{name}")
+    public CategoryResponseAdmin update(
+            @RequestBody CategoryCreateRequest request,@PathVariable String name){
+        //mapeamos el request a un modelo
+        CategoryModel categoryModel = restMapper.toCategory(request);
+        //llamo al servicio
+        CategoryModel updateCategory = servicePort.update(name,categoryModel);
+        //mapeo el nuevo servicio a un responseAdmin
+        return restMapper.toCategoryResponseAdmin(updateCategory);
     }
 
-    @PostMapping("/v1/api/create")
-    public ResponseEntity<CategoryResponse> save(@Valid @RequestBody CategoryCreateRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(restMapper.toCategoryResponse(
-                        servicePort.createCategory(restMapper.toCategory(request))));
+    @GetMapping("v1/api/admin/read/{name}")
+    public CategoryResponseAdmin readByName(@PathVariable String name){
+        CategoryModel categoryModel = servicePort.readByName(name);
+        return restMapper.toCategoryResponseAdmin(categoryModel);
     }
 
-
-    @PutMapping("/v1/api/update/{id}")
-    public CategoryResponse update(@PathVariable Long id, @Valid @RequestBody CategoryCreateRequest request){
-        return restMapper.toCategoryResponse(
-                servicePort.editCategory(id,restMapper.toCategory(request)));
+    @GetMapping("v1/api/admin/readAll")
+    public List<CategoryResponseAdmin> findAll() {
+        List<CategoryModel> categoryList = servicePort.findAll();
+        return restMapper.toCategoryResponseAdminList(categoryList);
     }
 
-    @DeleteMapping("/v1/api/delete/{id}")
-    public void delete(@PathVariable Long id){
-        servicePort.deleteCategory(id);
+    @DeleteMapping("v1/api/admin/delete/{name}")
+    public void deleteByName(@PathVariable String name){
+        servicePort.updateStatusProduct(name);
     }
 
+    //Controllers user------------------------
+
+    @GetMapping("v1/api/read/{name}")
+    public CategoryResponse readByNameUser(@PathVariable String name){
+        CategoryModel categoryModel = servicePort.readByName(name);
+        return restMapper.toCategoryResponse(categoryModel);
+    }
+
+    @GetMapping("v1/api/readAll")
+    public List<CategoryResponse> readAllByName(){
+        List<CategoryModel> categoryList = servicePort.findAll();
+        return restMapper.toCategoryResponseList(categoryList);
+    }
 
 }
 

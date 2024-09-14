@@ -1,11 +1,10 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
-import com.riwi.artemisa.domain.models.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity(name = "category")
 @Getter
@@ -13,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends Auditable{
+public class Category{
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
@@ -29,5 +28,17 @@ public class Category extends Auditable{
 //
 //    @OneToMany(mappedBy = "categoryId",fetch = FetchType.LAZY)
 //    private List<Medication> medication;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "update_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "delete_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
 
 }
