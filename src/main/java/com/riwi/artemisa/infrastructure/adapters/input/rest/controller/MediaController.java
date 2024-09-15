@@ -1,8 +1,10 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.controller;
 
 import com.riwi.artemisa.application.ports.input.MediaServicePort;
+import com.riwi.artemisa.domain.models.MediaModel;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.MediaCreateRequest;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MediaResponse;
+import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MediaResponseAdmin;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.mapper.MediaRestMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,26 +22,52 @@ public class MediaController {
     private final MediaServicePort servicePort;
     private final MediaRestMapper restMapper;
 
-    @GetMapping("/v1/api/all")
-    public List<MediaResponse> findAll(){
-        return restMapper.toMediaResponseList(servicePort.findAll());
+
+    //Admin controllers ---------------------------
+
+    @PostMapping("v1/api/admin/create")
+    public MediaResponseAdmin save(@Valid @RequestBody MediaCreateRequest request){
+        MediaModel savedMedia = servicePort.save(restMapper.toMedia(request));
+        return restMapper.toMediaResponseAdmin(savedMedia);
     }
 
-    @GetMapping("/v1/api/search/{id}")
-    public MediaResponse findById(@PathVariable Long id){
-        return restMapper.toMediaResponse(servicePort.findById(id));
+    @PutMapping("v1/api/admin/update/{id}")
+    public MediaResponseAdmin update(
+            @Valid @RequestBody MediaCreateRequest request,@PathVariable Long id){
+        MediaModel updatedMedia = servicePort.update(id, restMapper.toMedia(request));
+        return restMapper.toMediaResponseAdmin(updatedMedia);
     }
 
-    @PostMapping("/v1/api/create")
-    public ResponseEntity<MediaResponse> save(@Valid @RequestBody MediaCreateRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(restMapper.toMediaResponse(
-                        servicePort.save(restMapper.toMediaModel(request))));
+
+    @GetMapping("/v1/api/admin/read/{id}")
+    public MediaResponseAdmin readById(@PathVariable Long id){
+        MediaModel mediaModel = servicePort.findById(id);
+        return restMapper.toMediaResponseAdmin(mediaModel);
     }
 
-    @DeleteMapping("/v1/api/delete/{id}")
+
+    @GetMapping("/v1/api/admin/read/all")
+    public List<MediaResponseAdmin> findAll(){
+        return restMapper.toMediaResponseAdminList(servicePort.findAll());
+    }
+
+
+    @DeleteMapping("/v1/api/admin/delete/{id}")
     public void delete(@PathVariable Long id){
         servicePort.deletebyId(id);
+    }
+
+    //User controllers ---------------------------
+
+    @GetMapping("/v1/api/read/{id}")
+    public MediaResponse readByIdUser(@PathVariable Long id){
+        MediaModel mediaModel = servicePort.findById(id);
+        return restMapper.toMediaResponse(mediaModel);
+    }
+
+    @GetMapping("/v1/api/read/all")
+    public List<MediaResponse> findAllUser(){
+        return restMapper.toMediaResponseList(servicePort.findAll());
     }
 
 }

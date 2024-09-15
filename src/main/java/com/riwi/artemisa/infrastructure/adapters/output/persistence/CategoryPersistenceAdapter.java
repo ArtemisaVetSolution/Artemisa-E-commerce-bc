@@ -23,6 +23,7 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
 
         Category category = Category.builder()
                 .name(categoryModel.getName())
+                .name(categoryModel.getName())
                 .description(categoryModel.getDescription())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -57,7 +58,7 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
         category.setUpdatedAt(LocalDateTime.now());
         category.setDeletedAt(LocalDateTime.now());
         repository.save(category);
-        if (category.getDeleted()) {
+        if (category.getDeleted() == true) {
             return "Product deleted successfully";
         }
         return "Product restore successfully";
@@ -65,12 +66,14 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
 
     @Override
     public CategoryModel readByName(String name) {
-        return mapper.toCategoryModel(repository.findByNameIgnoreCase(name));
+        Category category = repository.findByIdAndNotDeleted(name).orElseThrow();
+        return mapper.toCategoryModel(category);
     }
 
     @Override
     public List<CategoryModel> findAll() {
-        return mapper.toCategoryModels(repository.findAll());
+        List<Category> categoryList = repository.findAllByDeletedIsFalse();
+        return mapper.toCategoryModels(categoryList);
     }
 
 }

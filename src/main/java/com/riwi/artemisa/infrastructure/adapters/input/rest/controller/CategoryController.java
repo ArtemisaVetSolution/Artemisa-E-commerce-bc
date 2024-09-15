@@ -44,7 +44,7 @@ public class CategoryController {
         return restMapper.toCategoryResponseAdmin(categoryModel);
     }
 
-    @GetMapping("v1/api/admin/readAll")
+    @GetMapping("v1/api/admin/read/all")
     public List<CategoryResponseAdmin> findAll() {
         List<CategoryModel> categoryList = servicePort.findAll();
         return restMapper.toCategoryResponseAdminList(categoryList);
@@ -63,7 +63,7 @@ public class CategoryController {
         return restMapper.toCategoryResponse(categoryModel);
     }
 
-    @GetMapping("v1/api/readAll")
+    @GetMapping("v1/api/read/all")
     public List<CategoryResponse> readAllByName(){
         List<CategoryModel> categoryList = servicePort.findAll();
         return restMapper.toCategoryResponseList(categoryList);
