@@ -48,7 +48,7 @@ public class MedicationInventoryPersistenceAdapter implements MedicationInventor
                         .getId())
                 .orElseThrow(RuntimeException::new);
 
-        medication.setCategoryId(category);
+        medication.setCategory(category);
 
         List<Media> media = medicationInventoryModel.getMedication().getMedia().stream().map(
                 mediaModel -> Media.builder()

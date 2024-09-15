@@ -5,6 +5,7 @@ import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.Category
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.CategoryResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.CategoryResponseAdmin;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;

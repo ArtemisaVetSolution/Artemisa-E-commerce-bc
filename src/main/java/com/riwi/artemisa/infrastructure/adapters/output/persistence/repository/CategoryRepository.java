@@ -12,9 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
-    Category findByName(String name);
-    Category findByDescription(String description);
-    Category findByNameIgnoreCase(String name);
+    Category findByNameAndDeletedIsFalse(String name);
 
     @Query("SELECT m FROM category m WHERE m.name = :name AND m.deleted = false")
     Optional<Category> findByIdAndNotDeleted(@Param("name") String name);

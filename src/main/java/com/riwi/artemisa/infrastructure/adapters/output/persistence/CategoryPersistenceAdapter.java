@@ -36,7 +36,7 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
     @Override
     public CategoryModel update(String name, CategoryModel categoryModel) {
         // Recupera la entidad existente por nombre
-        Category existingCategory = repository.findByName(name);
+        Category existingCategory = repository.findByNameAndDeletedIsFalse(name);
         // Crea la nueva entidad de categoría con los datos actualizados
         Category category = Category.builder()
                 .id(existingCategory.getId())
@@ -52,7 +52,7 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
 
     @Override
     public String updateStatusProduct(String name) {
-        Category category = repository.findByName(name);
+        Category category = repository.findByNameAndDeletedIsFalse(name);
         category.setDeleted(true);
         category.setCreatedAt(category.getCreatedAt());
         category.setUpdatedAt(LocalDateTime.now());

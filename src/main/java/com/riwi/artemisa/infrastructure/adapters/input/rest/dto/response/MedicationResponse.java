@@ -9,9 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedicationResponse {
-    private Long id;
     private String name;
     private String description;
     private CategoryResponse category;
-    private List<MediaResponse> media;
 }
