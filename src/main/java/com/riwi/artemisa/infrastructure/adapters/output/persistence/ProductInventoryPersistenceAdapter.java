@@ -55,7 +55,7 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
                         .getCategory()
                         .getId()).orElseThrow(RuntimeException::new);
 
-        product.setCategoryId(category);
+        product.setCategory(category);
 
         List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
                 mediaModel ->Media.builder()
@@ -100,7 +100,7 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
                 .build();
 
         Category category = categoryRepository.findById(productInventoryModel.getProduct().getCategory().getId()).orElseThrow(() -> new RuntimeException("The category does not exist"));
-        product.setCategoryId(category);
+        product.setCategory(category);
 
         List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
                 mediaModel -> {

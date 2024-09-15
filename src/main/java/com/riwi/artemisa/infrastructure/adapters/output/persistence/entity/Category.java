@@ -25,8 +25,8 @@ public class Category{
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "categoryId",fetch = FetchType.LAZY)
-    private List<Product> products;
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    private List<Product> product;
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
     @JsonManagedReference

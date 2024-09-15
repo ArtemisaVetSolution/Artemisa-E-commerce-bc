@@ -14,7 +14,7 @@ public interface ProductInventoryRepository extends JpaRepository<ProductInvento
 //    @Query("SELECT n FROM productInventory n JOIN n.products m JOIN m.category c WHERE c.id = :id")
 //    List<ProductInventory> findByCategoryId(@Param("id") Long id);
 
-    @Query("SELECT p FROM ProductInventory p WHERE p.product.categoryId.id = :id")
+    @Query("SELECT p FROM ProductInventory p WHERE p.product.category.id = :id")
     List<ProductInventory> findByCategoryId(@Param("id") Long categoryId);
 
     @Query("SELECT p FROM ProductInventory p WHERE LOWER(p.product.name) LIKE LOWER(CONCAT(:name, '%'))")
