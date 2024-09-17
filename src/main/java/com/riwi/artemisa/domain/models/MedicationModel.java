@@ -17,8 +17,5 @@ public class MedicationModel{
     private String description;
     private List<MediaModel> media;
     private CategoryModel category;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
     private Boolean deleted = false;
 }

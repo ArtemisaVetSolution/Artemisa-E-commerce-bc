@@ -26,16 +26,6 @@ public class Media {
     @Column (name = "url", nullable = false)
     private String url;
 
-    @ManyToOne(targetEntity = Product.class)
-    @JoinColumn(name = "product_id")
-    @JsonBackReference
-    private Product productId;
-
-    @ManyToOne(targetEntity = Medication.class)
-    @JoinColumn(name = "medication_id")
-    @JsonBackReference
-    private Medication medication;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

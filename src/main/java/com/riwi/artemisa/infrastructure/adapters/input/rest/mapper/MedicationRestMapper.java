@@ -6,6 +6,7 @@ import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MediaRe
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MedicationResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MedicationResponseAdmin;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;

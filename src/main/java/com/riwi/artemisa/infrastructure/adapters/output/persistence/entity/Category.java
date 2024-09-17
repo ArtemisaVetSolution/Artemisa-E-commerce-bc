@@ -25,13 +25,6 @@ public class Category{
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
-    private List<Product> product;
-
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Medication> medication;
-
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

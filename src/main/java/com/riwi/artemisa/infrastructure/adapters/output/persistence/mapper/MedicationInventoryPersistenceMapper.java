@@ -13,7 +13,6 @@ public interface MedicationInventoryPersistenceMapper {
 
     MedicationInventory toMedicationInventory(MedicationInventoryModel medicationInventoryModel);
 
-    @Mapping(source = "medication.category",target = "medication.category")
     MedicationInventoryModel toMedicationInventoryModel(MedicationInventory medicationInventory);
 
     List<MedicationInventoryModel> toMedicationInventoryModelList(List<MedicationInventory> medicationInventoryList);

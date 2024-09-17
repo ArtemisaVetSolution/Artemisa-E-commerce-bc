@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,10 +23,10 @@ public class MedicationInventory {
     private long id;
 
     @Column(name = "prescribed", nullable = false)
-    private boolean prescribed;
+    private Boolean prescribed;
 
     @Column(name = "stock", nullable = false)
-    private int stock;
+    private Integer stock;
 
     @Column(name = "method_use", nullable = false)
     private String methodUse;
@@ -32,21 +34,33 @@ public class MedicationInventory {
     @Column(name = "supplier", nullable = false)
     private String supplier;
 
-
     @Column(name = "supplier_price", nullable = false)
-    private float supplierPrice;
+    private Float supplierPrice;
 
     @Column(name = "selling_price", nullable = false)
-    private float sellingPrice;
+    private Float sellingPrice;
 
     @Column(name="due_date")
-    private Date dueDate;
+    private LocalDate dueDate;
 
     @Column(name="state_medication", nullable = false)
-    private boolean stateMedication = true;
+    private Boolean isMedicationAvailable = true;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "medicationinventory_id")
     private Medication medication;
+
+    //Auditable
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 
 }

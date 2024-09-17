@@ -14,7 +14,6 @@ public interface ProductInventoryRestMapper {
 
     //Admin
 
-
     ProductInventoryModel toProductInventoryModel(ProductInventoryCreateRequest productInventoryCreateRequest);
 
     ProductInventoryCreateRequest toProductInventoryCreateRequest(ProductInventoryModel productInventoryModel);

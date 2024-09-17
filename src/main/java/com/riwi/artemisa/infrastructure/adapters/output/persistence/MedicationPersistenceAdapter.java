@@ -35,20 +35,16 @@ public class MedicationPersistenceAdapter implements MedicationPersistencePort {
 
     @Override
     public MedicationModel save(MedicationModel medicationModel) {
-        // Obtener la categoría por nombre y que no esté eliminada
-        Category category = categoryRepository.findByNameAndDeletedIsFalse(medicationModel.getCategory().getName());
+
+        // Obtener o guardar la categoría
+        Category category = categoryRepository.findById(medicationModel.getCategory().getId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
         // Obtener las medias por sus ids
         List<Media> mediaList = mediaRepository.findAllByIdInAndDeletedIsFalse(medicationModel.getMedia()
                 .stream()
-                .map(MediaModel::getId)  // Obtener los IDs de las medias
-                .collect(Collectors.toList())
-        );
-
-        // Asignar valores al medicamento antes de guardarlo
-        medicationModel.setCreatedAt(LocalDateTime.now());
-        medicationModel.setUpdatedAt(LocalDateTime.now());
-        medicationModel.setDeleted(false);
+                .map(MediaModel::getId)
+                .collect(Collectors.toList()));
 
         // Asignar la categoría al medicamento
         medicationModel.setCategory(categoryMapper.toCategoryModel(category));
@@ -66,9 +62,6 @@ public class MedicationPersistenceAdapter implements MedicationPersistencePort {
     public String deletebyId(String name) {
         Medication existingMedication = repository.findBynameAndDeletedIsFalse(name);
         existingMedication.setDeleted(true);
-        existingMedication.setCreatedAt(existingMedication.getCreatedAt());
-        existingMedication.setUpdatedAt(LocalDateTime.now());
-        existingMedication.setDeletedAt(LocalDateTime.now());
         repository.save(existingMedication);
         if (existingMedication.getDeleted() == true){
             return "medication deleted successfully";
@@ -94,9 +87,6 @@ public class MedicationPersistenceAdapter implements MedicationPersistencePort {
                 .id(existingMedication.getId())
                 .name(medicationModel.getName())
                 .description(medicationModel.getDescription())
-                .createdAt(existingMedication.getCreatedAt())
-                .updatedAt(LocalDateTime.now())
-                .deletedAt(existingMedication.getDeletedAt())
                 .build();
 
         return mapper.toMedicationModel(repository.save(medication));
