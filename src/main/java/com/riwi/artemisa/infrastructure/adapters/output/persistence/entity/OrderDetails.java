@@ -2,19 +2,16 @@
     
     
     import jakarta.persistence.*;
-    import lombok.AllArgsConstructor;
-    import lombok.Getter;
-    import lombok.NoArgsConstructor;
-    import lombok.Setter;
-    
-    import java.util.List;
-    
+    import lombok.*;
+
+
     @Entity
     @Table(name = "order_details")
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public class OrderDetails {
     
         @Id
@@ -25,13 +22,15 @@
         private int quantity;
     
         @Column(name = "unit_price", nullable = false)
-        private float unitPrice;
+        private Float unitPrice;
     
         @Column(name = "total_price_product", nullable = false)
-        private float totalPriceProduct;
-//
-//        private List<Product> products;
-//
+        private Float totalPriceProduct;
+
+        @ManyToOne
+        @JoinColumn(name = "products_id")
+        private ProductInventory product;
+
 //        private List<Medication> medications;
     
     }

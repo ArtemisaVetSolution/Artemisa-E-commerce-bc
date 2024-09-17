@@ -165,6 +165,8 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
         return productInventoryPersistenceMapper.toProductInventoryModelList(productInventoryRepository.findAllProductInventoryStock(stock));
     }
 
+
+    //User
     @Override
     public List<ProductInventoryModel> readAllIfAvailable() {
         return productInventoryPersistenceMapper.toProductInventoryModelList(productInventoryRepository.findAllProductInventoryAvailable());

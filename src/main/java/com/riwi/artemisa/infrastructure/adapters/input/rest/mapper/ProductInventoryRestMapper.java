@@ -28,7 +28,7 @@ public interface ProductInventoryRestMapper {
     ProductInventoryResponse toProductInventoryResponse(ProductInventoryModel productInventoryModel);
 
     @Mapping(source = "product", target = "product")
-    ProductInventoryModel toProductInventoryModel(ProductInventoryResponse productInventoryResponse);
+//    ProductInventoryModel toProductInventoryModel(ProductInventoryResponse productInventoryResponse);
 
     List<ProductInventoryResponse> toProductInventoryResponseList(List<ProductInventoryModel> productInventoryModels);
 
