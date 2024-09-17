@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@RequestMapping("api/medicationInventory/")
+@RequestMapping("medicationInventory")
 @RequiredArgsConstructor
 public class MedicationIventoryController {
 
@@ -39,34 +39,34 @@ public class MedicationIventoryController {
         return servicePort.updateStatusProduct(id);
     }
 
-    @GetMapping("admin/get/all")
+    @GetMapping("admin/readAll")
     public List<MedicationInventoryResponseAdmin> getAllAdmin(){
         return restMapper.toMedicationInventoryResponseAdminList(servicePort.findAll());
     }
 
-    @GetMapping("admin/get/{id}")
+    @GetMapping("admin/read/{id}")
     public MedicationInventoryResponseAdmin getMedicationInventory(@PathVariable Long id){
         return restMapper.toMedicationInventoryAdmin(servicePort.readById(id));
     }
 
-    @GetMapping("admin/get/allCategory")
+    @GetMapping("admin/readAllCategory")
     public List<MedicationInventoryResponseAdmin> getAllByCategory(@RequestParam Long categoryId){
         return restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllCategory(categoryId));
     }
 
-    @GetMapping("admin/get/allProductName")
+    @GetMapping("admin/readAllProductName")
     public List<MedicationInventoryResponseAdmin> getAllByName(@RequestParam String name){
         return restMapper.toMedicationInventoryResponseAdminList(servicePort.findAllByName(name));
     }
 
-    @GetMapping("admin/get/allProductStock")
+    @GetMapping("admin/readAllProductStock")
     public List<MedicationInventoryResponseAdmin> getAllByStock(@RequestParam int stock){
         return restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllProductStock(stock));
     }
 
     //User Controllers -----------------------
 
-    @GetMapping("user/read/all")
+    @GetMapping("user/readAll")
     public List<MedicationInventoryResponse> getAll(){
            return restMapper.toMedicationResponseList(servicePort.readAllIfAvailable());
     }

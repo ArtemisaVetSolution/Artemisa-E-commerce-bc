@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/media")
+@RequestMapping("media")
 public class MediaController {
 
     private final MediaServicePort servicePort;
@@ -25,13 +25,13 @@ public class MediaController {
 
     //Admin controllers ---------------------------
 
-    @PostMapping("v1/api/admin/create")
+    @PostMapping("admin/create")
     public MediaResponseAdmin save(@Valid @RequestBody MediaCreateRequest request){
         MediaModel savedMedia = servicePort.save(restMapper.toMedia(request));
         return restMapper.toMediaResponseAdmin(savedMedia);
     }
 
-    @PutMapping("v1/api/admin/update/{id}")
+    @PutMapping("admin/update/{id}")
     public MediaResponseAdmin update(
             @Valid @RequestBody MediaCreateRequest request,@PathVariable Long id){
         MediaModel updatedMedia = servicePort.update(id, restMapper.toMedia(request));
@@ -39,33 +39,33 @@ public class MediaController {
     }
 
 
-    @GetMapping("/v1/api/admin/read/{id}")
+    @GetMapping("admin/read/{id}")
     public MediaResponseAdmin readById(@PathVariable Long id){
         MediaModel mediaModel = servicePort.findById(id);
         return restMapper.toMediaResponseAdmin(mediaModel);
     }
 
 
-    @GetMapping("/v1/api/admin/read/all")
+    @GetMapping("admin/readAll")
     public List<MediaResponseAdmin> findAll(){
         return restMapper.toMediaResponseAdminList(servicePort.findAll());
     }
 
 
-    @DeleteMapping("/v1/api/admin/delete/{id}")
+    @DeleteMapping("admin/delete/{id}")
     public void delete(@PathVariable Long id){
         servicePort.deletebyId(id);
     }
 
     //User controllers ---------------------------
 
-    @GetMapping("/v1/api/read/{id}")
+    @GetMapping("user/read/{id}")
     public MediaResponse readByIdUser(@PathVariable Long id){
         MediaModel mediaModel = servicePort.findById(id);
         return restMapper.toMediaResponse(mediaModel);
     }
 
-    @GetMapping("/v1/api/read/all")
+    @GetMapping("user/readAll")
     public List<MediaResponse> findAllUser(){
         return restMapper.toMediaResponseList(servicePort.findAll());
     }

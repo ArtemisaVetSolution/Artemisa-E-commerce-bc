@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/category")
+@RequestMapping("category")
 public class CategoryController {
 
     private final CategoryServicePort servicePort;
@@ -21,13 +21,13 @@ public class CategoryController {
 
     //Controllers admin------------------------
 
-    @PostMapping("v1/api/admin/create")
+    @PostMapping("admin/create")
     public CategoryResponseAdmin save(@RequestBody CategoryCreateRequest request){
         CategoryModel savedCategory = servicePort.save(restMapper.toCategory(request));
         return restMapper.toCategoryResponseAdmin(savedCategory);
     }
 
-    @PutMapping("v1/api/admin/update/{name}")
+    @PutMapping("admin/update/{name}")
     public CategoryResponseAdmin update(
             @RequestBody CategoryCreateRequest request,@PathVariable String name){
         //mapeamos el request a un modelo
@@ -38,32 +38,32 @@ public class CategoryController {
         return restMapper.toCategoryResponseAdmin(updateCategory);
     }
 
-    @GetMapping("v1/api/admin/read/{name}")
+    @GetMapping("admin/read/{name}")
     public CategoryResponseAdmin readByName(@PathVariable String name){
         CategoryModel categoryModel = servicePort.readByName(name);
         return restMapper.toCategoryResponseAdmin(categoryModel);
     }
 
-    @GetMapping("v1/api/admin/read/all")
+    @GetMapping("admin/readAll")
     public List<CategoryResponseAdmin> findAll() {
         List<CategoryModel> categoryList = servicePort.findAll();
         return restMapper.toCategoryResponseAdminList(categoryList);
     }
 
-    @DeleteMapping("v1/api/admin/delete/{name}")
+    @DeleteMapping("admin/delete/{name}")
     public void deleteByName(@PathVariable String name){
         servicePort.updateStatusProduct(name);
     }
 
     //Controllers user------------------------
 
-    @GetMapping("v1/api/read/{name}")
+    @GetMapping("user/read/{name}")
     public CategoryResponse readByNameUser(@PathVariable String name){
         CategoryModel categoryModel = servicePort.readByName(name);
         return restMapper.toCategoryResponse(categoryModel);
     }
 
-    @GetMapping("v1/api/read/all")
+    @GetMapping("user/readAll")
     public List<CategoryResponse> readAllByName(){
         List<CategoryModel> categoryList = servicePort.findAll();
         return restMapper.toCategoryResponseList(categoryList);
