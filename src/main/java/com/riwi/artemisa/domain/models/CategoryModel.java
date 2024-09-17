@@ -17,6 +17,8 @@ public class CategoryModel{
     private String description;
     private List<ProductModel> products;
     private List<MedicationModel> medications;
+
+    //Auditable
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

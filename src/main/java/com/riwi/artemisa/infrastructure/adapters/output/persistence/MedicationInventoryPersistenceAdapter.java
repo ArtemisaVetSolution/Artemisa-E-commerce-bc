@@ -97,6 +97,7 @@ public class MedicationInventoryPersistenceAdapter implements MedicationInventor
     public String updateStatusProduct(Long id) {
         MedicationInventory medicationInventory = repository.findById(id).orElseThrow();
         medicationInventory.setIsMedicationAvailable(!medicationInventory.getIsMedicationAvailable());
+        medicationInventory.setUpdatedAt(LocalDateTime.now());
         repository.save(medicationInventory);
         return medicationInventory.getIsMedicationAvailable() ? "Medication restore successfully" : "Medication deleted successfully";
     }

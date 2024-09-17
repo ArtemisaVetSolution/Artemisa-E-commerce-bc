@@ -11,7 +11,4 @@ public class MediaResponse {
 
     private String type;
     private String url;
-    private ProductResponse product;
-    private MedicationResponse medication;
-
 }

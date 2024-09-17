@@ -14,8 +14,6 @@ public class MediaResponseAdmin {
     private Long id;
     private String type;
     private String url;
-    private ProductResponse product;
-    private MedicationResponse medication;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

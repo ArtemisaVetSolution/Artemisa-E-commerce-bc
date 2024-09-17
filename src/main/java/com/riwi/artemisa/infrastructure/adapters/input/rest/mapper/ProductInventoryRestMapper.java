@@ -1,10 +1,12 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.mapper;
 
+import com.riwi.artemisa.domain.models.MedicationInventoryModel;
 import com.riwi.artemisa.domain.models.ProductInventoryModel;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.ProductInventoryCreateRequest;
+import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MedicationInventoryResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.ProductInventoryResponse;
+import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.ProductResponseAdmin;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
@@ -13,22 +15,20 @@ import java.util.List;
 public interface ProductInventoryRestMapper {
 
     //Admin
+    ProductResponseAdmin toProductInventoryResponseAmin(ProductInventoryModel model);
+    List<ProductResponseAdmin> toProductInventoryResponseAdminList(List<ProductInventoryModel> models);
 
-    ProductInventoryModel toProductInventoryModel(ProductInventoryCreateRequest productInventoryCreateRequest);
+    //Mappgin for create request
 
-    ProductInventoryCreateRequest toProductInventoryCreateRequest(ProductInventoryModel productInventoryModel);
-
+    ProductInventoryModel toProductInventory(ProductInventoryCreateRequest createRequest);
+    ProductInventoryCreateRequest toProductInventoryCreateRequest(ProductInventoryModel model);
     List<ProductInventoryCreateRequest> toProductInventoryCreateRequestList(List<ProductInventoryModel> productInventoryModels);
 
-    //User
-
+    //User mappings
 
     ProductInventoryResponse toProductInventoryResponse(ProductInventoryModel productInventoryModel);
-
-
     ProductInventoryModel toProductInventoryModel(ProductInventoryResponse productInventoryResponse);
-
-    List<ProductInventoryResponse> toProductInventoryResponseList(List<ProductInventoryModel> productInventoryModels);
+    List<ProductInventoryResponse> toProductResponseList(List<ProductInventoryModel> ProductsInventoryList);
 
 }
 
