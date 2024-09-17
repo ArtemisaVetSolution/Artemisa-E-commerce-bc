@@ -1,12 +1,13 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "category")
+@Entity(name = "category")
 @Getter
 @Setter
 @Builder
@@ -22,5 +23,17 @@ public class Category{
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
 
 }

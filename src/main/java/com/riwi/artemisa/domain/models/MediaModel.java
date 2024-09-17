@@ -2,6 +2,8 @@ package com.riwi.artemisa.domain.models;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -14,5 +16,11 @@ public class MediaModel {
     private String url;
     private ProductModel productModel;
     private MedicationModel medication;
+
+    //Auditable
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
+    private Boolean deleted = false;
 
 }

@@ -2,6 +2,7 @@ package com.riwi.artemisa.domain.models;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -9,12 +10,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryModel extends Auditable{
+public class CategoryModel{
 
     private Long id;
     private String name;
     private String description;
     private List<ProductModel> products;
     private List<MedicationModel> medications;
+
+    //Auditable
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
+    private Boolean deleted = false;
 
 }

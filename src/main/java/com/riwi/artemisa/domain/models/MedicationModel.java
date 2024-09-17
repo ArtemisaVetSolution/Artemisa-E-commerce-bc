@@ -3,6 +3,7 @@ package com.riwi.artemisa.domain.models;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,6 +15,7 @@ public class MedicationModel{
     private Long id;
     private String name;
     private String description;
-    private List<MedicationModel> medias;
+    private List<MediaModel> media;
     private CategoryModel category;
+    private Boolean deleted = false;
 }

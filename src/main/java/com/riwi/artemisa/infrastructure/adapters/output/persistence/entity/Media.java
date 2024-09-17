@@ -1,13 +1,14 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 
 
-@Entity
-@Table(name = "medias")
+@Entity(name = "medias")
 @Getter
 @Setter
 @Builder
@@ -24,6 +25,18 @@ public class Media {
 
     @Column (name = "url", nullable = false)
     private String url;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 
 }
 
