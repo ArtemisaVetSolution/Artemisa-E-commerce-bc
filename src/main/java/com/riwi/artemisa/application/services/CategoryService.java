@@ -2,12 +2,10 @@ package com.riwi.artemisa.application.services;
 
 import com.riwi.artemisa.application.ports.input.CategoryServicePort;
 import com.riwi.artemisa.application.ports.out.CategoryPersistencePort;
-import com.riwi.artemisa.domain.exception.CategoryNotFoundException;
 import com.riwi.artemisa.domain.models.CategoryModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,35 +14,28 @@ public class CategoryService implements CategoryServicePort {
 
     private final CategoryPersistencePort persistencePort;
 
-
     @Override
-    public CategoryModel createCategory(CategoryModel categoryModel) {
+    public CategoryModel save(CategoryModel categoryModel) {
         return persistencePort.save(categoryModel);
     }
 
     @Override
-    public CategoryModel editCategory(Long id, CategoryModel categoryModel) {
-        CategoryModel existingCategory = getCategoryById(id);
-        existingCategory.setName(categoryModel.getName());
-        existingCategory.setDescription(categoryModel.getDescription());
-        return persistencePort.save(existingCategory);
+    public String updateStatusProduct(String name) {
+        return persistencePort.updateStatusProduct(name);
     }
 
     @Override
-    public void deleteCategory(Long id) {
-        CategoryModel categoryModel = getCategoryById(id);
-        categoryModel.setDeletedAt(LocalDateTime.now());
-        categoryModel.setDeleted(true);
-        persistencePort.save(categoryModel);
+    public CategoryModel update(String name, CategoryModel categoryModel) {
+        return persistencePort.update(name, categoryModel);
     }
 
     @Override
-    public List<CategoryModel> getAllCategories() {
+    public CategoryModel readByName(String name) {
+        return persistencePort.readByName(name);
+    }
+
+    @Override
+    public List<CategoryModel> findAll() {
         return persistencePort.findAll();
-    }
-
-    @Override
-    public CategoryModel getCategoryById(Long id) {
-       return persistencePort.findById(id).orElseThrow(CategoryNotFoundException::new);
     }
 }

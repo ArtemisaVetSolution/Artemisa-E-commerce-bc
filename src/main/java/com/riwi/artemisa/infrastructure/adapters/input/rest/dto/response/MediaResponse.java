@@ -9,9 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class MediaResponse {
 
-    private Long id;
+    private String type;
     private String url;
-    private ProductResponse product;
-    private MedicationResponse medication;
-
 }

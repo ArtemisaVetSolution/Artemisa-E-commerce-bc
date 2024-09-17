@@ -18,27 +18,32 @@ public class MediaSerivice implements MediaServicePort {
 
 
     @Override
-    public MediaModel findById(Long id) {
-        return null;
+    public MediaModel save(MediaModel mediaModel) {
+        return persistenPort.save(mediaModel);
+    }
+    @Override
+    public MediaModel update(Long id, MediaModel mediaModel) {
+        return persistenPort.update(id, mediaModel);
     }
 
     @Override
-    public String deletebyId(Long aLong) {
-        return "";
+    public MediaModel findById(Long id) {
+        return persistenPort.readById(id);
     }
 
     @Override
     public List<MediaModel> findAll() {
-        return List.of();
+        return persistenPort.findAll();
     }
 
     @Override
-    public MediaModel save(MediaModel mediaModel) {
-        return null;
+    public String deletebyId(Long id) {
+        return persistenPort.deletebyId(id);
     }
 
-    @Override
-    public MediaModel update(Long aLong, MediaModel mediaModel) {
-        return null;
-    }
+
+
+
+
+
 }

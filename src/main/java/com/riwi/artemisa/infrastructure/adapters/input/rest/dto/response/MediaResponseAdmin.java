@@ -1,4 +1,4 @@
-package com.riwi.artemisa.domain.models;
+package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
 import lombok.*;
 
@@ -9,18 +9,13 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MediaModel {
+public class MediaResponseAdmin {
 
     private Long id;
     private String type;
     private String url;
-    private ProductModel productModel;
-    private MedicationModel medication;
-
-    //Auditable
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    private Boolean deleted = false;
-
+    private Boolean deleted;
 }

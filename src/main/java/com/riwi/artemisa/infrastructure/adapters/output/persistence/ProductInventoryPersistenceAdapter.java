@@ -2,7 +2,6 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence;
 
 import com.riwi.artemisa.application.ports.out.ProductInventoryPersistencePort;
 import com.riwi.artemisa.domain.models.ProductInventoryModel;
-import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.ProductInventoryResponse;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Category;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Media;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Product;
@@ -15,7 +14,8 @@ import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.P
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -34,12 +34,13 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
 
         ProductInventory productInventory = ProductInventory.builder().
                 stock(productInventoryModel.getStock()).
-                updateDate(LocalDate.now()).
                 supplier(productInventoryModel.getSupplier()).
                 supplierPrice(productInventoryModel.getSupplierPrice()).
                 sellingPrice(productInventoryModel.getSellingPrice()).
                 dueDate(productInventoryModel.getDueDate()).
                 stateProduct(true).
+                createdAt(LocalDateTime.now()).
+                updatedAt(LocalDateTime.now()).
                 build();
 
 
@@ -55,7 +56,7 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
                         .getCategory()
                         .getId()).orElseThrow(RuntimeException::new);
 
-        product.setCategoryId(category);
+        product.setCategory(category);
 
         List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
                 mediaModel ->Media.builder()
@@ -85,12 +86,13 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
         ProductInventory productInventory = ProductInventory.builder()
                 .id(productInventoryModel.getId())
                 .stock(productInventoryModel.getStock())
-                .updateDate(LocalDate.now())
                 .supplier(productInventoryModel.getSupplier())
                 .supplierPrice(productInventoryModel.getSupplierPrice())
                 .sellingPrice(productInventoryModel.getSellingPrice())
                 .dueDate(productInventoryModel.getDueDate())
                 .stateProduct(true)
+                .createdAt(productInventoryModel.getCreatedAt())
+                .updatedAt(productInventoryModel.getUpdatedAt())
                 .build();
 
         Product product = Product.builder()
@@ -100,7 +102,7 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
                 .build();
 
         Category category = categoryRepository.findById(productInventoryModel.getProduct().getCategory().getId()).orElseThrow(() -> new RuntimeException("The category does not exist"));
-        product.setCategoryId(category);
+        product.setCategory(category);
 
         List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
                 mediaModel -> {
@@ -127,6 +129,8 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
     public String updateStatusProduct(Long id) {
         ProductInventory productInventory = productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("the product does not exist, therefore it could not be eliminated."));
         productInventory.setStateProduct(!productInventory.isStateProduct());
+        productInventory.setCreatedAt(productInventory.getCreatedAt());
+        productInventory.setUpdatedAt(LocalDateTime.now());
         productInventoryRepository.save(productInventory);
         return productInventory.isStateProduct() ? "Product restore successfully" : "Product deleted successfully";
     }
@@ -155,7 +159,8 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
     public String updateStock(Integer stock, Long id) {
         ProductInventory productInventory = productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Product inventory not found"));
         productInventory.setStock(productInventory.getStock() + stock);
-        productInventory.setUpdateDate(LocalDate.now());
+        productInventory.setCreatedAt(productInventory.getCreatedAt());
+        productInventory.setUpdatedAt(LocalDateTime.now());
         productInventoryRepository.save(productInventory);
         return "Stock updated successfully";
     }

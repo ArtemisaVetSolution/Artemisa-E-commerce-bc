@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -14,23 +16,21 @@ import java.sql.Date;
 @NoArgsConstructor
 public class MedicationInventoryCreateRequest {
 
-    @NotNull(message = "The update date of the medication is required")
-    private Date updateDate;
     @NotNull(message = "The prescribed of the medication is required")
-    private boolean prescribed;
+    private Boolean prescribed;
     @NotNull(message = "The stock of the medication is required")
-    private int stock;
+    private Integer stock;
     @NotNull(message = "The method Use of the medication is required")
     private String methodUse;
     @NotBlank(message = "The supplier of the product is required")
     private String supplier;
     @NotNull(message = "The supplier price of the product is required")
-    private float supplierPrice;
+    private Float supplierPrice;
     @NotNull(message = "The selling price of the product is required")
-    private float sellingPrice;
+    private Float sellingPrice;
     @NotNull(message = "The dueDate of the product is required")
-    private Date dueDate;
+    private LocalDate dueDate;
     @NotNull(message = "The medication is required")
     @Valid
-    private MedicationCreateRequest medication;
+    private MedicationCreateRequestId medication;
 }

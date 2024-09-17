@@ -1,8 +1,8 @@
-package com.riwi.artemisa.domain.models;
+package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
+import com.riwi.artemisa.domain.models.MedicationModel;
 import lombok.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicationInventoryModel {
-
+public class MedicationInventoryResponseAdmin {
     private long id;
     private Boolean prescribed;
     private Integer stock;
@@ -22,7 +21,7 @@ public class MedicationInventoryModel {
     private Float sellingPrice;
     private LocalDate dueDate;
     private Boolean isMedicationAvailable = true;
-    private MedicationModel medication;
+    private MedicationResponseAdmin medication;
 
     //Auditable
     private LocalDateTime createdAt;

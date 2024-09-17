@@ -4,7 +4,9 @@ import com.riwi.artemisa.domain.models.MedicationModel;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.MedicationCreateRequest;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MediaResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MedicationResponse;
+import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MedicationResponseAdmin;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
@@ -12,7 +14,18 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MedicationRestMapper {
 
-    MedicationModel toMedicationModel(MedicationCreateRequest medicationCreateRequest);
+    //Admin mappings
+    MedicationResponseAdmin toMedicationResponseAdmin(MedicationModel model);
+    List<MedicationResponseAdmin> toMediaResponseAdminList(List<MedicationModel> medicationModels);
+
+    //Mappgin for create request
+
+    MedicationModel toMedication(MedicationCreateRequest request);
+    MedicationCreateRequest toMedicationCreateRequest(MedicationModel medicationModel);
+    List<MedicationCreateRequest> toMedicationCreateRequestList(List<MedicationModel> medicationList);
+
+    //User mappings
     MedicationResponse toMedicationResponse(MedicationModel medicationModel);
-    List<MediaResponse> toMediaResponseList(List<MedicationModel> medicationModels);
+    MedicationModel toMedicationModel(MedicationResponse medicationResponse);
+    List<MedicationResponse> toMedicationResponseList(List<MedicationModel> medicationList);
 }

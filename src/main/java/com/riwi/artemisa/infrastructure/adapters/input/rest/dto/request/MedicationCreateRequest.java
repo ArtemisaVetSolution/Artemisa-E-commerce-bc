@@ -16,6 +16,7 @@ import java.util.List;
 @Validated
 public class MedicationCreateRequest {
 
+
     @NotBlank(message = "The name of the medication is required")
     private String name;
     @NotBlank(message = "The description of the medication is required")
