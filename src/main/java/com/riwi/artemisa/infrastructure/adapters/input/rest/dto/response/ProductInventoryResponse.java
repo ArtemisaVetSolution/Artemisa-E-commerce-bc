@@ -2,8 +2,6 @@ package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
 
 @Getter
 @Setter
@@ -13,8 +11,9 @@ import java.time.LocalDate;
 public class ProductInventoryResponse {
 
     private Long id;
-    private int stock;
+
     private float sellingPrice;
+
     private ProductResponse product;
 
 }

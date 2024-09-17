@@ -25,4 +25,8 @@ public interface ProductInventoryRepository extends JpaRepository<ProductInvento
 
     @Query("SELECT p FROM ProductInventory p WHERE p.stateProduct = true")
     List<ProductInventory> findAllProductInventoryAvailable();
+
+    @Query("SELECT p FROM ProductInventory p WHERE p.stateProduct = true and p.stock > 0")
+    List<ProductInventory> findAllProductInventory();
+
 }
