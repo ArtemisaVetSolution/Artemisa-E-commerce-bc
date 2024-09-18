@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-
-@Builder
 @Entity(name = "medias")
 @Getter
 @Setter
