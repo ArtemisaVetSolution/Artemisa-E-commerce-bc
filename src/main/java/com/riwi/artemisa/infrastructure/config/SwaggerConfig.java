@@ -1,17 +1,25 @@
 package com.riwi.artemisa.infrastructure.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 
-@Configuration
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Artemisa E-commerce API",
+                version = "1.0.0",
+                description = "Application for the management of veterinary, pharmacy and store to provide a complete service to all people who want to take special care of their pets.",
+                contact = @Contact(
+                        name = "Artemisa E-commerce"
+                )
+        ),
+        servers = {
+            @Server(
+                    description = "DEV SERVER",
+                    url = "http://localhost:8080"
+            )
+        }
+)
 public class SwaggerConfig {
-    @Bean
-    public OpenAPI apiInfo() {
-        return new OpenAPI()
-                .info(new Info().title("Artemisa E-commerce API")
-                        .description("API for e-commerce")
-                        .version("0.0.1"));
-    }
 }

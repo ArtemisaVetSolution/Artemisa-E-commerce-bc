@@ -1,18 +1,15 @@
 package com.riwi.artemisa.application.ports.out;
 
+import com.riwi.artemisa.application.ports.CRUD.*;
 import com.riwi.artemisa.domain.models.CategoryModel;
 
-import java.util.List;
-import java.util.Optional;
 
-public interface CategoryPersistencePort {
+public interface CategoryPersistencePort extends
+        Save<CategoryModel>
+        , Update<CategoryModel,String>
+        , UpdateStatusProduct<String>
+        , ReadAll<CategoryModel>
+        , ReadByName<CategoryModel,String> {
 
-    Optional<CategoryModel> findByName(String name);
-
-    List<CategoryModel> findAll();
-
-    CategoryModel save(CategoryModel category);
-
-    void deleteByName(String name);
-
+    CategoryModel update(String name, CategoryModel categoryModel);
 }

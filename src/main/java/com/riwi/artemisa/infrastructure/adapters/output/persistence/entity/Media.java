@@ -1,35 +1,42 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 
 @Entity(name = "medias")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Media {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column (name = "url", nullable = false)
-    private String url;
+    private Long id;
 
     @Column ( name = "type", nullable = false)
     private String type;
 
-    @ManyToOne(targetEntity = Product.class)
-    @JoinColumn(name = "product_id")
-    private Product productId;
+    @Column (name = "url", nullable = false)
+    private String url;
 
-    @ManyToOne(targetEntity = Medication.class)
-    @JoinColumn(name = "medication_id")
-    private Medication medication;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 
 }
+
