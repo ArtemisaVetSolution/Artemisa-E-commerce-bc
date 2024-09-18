@@ -1,41 +1,40 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.riwi.artemisa.utils.enums.StatesOrder;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-@Entity(name = "purchase_orders")
+@Entity
+@Table(name = "purchase_orders")
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor 
 @NoArgsConstructor
+@Builder
 public class Order {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "id_user", nullable = false)
+    private Long idUser;
+
     @Column(name = "order_date", nullable = false)
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @Column(name = "total_order", nullable = false)
-    private float totalOrder;
+    private Float totalOrder = 0.0f;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Enumerated
+    private StatesOrder statesOrder;
+
+    @OneToMany
+    @JoinColumn(name = "order_details")
     private List<OrderDetails> orderDetails;
-
-    @ManyToOne(targetEntity = PetshopPayments.class)
-    @JoinColumn(name = "petshop_payments")
-    private PetshopPayments petshopPayments;
-
-    @ManyToOne(targetEntity = StatusOrder.class)
-    @JoinColumn(name = "status_order")
-    private StatusOrder statusOrder;
 
 }

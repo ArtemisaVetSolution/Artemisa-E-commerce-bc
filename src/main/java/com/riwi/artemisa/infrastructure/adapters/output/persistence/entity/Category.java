@@ -1,10 +1,11 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity(name = "category")
 @Getter
@@ -12,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends Auditable{
+public class Category{
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
@@ -23,11 +24,16 @@ public class Category extends Auditable{
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
-    private List<Product> products;
-  
-    @OneToMany(mappedBy = "categoryId",fetch = FetchType.EAGER)
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-    private List<Medication> medication;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
 
 }

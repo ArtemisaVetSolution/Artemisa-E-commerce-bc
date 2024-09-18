@@ -13,7 +13,6 @@ public interface ProductInventoryPersistenceMapper {
 
     ProductInventory toProductInventory(ProductInventoryModel productInventoryModel);
 
-    @Mapping(source = "product.categoryId", target = "product.category")
     ProductInventoryModel toProductInventoryModel(ProductInventory productInventory);
 
     List<ProductInventoryModel> toProductInventoryModelList(List<ProductInventory> productInventories);

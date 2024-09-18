@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
-@Entity(name = "product_inventory")
+@Entity
+@Table(name = "product_inventory")
 @Getter
 @Setter
 @Builder
@@ -21,9 +23,6 @@ public class ProductInventory {
 
     @Column(name = "stock", nullable = false)
     private int stock;
-
-    @Column(name = "update_date")
-    private LocalDate updateDate;
 
     @Column(name = "supplier", nullable = false)
     private String supplier;
@@ -40,8 +39,20 @@ public class ProductInventory {
     @Column(name = "state_product", nullable = false)
     private boolean stateProduct;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
+    //Auditable
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 }

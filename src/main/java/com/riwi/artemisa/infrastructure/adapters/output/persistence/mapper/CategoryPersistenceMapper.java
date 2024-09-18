@@ -15,4 +15,6 @@ public interface CategoryPersistenceMapper {
     CategoryModel toCategoryModel(Category category);
 
     List<CategoryModel> toCategoryModels(List<Category> categories);
+
 }
+

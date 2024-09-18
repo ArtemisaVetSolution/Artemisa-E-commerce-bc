@@ -4,6 +4,9 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
+
 
 @Entity(name = "medias")
 @Getter
@@ -23,13 +26,17 @@ public class Media {
     @Column (name = "url", nullable = false)
     private String url;
 
-    @ManyToOne(targetEntity = Product.class)
-    @JoinColumn(name = "product_id")
-    private Product productId;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @ManyToOne(targetEntity = Medication.class)
-    @JoinColumn(name = "medication_id")
-    private Medication medication;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 
 }
 

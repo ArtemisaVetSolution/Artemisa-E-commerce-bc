@@ -1,17 +1,17 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "medications")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Medication {
@@ -26,21 +26,16 @@ public class Medication {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)  // Corrected mappedBy value
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medication_id")
     private List<Media> media;
 
-    @ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER) // Corrected mappedBy value
-
-    @JoinColumn(name = "category_id")
-    private Category categoryId;
-
-    @ManyToOne(targetEntity = MedicationInventory.class)
-    @JoinColumn(name = "medication_inventory")
-    private MedicationInventory medicationInventory;
-
     @ManyToOne
-    @JoinColumn(name = "order_details_id")
-    private OrderDetails orderDetails;
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 
 }
 

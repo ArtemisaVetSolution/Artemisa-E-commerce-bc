@@ -14,7 +14,7 @@ import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.P
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,7 +27,6 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final MediaRepository mediaRepository;
-
     private final ProductInventoryPersistenceMapper productInventoryPersistenceMapper;
 
     @Override
@@ -35,12 +34,13 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
 
         ProductInventory productInventory = ProductInventory.builder().
                 stock(productInventoryModel.getStock()).
-                updateDate(LocalDate.now()).
                 supplier(productInventoryModel.getSupplier()).
                 supplierPrice(productInventoryModel.getSupplierPrice()).
                 sellingPrice(productInventoryModel.getSellingPrice()).
                 dueDate(productInventoryModel.getDueDate()).
                 stateProduct(true).
+                createdAt(LocalDateTime.now()).
+                updatedAt(LocalDateTime.now()).
                 build();
 
 
@@ -50,22 +50,23 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
             .build();
 
 
-        Category category = categoryRepository.findById(productInventoryModel.getProduct().getCategory().getId()).orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryRepository.findById(
+                productInventoryModel
+                        .getProduct()
+                        .getCategory()
+                        .getId()).orElseThrow(RuntimeException::new);
 
-        product.setCategoryId(category);
+        product.setCategory(category);
 
         List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
-                mediaModel -> {
-
-                    Media mediaEntity = Media.builder()
+                mediaModel ->Media.builder()
                             .type(mediaModel.getType())
                             .url(mediaModel.getUrl())
-                            .build();
+                            .build()
 
-                    return mediaRepository.save(mediaEntity);
-
-                }
         ).toList();
+
+        product.setMedia(mediaRepository.saveAll(media));
 
 
         product.setMedia(media);
@@ -75,5 +76,104 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
         productInventory.setProduct(savedProduct);
 
         return productInventoryPersistenceMapper.toProductInventoryModel(productInventoryRepository.save(productInventory));
+    }
+
+    @Override
+    public ProductInventoryModel update(Long id, ProductInventoryModel productInventoryModel) {
+
+        productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Product inventory not found"));
+
+        ProductInventory productInventory = ProductInventory.builder()
+                .id(productInventoryModel.getId())
+                .stock(productInventoryModel.getStock())
+                .supplier(productInventoryModel.getSupplier())
+                .supplierPrice(productInventoryModel.getSupplierPrice())
+                .sellingPrice(productInventoryModel.getSellingPrice())
+                .dueDate(productInventoryModel.getDueDate())
+                .stateProduct(true)
+                .createdAt(productInventoryModel.getCreatedAt())
+                .updatedAt(productInventoryModel.getUpdatedAt())
+                .build();
+
+        Product product = Product.builder()
+                .id(productInventoryModel.getProduct().getId())
+                .name(productInventoryModel.getProduct().getName())
+                .description(productInventoryModel.getProduct().getDescription())
+                .build();
+
+        Category category = categoryRepository.findById(productInventoryModel.getProduct().getCategory().getId()).orElseThrow(() -> new RuntimeException("The category does not exist"));
+        product.setCategory(category);
+
+        List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
+                mediaModel -> {
+
+                    Media mediaEntity = Media.builder()
+                            .id(mediaModel.getId())
+                            .type(mediaModel.getType())
+                            .url(mediaModel.getUrl())
+                            .build();
+
+                    return mediaRepository.save(mediaEntity);
+
+                }
+        ).toList();
+
+        product.setMedia(media);
+
+        productInventory.setProduct(productRepository.save(product));
+
+        return productInventoryPersistenceMapper.toProductInventoryModel(productInventoryRepository.save(productInventory));
+    }
+
+    @Override
+    public String updateStatusProduct(Long id) {
+        ProductInventory productInventory = productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("the product does not exist, therefore it could not be eliminated."));
+        productInventory.setStateProduct(!productInventory.isStateProduct());
+        productInventory.setCreatedAt(productInventory.getCreatedAt());
+        productInventory.setUpdatedAt(LocalDateTime.now());
+        productInventoryRepository.save(productInventory);
+        return productInventory.isStateProduct() ? "Product restore successfully" : "Product deleted successfully";
+    }
+
+    @Override
+    public List<ProductInventoryModel> findAll() {
+        return productInventoryPersistenceMapper.toProductInventoryModelList(productInventoryRepository.findAll());
+    }
+
+    @Override
+    public ProductInventoryModel readById(Long id) {
+        return productInventoryPersistenceMapper.toProductInventoryModel(productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("The Product not found")));
+    }
+
+    @Override
+    public List<ProductInventoryModel> readAllCategory(Long id) {
+        return productInventoryPersistenceMapper.toProductInventoryModelList(productInventoryRepository.findByCategoryId(id));
+    }
+
+    @Override
+    public List<ProductInventoryModel> findAllByName(String name) {
+        return productInventoryPersistenceMapper.toProductInventoryModelList(productInventoryRepository.findAllByName(name));
+    }
+
+    @Override
+    public String updateStock(Integer stock, Long id) {
+        ProductInventory productInventory = productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Product inventory not found"));
+        productInventory.setStock(productInventory.getStock() + stock);
+        productInventory.setCreatedAt(productInventory.getCreatedAt());
+        productInventory.setUpdatedAt(LocalDateTime.now());
+        productInventoryRepository.save(productInventory);
+        return "Stock updated successfully";
+    }
+
+    @Override
+    public List<ProductInventoryModel> readAllProductStock(Integer stock) {
+        return productInventoryPersistenceMapper.toProductInventoryModelList(productInventoryRepository.findAllProductInventoryStock(stock));
+    }
+
+
+    //User
+    @Override
+    public List<ProductInventoryModel> readAllIfAvailable() {
+        return productInventoryPersistenceMapper.toProductInventoryModelList(productInventoryRepository.findAllProductInventoryAvailable());
     }
 }
