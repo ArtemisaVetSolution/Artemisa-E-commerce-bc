@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.riwi.artemisa</groupId>
 	<artifactId>artemisa-ecommerce</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>artemisa-e-commerce-bc</name>
 	<description>Project for managing an E-commerce with Spring Boot</description>
 	<url/>
