@@ -31,6 +31,8 @@
         @JoinColumn(name = "products_id")
         private ProductInventory product;
 
-//        private List<Medication> medications;
+        @ManyToOne
+        @JoinColumn(name = "medications_id")
+        private MedicationInventory medication;
     
     }
