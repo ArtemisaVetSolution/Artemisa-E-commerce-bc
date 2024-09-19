@@ -23,7 +23,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copia el archivo JAR desde la etapa de compilación
-COPY --from=build /app/target/artemisa-ecommerce-1.0.0-SNAPSHOT.jar. app.jar
+COPY --from=build /app/target/artemisa-ecommerce-1.0.0-SNAPSHOT.jar app.jar
 
 # Expone el puerto en el que tu aplicación se ejecuta (por defecto 8080)
 EXPOSE 8080
