@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +34,9 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public ProductResponseAdmin save (@RequestBody ProductInventoryCreateRequest productInventoryCreateRequest){
+    public ResponseEntity<ProductResponseAdmin> save (@RequestBody ProductInventoryCreateRequest productInventoryCreateRequest){
         ProductInventoryModel model =  servicePort.save(mapper.toProductInventory(productInventoryCreateRequest));
-        return mapper.toProductInventoryResponseAmin(model);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toProductInventoryResponseAmin(model));
     }
 
     @PutMapping("admin/update/{id}")
@@ -45,9 +47,9 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public ProductResponseAdmin update(@RequestBody ProductInventoryCreateRequest productInventoryUpdateRequest,@PathVariable Long id){
+    public ResponseEntity<ProductResponseAdmin> update(@RequestBody ProductInventoryCreateRequest productInventoryUpdateRequest,@PathVariable Long id){
         ProductInventoryModel inventoryModel = servicePort.update(id,mapper.toProductInventory(productInventoryUpdateRequest));
-        return mapper.toProductInventoryResponseAmin(inventoryModel);
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponseAmin(inventoryModel));
     }
 
 
@@ -59,8 +61,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public String updateStatusProduct(@PathVariable Long id){
-        return servicePort.updateStatusProduct(id);
+    public ResponseEntity<String> updateStatusProduct(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicePort.updateStatusProduct(id));
     }
 
     @GetMapping("admin/readAll")
@@ -71,8 +73,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<ProductResponseAdmin> readAll(){
-        return mapper.toProductInventoryResponseAdminList(servicePort.findAll());
+    public ResponseEntity<List<ProductResponseAdmin>> readAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponseAdminList(servicePort.findAll()));
     }
 
     @GetMapping("admin/read/{id}")
@@ -83,8 +85,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public ProductResponseAdmin readById(@PathVariable Long id){
-        return mapper.toProductInventoryResponseAmin(servicePort.readById(id));
+    public ResponseEntity<ProductResponseAdmin> readById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponseAmin(servicePort.readById(id)));
     }
 
     @GetMapping("admin/readAllCategory/{id}")
@@ -95,8 +97,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<ProductResponseAdmin> readAllByCategory(@PathVariable Long id){
-        return mapper.toProductInventoryResponseAdminList(servicePort.readAllCategory(id));
+    public ResponseEntity<List<ProductResponseAdmin>> readAllByCategory(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponseAdminList(servicePort.readAllCategory(id)));
     }
 
     @GetMapping("admin/readAllProductName")
@@ -107,8 +109,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<ProductResponseAdmin> readAllByName(@RequestParam String name){
-        return mapper.toProductInventoryResponseAdminList(servicePort.findAllByName(name));
+    public ResponseEntity<List<ProductResponseAdmin>> readAllByName(@RequestParam String name){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponseAdminList(servicePort.findAllByName(name)));
     }
 
     @GetMapping("admin/updateStock")
@@ -119,8 +121,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public String updateStock(@RequestParam int stock, @RequestParam Long id){
-        return servicePort.updateStock(stock, id);
+    public ResponseEntity<String> updateStock(@RequestParam int stock, @RequestParam Long id){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicePort.updateStock(stock, id));
     }
 
     @GetMapping("admin/readAllProductsByStock")
@@ -131,8 +133,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public List<ProductResponseAdmin> readAllByStock(@RequestParam int stock){
-        return mapper.toProductInventoryResponseAdminList(servicePort.readAllProductStock(stock));
+    public ResponseEntity<List<ProductResponseAdmin>> readAllByStock(@RequestParam int stock){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponseAdminList(servicePort.readAllProductStock(stock)));
     }
 
     //Users
@@ -145,8 +147,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public ProductInventoryResponse readByIdByuser(@PathVariable Long id){
-        return mapper.toProductInventoryResponse(servicePort.readById(id));
+    public ResponseEntity<ProductInventoryResponse> readByIdByuser(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponse(servicePort.readById(id)));
     }
 
     @GetMapping("user/readAllProductName")
@@ -157,8 +159,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public List<ProductInventoryResponse> readAllByNameByUser(@RequestParam String name){
-        return mapper.toProductResponseList(servicePort.findAllByName(name));
+    public ResponseEntity<List<ProductInventoryResponse>> readAllByNameByUser(@RequestParam String name){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductResponseList(servicePort.findAllByName(name)));
     }
 
     @GetMapping("user/readAllCategory/{id}")
@@ -169,8 +171,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public List<ProductInventoryResponse> readAllByCategoryByUser(@PathVariable Long id){
-        return mapper.toProductResponseList(servicePort.readAllCategory(id));
+    public ResponseEntity<List<ProductInventoryResponse>> readAllByCategoryByUser(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductResponseList(servicePort.readAllCategory(id)));
     }
 
     @GetMapping("user/readAllProductAvailable")
@@ -181,8 +183,8 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public List<ProductInventoryResponse> readAllAviable(){
-        return mapper.toProductResponseList(servicePort.readAllIfAvailable());
+    public ResponseEntity<List<ProductInventoryResponse>> readAllAviable(){
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductResponseList(servicePort.readAllIfAvailable()));
     }
 
 }

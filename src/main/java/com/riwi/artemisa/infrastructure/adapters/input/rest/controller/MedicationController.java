@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +33,9 @@ public class MedicationController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MedicationResponseAdmin save(@RequestBody MedicationCreateRequest request){
+    public ResponseEntity<MedicationResponseAdmin> save(@RequestBody MedicationCreateRequest request){
         MedicationModel saveMedication = servicePort.save(restMapper.toMedication(request));
-        return restMapper.toMedicationResponseAdmin(saveMedication);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restMapper.toMedicationResponseAdmin(saveMedication));
     }
 
     @PutMapping("admin/update/{id}")
@@ -44,12 +46,12 @@ public class MedicationController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MedicationResponseAdmin update(
+    public ResponseEntity<MedicationResponseAdmin> update(
             @RequestBody MedicationCreateRequest request,@PathVariable Long id)
     {
         MedicationModel medicationModel = restMapper.toMedication(request);
         MedicationModel updateMedication = servicePort.update(id, medicationModel);
-        return restMapper.toMedicationResponseAdmin(updateMedication);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationResponseAdmin(updateMedication));
     }
 
     @GetMapping("admin/read/{name}")
@@ -60,9 +62,9 @@ public class MedicationController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MedicationResponseAdmin readByName(@PathVariable String name){
+    public ResponseEntity<MedicationResponseAdmin> readByName(@PathVariable String name){
         MedicationModel medicationModel = servicePort.readByName(name);
-        return restMapper.toMedicationResponseAdmin(medicationModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationResponseAdmin(medicationModel));
     }
 
     @GetMapping("admin/readAll")
@@ -73,9 +75,9 @@ public class MedicationController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MedicationResponseAdmin> findAll() {
+    public  ResponseEntity<List<MedicationResponseAdmin>> findAll() {
         List<MedicationModel> medicationList = servicePort.findAll();
-        return restMapper.toMediaResponseAdminList(medicationList);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMediaResponseAdminList(medicationList));
     }
 
     @DeleteMapping("admin/delete/{name}")
@@ -86,8 +88,8 @@ public class MedicationController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public void deleteById(@PathVariable String name){
-        servicePort.deletebyId(name);
+    public ResponseEntity<?> deleteById(@PathVariable String name){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicePort.deletebyId(name));
     }
 
     //Controllers user------------------------
@@ -99,9 +101,9 @@ public class MedicationController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MedicationResponse readByNameUser(@PathVariable String name){
+    public ResponseEntity<MedicationResponse> readByNameUser(@PathVariable String name){
         MedicationModel medicationModel = servicePort.readByName(name);
-        return restMapper.toMedicationResponse(medicationModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationResponse(medicationModel));
     }
 
     @GetMapping("user/readAll")
@@ -112,9 +114,9 @@ public class MedicationController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MedicationResponse> readAllByName(){
+    public ResponseEntity<List<MedicationResponse>> readAllByName(){
         List<MedicationModel> medicationList = servicePort.findAll();
-        return restMapper.toMedicationResponseList(medicationList);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationResponseList(medicationList));
     }
 
 }

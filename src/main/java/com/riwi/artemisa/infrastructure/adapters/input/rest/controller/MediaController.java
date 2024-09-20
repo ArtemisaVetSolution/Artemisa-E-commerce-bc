@@ -36,9 +36,9 @@ public class MediaController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MediaResponseAdmin save(@Valid @RequestBody MediaCreateRequest request){
+    public ResponseEntity<MediaResponseAdmin> save(@Valid @RequestBody MediaCreateRequest request){
         MediaModel savedMedia = servicePort.save(restMapper.toMedia(request));
-        return restMapper.toMediaResponseAdmin(savedMedia);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restMapper.toMediaResponseAdmin(savedMedia));
     }
 
     @PutMapping("admin/update/{id}")
@@ -49,10 +49,10 @@ public class MediaController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MediaResponseAdmin update(
+    public ResponseEntity<MediaResponseAdmin> update(
             @Valid @RequestBody MediaCreateRequest request,@PathVariable Long id){
         MediaModel updatedMedia = servicePort.update(id, restMapper.toMedia(request));
-        return restMapper.toMediaResponseAdmin(updatedMedia);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMediaResponseAdmin(updatedMedia));
     }
 
 
@@ -64,9 +64,9 @@ public class MediaController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MediaResponseAdmin readById(@PathVariable Long id){
+    public ResponseEntity<MediaResponseAdmin> readById(@PathVariable Long id){
         MediaModel mediaModel = servicePort.findById(id);
-        return restMapper.toMediaResponseAdmin(mediaModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMediaResponseAdmin(mediaModel));
     }
 
 
@@ -78,8 +78,8 @@ public class MediaController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MediaResponseAdmin> findAll(){
-        return restMapper.toMediaResponseAdminList(servicePort.findAll());
+    public ResponseEntity<List<MediaResponseAdmin>> findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMediaResponseAdminList(servicePort.findAll()));
     }
 
 
@@ -91,8 +91,8 @@ public class MediaController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public void delete(@PathVariable Long id){
-        servicePort.deletebyId(id);
+    public ResponseEntity<?> delete(@PathVariable Long id){
+       return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicePort.deletebyId(id));
     }
 
     //User controllers ---------------------------
@@ -105,9 +105,9 @@ public class MediaController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MediaResponse readByIdUser(@PathVariable Long id){
+    public ResponseEntity<MediaResponse> readByIdUser(@PathVariable Long id){
         MediaModel mediaModel = servicePort.findById(id);
-        return restMapper.toMediaResponse(mediaModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMediaResponse(mediaModel));
     }
 
     @GetMapping("user/readAll")
@@ -118,8 +118,8 @@ public class MediaController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MediaResponse> findAllUser(){
-        return restMapper.toMediaResponseList(servicePort.findAll());
+    public ResponseEntity<List<MediaResponse>> findAllUser(){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMediaResponseList(servicePort.findAll()));
     }
 
 }

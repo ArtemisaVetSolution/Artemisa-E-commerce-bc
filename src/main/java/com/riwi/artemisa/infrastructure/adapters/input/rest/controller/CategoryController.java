@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +35,9 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public CategoryResponseAdmin save(@RequestBody CategoryCreateRequest request){
+    public ResponseEntity<CategoryResponseAdmin> save(@RequestBody CategoryCreateRequest request){
         CategoryModel savedCategory = servicePort.save(restMapper.toCategory(request));
-        return restMapper.toCategoryResponseAdmin(savedCategory);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restMapper.toCategoryResponseAdmin(savedCategory));
     }
 
     @PutMapping("admin/update/{name}")
@@ -45,14 +48,14 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public CategoryResponseAdmin update(
+    public ResponseEntity<CategoryResponseAdmin> update(
             @RequestBody CategoryCreateRequest request,@PathVariable String name){
         //mapeamos el request a un modelo
         CategoryModel categoryModel = restMapper.toCategory(request);
         //llamo al servicio
         CategoryModel updateCategory = servicePort.update(name,categoryModel);
         //mapeo el nuevo servicio a un responseAdmin
-        return restMapper.toCategoryResponseAdmin(updateCategory);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toCategoryResponseAdmin(updateCategory));
     }
 
     @GetMapping("admin/read/{name}")
@@ -63,9 +66,9 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public CategoryResponseAdmin readByName(@PathVariable String name){
+    public ResponseEntity<CategoryResponseAdmin> readByName(@PathVariable String name){
         CategoryModel categoryModel = servicePort.readByName(name);
-        return restMapper.toCategoryResponseAdmin(categoryModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toCategoryResponseAdmin(categoryModel));
     }
 
     @GetMapping("admin/readAll")
@@ -76,9 +79,9 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<CategoryResponseAdmin> findAll() {
+    public ResponseEntity<List<CategoryResponseAdmin>> findAll() {
         List<CategoryModel> categoryList = servicePort.findAll();
-        return restMapper.toCategoryResponseAdminList(categoryList);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toCategoryResponseAdminList(categoryList));
     }
 
     @DeleteMapping("admin/delete/{name}")
@@ -89,8 +92,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public void deleteByName(@PathVariable String name){
-        servicePort.updateStatusProduct(name);
+    public ResponseEntity<?> deleteByName(@PathVariable String name){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicePort.updateStatusProduct(name));
     }
 
     //Controllers user------------------------
@@ -103,9 +106,9 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public CategoryResponse readByNameUser(@PathVariable String name){
+    public ResponseEntity<CategoryResponse> readByNameUser(@PathVariable String name){
         CategoryModel categoryModel = servicePort.readByName(name);
-        return restMapper.toCategoryResponse(categoryModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toCategoryResponse(categoryModel));
     }
 
     @GetMapping("user/readAll")
@@ -116,9 +119,9 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<CategoryResponse> readAllByName(){
+    public ResponseEntity<List<CategoryResponse>> readAllByName(){
         List<CategoryModel> categoryList = servicePort.findAll();
-        return restMapper.toCategoryResponseList(categoryList);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toCategoryResponseList(categoryList));
     }
 
 }

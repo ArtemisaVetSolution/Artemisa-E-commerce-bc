@@ -2,7 +2,6 @@ package com.riwi.artemisa.infrastructure.adapters.input.rest.advice;
 
 import com.riwi.artemisa.domain.error.ErrorResponse;
 import com.riwi.artemisa.domain.exception.CategoryNotFoundException;
-
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -18,11 +17,11 @@ import java.util.stream.Collectors;
 import static com.riwi.artemisa.utils.enums.ErrorCatalog.*;
 
 @RestControllerAdvice
-public class CategoryControllerAdvice {
+public class GlobalControllerAdvice {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ErrorResponse handleCategoryNotFound(){
+    public ErrorResponse handleCategoryNotFoundException(CategoryNotFoundException ex) {
         return ErrorResponse.builder()
                 .code(CATEGORY_NOT_FOUND.getCode())
                 .message(CATEGORY_NOT_FOUND.getMessage())
@@ -30,12 +29,10 @@ public class CategoryControllerAdvice {
                 .build();
     }
 
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResponse MethodArgumentNotValidException(MethodArgumentNotValidException exception){
-        BindingResult result = exception.getBindingResult();
-
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        BindingResult result = ex.getBindingResult();
         return ErrorResponse.builder()
                 .code(INVALID_CATEGORY.getCode())
                 .message(INVALID_CATEGORY.getMessage())
@@ -47,16 +44,14 @@ public class CategoryControllerAdvice {
                 .build();
     }
 
-
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ErrorResponse handleOtherExceptions(Exception exception){
+    public ErrorResponse handleOtherExceptions(Exception ex) {
         return ErrorResponse.builder()
                 .code(GENERIC_ERROR.getCode())
                 .message(GENERIC_ERROR.getMessage())
-                .details(Collections.singletonList(exception.getMessage()))
+                .details(Collections.singletonList(ex.getMessage()))
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-
 }

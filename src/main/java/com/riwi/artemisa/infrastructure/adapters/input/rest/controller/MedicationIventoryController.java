@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +34,9 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public MedicationInventoryResponseAdmin save(@RequestBody MedicationInventoryCreateRequest request){
+    public ResponseEntity<MedicationInventoryResponseAdmin> save(@RequestBody MedicationInventoryCreateRequest request){
         MedicationInventoryModel inventoryModel = servicePort.save(restMapper.toMedicationInventroy(request));
-        return restMapper.toMedicationInventoryAdmin(inventoryModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restMapper.toMedicationInventoryAdmin(inventoryModel));
     }
 
     @PutMapping("admin/update/{id}")
@@ -45,10 +47,10 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public MedicationInventoryResponseAdmin update(
+    public ResponseEntity<MedicationInventoryResponseAdmin> update(
             @RequestBody MedicationInventoryCreateRequest request,@PathVariable Long id){
         MedicationInventoryModel inventoryModel = servicePort.update(id, restMapper.toMedicationInventroy(request));
-        return restMapper.toMedicationInventoryAdmin(inventoryModel);
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryAdmin(inventoryModel));
     }
 
     @DeleteMapping("admin/delete/{id}")
@@ -58,8 +60,8 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "200", description = "delete medication inventory successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public String delete(@PathVariable Long id){
-        return servicePort.updateStatusProduct(id);
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicePort.updateStatusProduct(id));
     }
 
     @GetMapping("admin/readAll")
@@ -70,8 +72,8 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required"),
             @ApiResponse(responseCode = "403", description = "Forbidden - User access required")
     })
-    public List<MedicationInventoryResponseAdmin> getAllAdmin(){
-        return restMapper.toMedicationInventoryResponseAdminList(servicePort.findAll());
+    public ResponseEntity<List<MedicationInventoryResponseAdmin>> getAllAdmin(){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryResponseAdminList(servicePort.findAll()));
     }
 
     @GetMapping("admin/read/{id}")
@@ -82,8 +84,8 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required"),
             @ApiResponse(responseCode = "403", description = "Forbidden - User access required")
     })
-    public MedicationInventoryResponseAdmin getMedicationInventory(@PathVariable Long id){
-        return restMapper.toMedicationInventoryAdmin(servicePort.readById(id));
+    public ResponseEntity<MedicationInventoryResponseAdmin> getMedicationInventory(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryAdmin(servicePort.readById(id)));
     }
 
     @GetMapping("admin/readAllCategory")
@@ -93,8 +95,8 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "200", description = "read all medication inventories successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public List<MedicationInventoryResponseAdmin> getAllByCategory(@RequestParam Long categoryId){
-        return restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllCategory(categoryId));
+    public ResponseEntity<List<MedicationInventoryResponseAdmin>> getAllByCategory(@RequestParam Long categoryId){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllCategory(categoryId)));
     }
 
     @GetMapping("admin/readAllProductName")
@@ -105,8 +107,8 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MedicationInventoryResponseAdmin> getAllByName(@RequestParam String name){
-        return restMapper.toMedicationInventoryResponseAdminList(servicePort.findAllByName(name));
+    public ResponseEntity<List<MedicationInventoryResponseAdmin>> getAllByName(@RequestParam String name){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryResponseAdminList(servicePort.findAllByName(name)));
     }
 
     @GetMapping("admin/readAllProductStock")
@@ -117,8 +119,8 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MedicationInventoryResponseAdmin> getAllByStock(@RequestParam int stock){
-        return restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllProductStock(stock));
+    public ResponseEntity<List<MedicationInventoryResponseAdmin>> getAllByStock(@RequestParam int stock){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllProductStock(stock)));
     }
 
     //User Controllers -----------------------
@@ -131,8 +133,8 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MedicationInventoryResponse> getAll(){
-           return restMapper.toMedicationResponseList(servicePort.readAllIfAvailable());
+    public ResponseEntity<List<MedicationInventoryResponse>> getAll(){
+           return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationResponseList(servicePort.readAllIfAvailable()));
     }
 
     @GetMapping("user/readAvailable")
@@ -143,7 +145,7 @@ public class MedicationIventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public List<MedicationInventoryResponse> getAllAvailable(){
-        return restMapper.toMedicationResponseList(servicePort.readAllIfAvailable());
+    public ResponseEntity<List<MedicationInventoryResponse>> getAllAvailable(){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationResponseList(servicePort.readAllIfAvailable()));
     }
 }
