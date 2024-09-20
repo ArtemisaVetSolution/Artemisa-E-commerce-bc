@@ -19,7 +19,7 @@ public interface MedicationInventoryRepository extends JpaRepository<MedicationI
     @Query("SELECT m FROM MedicationInventory m WHERE m.stock = :stock")
     List<MedicationInventory> findAllMedicationInventorytock(@Param("stock") int stock);
 
-    @Query("SELECT m FROM MedicationInventory m WHERE m.isMedicationAvailable = true")
+    @Query("SELECT m FROM MedicationInventory m WHERE m.isMedicationAvailable = true AND m.prescribed = false")
     List<MedicationInventory> findAllMedicationInventoryAvailable();
 
     MedicationInventory findByIdAndIsMedicationAvailableIsTrue(Long id);

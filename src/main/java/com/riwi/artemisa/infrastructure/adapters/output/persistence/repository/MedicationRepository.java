@@ -17,6 +17,7 @@ public interface MedicationRepository extends JpaRepository<Medication,Long> {
 
     Medication findByIdAndDeletedIsFalse(Long id);
 
-    Medication findBynameAndDeletedIsFalse(String name);
+    Medication findByNameIgnoreCaseAndDeletedIsFalse(String name);
+
 
 }

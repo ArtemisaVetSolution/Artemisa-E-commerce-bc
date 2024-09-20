@@ -133,7 +133,7 @@ public class ProductInventoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public ResponseEntity<List<ProductResponseAdmin>> readAllByStock(@RequestParam int stock){
+    public ResponseEntity<List<ProductResponseAdmin>> readAllByStock(@RequestParam Integer stock){
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductInventoryResponseAdminList(servicePort.readAllProductStock(stock)));
     }
 

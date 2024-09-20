@@ -88,15 +88,15 @@ public class MedicationIventoryController {
         return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryAdmin(servicePort.readById(id)));
     }
 
-    @GetMapping("admin/readAllCategory")
+    @GetMapping("admin/readAllCategory/{id}")
     @Operation(summary = "Read all inventory medications by category",
             description = "Read all inventory medications by category in the system.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "read all medication inventories successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - User access required")
     })
-    public ResponseEntity<List<MedicationInventoryResponseAdmin>> getAllByCategory(@RequestParam Long categoryId){
-        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllCategory(categoryId)));
+    public ResponseEntity<List<MedicationInventoryResponseAdmin>> getAllByCategory(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(restMapper.toMedicationInventoryResponseAdminList(servicePort.readAllCategory(id)));
     }
 
     @GetMapping("admin/readAllProductName")
