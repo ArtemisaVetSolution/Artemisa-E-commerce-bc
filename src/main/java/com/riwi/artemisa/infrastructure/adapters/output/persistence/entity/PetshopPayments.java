@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+
 import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "petshop_payments")
@@ -21,7 +23,9 @@ public class PetshopPayments {
     private long id;
 
     @Column(name = "payment_date", nullable = false)
+
     private LocalDate paymentDate;
+
 
     private float amount;
 

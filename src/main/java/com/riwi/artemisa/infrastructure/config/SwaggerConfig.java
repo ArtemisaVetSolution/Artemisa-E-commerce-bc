@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 @OpenAPIDefinition(
         info = @Info(
                 title = "Artemisa E-commerce API",
@@ -15,11 +17,16 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 )
         ),
         servers = {
-            @Server(
-                    description = "DEV SERVER",
-                    url = "http://localhost:8080"
-            )
+                @Server(
+                        description = "DEV SERVER",
+                        url = "http://localhost:8080/v1/api"
+                ),
+                @Server(
+                        description = "PROD SERVER",
+                        url = "https://example.com/v1/api"
+                )
         }
 )
 public class SwaggerConfig {
+
 }

@@ -35,6 +35,8 @@ public class OrderDetails {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
+
 //        private List<Medication> medications;
 
 }
+
