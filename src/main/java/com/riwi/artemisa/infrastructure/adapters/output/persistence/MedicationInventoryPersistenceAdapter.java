@@ -137,6 +137,7 @@ public class MedicationInventoryPersistenceAdapter implements MedicationInventor
 
     @Override
     public List<MedicationInventoryModel> readAllProductStock(Integer stock) {
+
         return mapper.toMedicationInventoryModelList(repository.findAllMedicationInventorytock(stock));
     }
 

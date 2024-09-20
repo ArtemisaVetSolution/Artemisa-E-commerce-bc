@@ -1,6 +1,7 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence;
 
 import com.riwi.artemisa.application.ports.out.ProductInventoryPersistencePort;
+import com.riwi.artemisa.domain.models.MediaModel;
 import com.riwi.artemisa.domain.models.ProductInventoryModel;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Category;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Media;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -79,60 +81,60 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
 
     @Override
     public ProductInventoryModel update(Long id, ProductInventoryModel productInventoryModel) {
+        ProductInventory existingInventory = productInventoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product inventory not found"));
 
-        productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Product inventory not found"));
+        // Actualiza los atributos de ProductInventory
+        existingInventory.setStock(productInventoryModel.getStock());
+        existingInventory.setSupplier(productInventoryModel.getSupplier());
+        existingInventory.setSupplierPrice(productInventoryModel.getSupplierPrice());
+        existingInventory.setSellingPrice(productInventoryModel.getSellingPrice());
+        existingInventory.setDueDate(productInventoryModel.getDueDate());
+        existingInventory.setUpdatedAt(LocalDateTime.now()); // Actualiza la fecha de modificación
 
-        ProductInventory productInventory = ProductInventory.builder()
-                .id(productInventoryModel.getId())
-                .stock(productInventoryModel.getStock())
-                .supplier(productInventoryModel.getSupplier())
-                .supplierPrice(productInventoryModel.getSupplierPrice())
-                .sellingPrice(productInventoryModel.getSellingPrice())
-                .dueDate(productInventoryModel.getDueDate())
-                .stateProduct(true)
-                .createdAt(productInventoryModel.getCreatedAt())
-                .updatedAt(productInventoryModel.getUpdatedAt())
-                .build();
+        // Actualiza o crea el producto
+        Product existingProduct = productRepository.findById(productInventoryModel.getProduct().getId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        Product product = Product.builder()
-                .id(productInventoryModel.getProduct().getId())
-                .name(productInventoryModel.getProduct().getName())
-                .description(productInventoryModel.getProduct().getDescription())
-                .build();
+        existingProduct.setName(productInventoryModel.getProduct().getName());
+        existingProduct.setDescription(productInventoryModel.getProduct().getDescription());
 
-        Category category = categoryRepository.findById(productInventoryModel.getProduct().getCategory().getId()).orElseThrow(() -> new RuntimeException("The category does not exist"));
-        product.setCategory(category);
+        // Actualiza medias
+        List<Media> mediaList = new ArrayList<>();
+        for (MediaModel mediaModel : productInventoryModel.getProduct().getMedia()) {
+            Media mediaEntity = mediaRepository.findById(mediaModel.getId())
+                    .orElseThrow(() -> new RuntimeException("Media not found"));
+            mediaEntity.setType(mediaModel.getType());
+            mediaEntity.setUrl(mediaModel.getUrl());
+            mediaList.add(mediaRepository.save(mediaEntity));
+        }
+        existingProduct.setMedia(mediaList);
 
-        List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
-                mediaModel -> {
+        // Guarda el producto actualizado
+        productRepository.save(existingProduct);
+        existingInventory.setProduct(existingProduct);
 
-                    Media mediaEntity = Media.builder()
-                            .id(mediaModel.getId())
-                            .type(mediaModel.getType())
-                            .url(mediaModel.getUrl())
-                            .build();
-
-                    return mediaRepository.save(mediaEntity);
-
-                }
-        ).toList();
-
-        product.setMedia(media);
-
-        productInventory.setProduct(productRepository.save(product));
-
-        return productInventoryPersistenceMapper.toProductInventoryModel(productInventoryRepository.save(productInventory));
+        // Guarda el inventario actualizado
+        return productInventoryPersistenceMapper.toProductInventoryModel(productInventoryRepository.save(existingInventory));
     }
 
     @Override
     public String updateStatusProduct(Long id) {
-        ProductInventory productInventory = productInventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("the product does not exist, therefore it could not be eliminated."));
+        ProductInventory productInventory = productInventoryRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("The product does not exist, therefore it could not be eliminated."));
+
+        // Cambia el estado del producto
         productInventory.setStateProduct(!productInventory.isStateProduct());
-        productInventory.setCreatedAt(productInventory.getCreatedAt());
         productInventory.setUpdatedAt(LocalDateTime.now());
+
+        // Guarda el estado actualizado en la base de datos
         productInventoryRepository.save(productInventory);
-        return productInventory.isStateProduct() ? "Product restore successfully" : "Product deleted successfully";
+
+        // Devuelve un mensaje según el nuevo estado del producto
+        return productInventory.isStateProduct() ? "Product restored successfully" : "Product deleted successfully";
     }
+
 
     @Override
     public List<ProductInventoryModel> findAll() {
