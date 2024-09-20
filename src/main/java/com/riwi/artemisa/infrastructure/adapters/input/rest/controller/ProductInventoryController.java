@@ -185,6 +185,7 @@ public class ProductInventoryController {
     })
     public ResponseEntity<List<ProductInventoryResponse>> readAllAviable(){
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toProductResponseList(servicePort.readAllIfAvailable()));
+
     }
 
 }
