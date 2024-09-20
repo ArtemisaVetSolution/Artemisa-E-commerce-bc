@@ -2,14 +2,12 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
-import java.util.List;
+
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "petshop_payments")
@@ -17,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PetshopPayments {
 
     @Id
@@ -24,13 +23,17 @@ public class PetshopPayments {
     private long id;
 
     @Column(name = "payment_date", nullable = false)
-    private LocalDateTime paymentDate;
+
+    private LocalDate paymentDate;
+
 
     private float amount;
 
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
-//    private List<Order> purchase_order;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
 }

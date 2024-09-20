@@ -31,90 +31,137 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
     @Override
     public OrderModel save(OrderModel orderModel) {
 
-        Order findOrder = orderRepository.findByIdUserAndByStateOrder(orderModel.getIdUser());
-        if(findOrder != null) {
+        Order order = orderRepository.findByIdUserAndByStateOrder(orderModel.getIdUser(), StatesOrder.PENDING);
 
-            List<OrderDetails> orderDetails = orderModel.getOrderDetails().stream().map(
-                    or -> {
+        if (order != null) {
+            order.setTotalOrder(0.0f);
 
-                        ProductInventory product = productInventoryRepository.findById(or.getProduct().getId()).orElseThrow(() -> new RuntimeException("Product not found"));
+            // Obtener la lista existente de orderDetails
+            List<OrderDetails> existingOrderDetails = order.getOrderDetails();
 
-                        findOrder.getOrderDetails().forEach(od -> {
-                            if (od.getProduct().getId() == product.getId()) {
+            orderModel.getOrderDetails().forEach(od -> {
+                ProductInventory product = productInventoryRepository.findById(od.getProduct().getId())
+                        .orElseThrow(() -> new RuntimeException("Product not found"));
 
-                            }
-                        });
+                OrderDetails findOrderDetails = existingOrderDetails.stream()
+                        .filter(detail -> detail.getProduct().getId().equals(product.getId()))
+                        .findFirst().orElse(null);
 
-                        float priceTotal = product.getSellingPrice()*or.getQuantity();
-                        OrderDetails newOrderDetails = OrderDetails.builder()
-                                .quantity(or.getQuantity())
+                if (findOrderDetails != null) {
+                    if(product.getStock() - od.getQuantity() >= 0){
+                        // Actualiza el OrderDetails existente
+                        findOrderDetails.setQuantity(od.getQuantity());
+                        findOrderDetails.setTotalPriceProduct(od.getQuantity() * product.getSellingPrice());
+                    }else{
+                        throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
+                    }
+                } else {
+                    if(product.getStock() - od.getQuantity() >= 0){
+                        // Agrega un nuevo OrderDetails si no existe
+                        OrderDetails newOrderDetail = OrderDetails.builder()
+                                .quantity(od.getQuantity())
                                 .unitPrice(product.getSellingPrice())
-                                .totalPriceProduct(priceTotal)
+                                .totalPriceProduct(od.getQuantity() * product.getSellingPrice())
                                 .product(product)
+                                .order(order)
                                 .build();
+                        existingOrderDetails.add(newOrderDetail);  // Agrega el nuevo detalle a la lista existente
+                    }else{
+                        throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
+                    }
+                }
+            });
 
-                        if(findOrder.getTotalOrder() == null) {
-                            findOrder.setTotalOrder(0.0f);
+            // Actualiza el total de la orden basado en los detalles existentes
+            existingOrderDetails.forEach(detail ->
+                order.setTotalOrder(order.getTotalOrder() + detail.getTotalPriceProduct())
+            );
+
+            order.setOrderDate(LocalDate.now());
+
+            // Guarda la orden actualizada con los detalles correctamente referenciados
+            orderRepository.save(order);
+
+            return orderPersistenceMapper.toOrderModel(orderRepository.findById(order.getId()).orElseThrow());
+        } else {
+
+            Order createOrder = orderRepository.save(Order.builder()
+                    .idUser(orderModel.getIdUser())
+                    .statesOrder(StatesOrder.PENDING)
+                    .totalOrder(0.0f)
+                    .orderDate(LocalDate.now())
+                    .build());
+
+            orderModel.getOrderDetails().forEach(
+                    od -> {
+                        ProductInventory product = productInventoryRepository.findById(od.getProduct().getId())
+                                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+                        if (product.getStock() - od.getQuantity() >= 0) {
+
+                            orderDetailsRepository.save(OrderDetails.builder()
+                                    .quantity(od.getQuantity())
+                                    .unitPrice(product.getSellingPrice())
+                                    .totalPriceProduct(od.getQuantity() * product.getSellingPrice())
+                                    .product(product)
+                                    .order(createOrder)
+                                    .build());
+
+                        }else{
+                            throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
                         }
-                        findOrder.setTotalOrder(findOrder.getTotalOrder() + newOrderDetails.getTotalPriceProduct());
 
-                        return orderDetailsRepository.save(newOrderDetails);
+                    });
+            List<OrderDetails> newOrderDetails = orderDetailsRepository.findAllByOrderId(createOrder.getId());
 
+            createOrder.setOrderDetails(newOrderDetails);
 
+            newOrderDetails.forEach(update -> createOrder.setTotalOrder(createOrder.getTotalOrder() + update.getTotalPriceProduct()));
 
-//                        float priceTotal = product.getSellingPrice()*or.getQuantity();
-//                        OrderDetails newOrderDetails = OrderDetails.builder()
-//                                .quantity(or.getQuantity())
-//                                .unitPrice(product.getSellingPrice())
-//                                .totalPriceProduct(priceTotal)
-//                                .product(product)
-//                                .build();
-//
-//                        findOrder.setTotalOrder(0);
-//                        findOrder.setTotalOrder(findOrder.getTotalOrder() + newOrderDetails.getTotalPriceProduct());
-//
-//                        return orderDetailsRepository.save(newOrderDetails);
-
-
-
-                    }).toList();
-
-            findOrder.setOrderDetails(orderDetails);
-            findOrder.setOrderDate(LocalDate.now());
-            findOrder.setStatesOrder(StatesOrder.valueOf("PENDING"));
-            return orderPersistenceMapper.toOrderModel(orderRepository.save(findOrder));
-
-        }else{
-
-            Order createOrder = new Order();
-            List<OrderDetails> orderDetails = orderModel.getOrderDetails().stream().map(
-                    or -> {
-
-                        ProductInventory product = productInventoryRepository.findById(or.getProduct().getId()).orElseThrow(() -> new RuntimeException("Product not found"));
-
-                        OrderDetails newOrderDetails = OrderDetails.builder()
-                                .quantity(or.getQuantity())
-                                .unitPrice(product.getSellingPrice())
-                                .totalPriceProduct(product.getSellingPrice()*or.getQuantity())
-                                .product(product)
-                                .build();
-
-                        if(createOrder.getTotalOrder() == null) {
-                            createOrder.setTotalOrder(0.0f);
-                        }
-                        createOrder.setTotalOrder(createOrder.getTotalOrder() + newOrderDetails.getTotalPriceProduct());
-
-                        return orderDetailsRepository.save(newOrderDetails);
-                    }).toList();
-
-            createOrder.setIdUser(orderModel.getIdUser());
-            createOrder.setOrderDate(LocalDate.now());
-            createOrder.setStatesOrder(StatesOrder.valueOf("PENDING"));
-            createOrder.setOrderDetails(orderDetails);
             return orderPersistenceMapper.toOrderModel(orderRepository.save(createOrder));
+        }
+    }
+
+
+    @Override
+    public List<OrderModel> findAll() {
+        return orderPersistenceMapper.toOrderModelList(orderRepository.findAll());
+    }
+
+    @Override
+    public OrderModel readByIdUserAndOrderDate(Long id, LocalDate date) {
+        return orderPersistenceMapper.toOrderModel(orderRepository.findByIdUserAndByOrderDate(id,date));
+    }
+
+    @Override
+    public OrderModel readById(Long id) {
+        return orderPersistenceMapper.toOrderModel(orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found")));
+    }
+
+    @Override
+    public String updateStatesOrder(Long id, StatesOrder statesOrder) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setStatesOrder(statesOrder);
+        orderRepository.save(order);
+        return "Updated successfully";
+    }
+
+    @Override
+    public String deleteOrderDetails(Long idOrder, Long idOrderDetails) {
+
+        Order order = orderRepository.findById(idOrder).orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.getOrderDetails().removeIf(detail -> detail.getId().equals(idOrderDetails));
+
+        if (order.getOrderDetails().isEmpty()) {
+            orderRepository.delete(order);
+            return "Delete Order Details successfully";
+
+        } else {
+            orderRepository.save(order);
+            return "Delete Order successfully";
 
         }
-
     }
 }
 

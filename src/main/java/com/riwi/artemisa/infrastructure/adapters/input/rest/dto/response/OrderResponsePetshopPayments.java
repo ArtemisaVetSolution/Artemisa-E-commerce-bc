@@ -9,12 +9,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderResponse {
+public class OrderResponsePetshopPayments {
 
     private Long id;
 
     private float totalOrder;
 
-    private List<OrderDetailsResponse> orderDetails;
+    private List<OrderDetailsResponsePetshopPayments> orderDetails;
 
 }

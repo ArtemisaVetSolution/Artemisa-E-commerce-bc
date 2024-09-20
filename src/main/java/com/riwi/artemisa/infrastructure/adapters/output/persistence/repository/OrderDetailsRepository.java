@@ -13,5 +13,8 @@ import java.util.List;
 public interface OrderDetailsRepository extends JpaRepository<OrderDetails, Long> {
 
     @Query("SELECT od FROM Order o JOIN o.orderDetails od JOIN od.product p WHERE o.id = :orderId AND p.id = :productId")
-    List<OrderDetails> findOrderDetailsByOrderIdAndProductId(@Param("orderId") Long orderId, @Param("productId") Long productId);
+    OrderDetails findOrderDetailsByOrderIdAndProductId(@Param("orderId") Long orderId, @Param("productId") Long productId);
+
+    @Query("SELECT od FROM OrderDetails od WHERE od.order.id = :orderId")
+    List<OrderDetails> findAllByOrderId(@Param("orderId") Long orderId);
 }

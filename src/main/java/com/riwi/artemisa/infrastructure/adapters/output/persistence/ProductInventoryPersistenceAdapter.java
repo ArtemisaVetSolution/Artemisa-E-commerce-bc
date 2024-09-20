@@ -59,11 +59,10 @@ public class ProductInventoryPersistenceAdapter implements ProductInventoryPersi
         product.setCategory(category);
 
         List<Media> media = productInventoryModel.getProduct().getMedia().stream().map(
-                mediaModel ->Media.builder()
+                mediaModel -> Media.builder()
                             .type(mediaModel.getType())
                             .url(mediaModel.getUrl())
                             .build()
-
         ).toList();
 
         product.setMedia(mediaRepository.saveAll(media));

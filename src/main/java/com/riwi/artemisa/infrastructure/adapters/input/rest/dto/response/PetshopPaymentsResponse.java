@@ -2,19 +2,19 @@ package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderResponse {
+public class PetshopPaymentsResponse {
 
     private Long id;
 
-    private float totalOrder;
+    private Float amount;
 
-    private List<OrderDetailsResponse> orderDetails;
+    private String paymentMethod;
+
+    private OrderResponsePetshopPayments order;
 
 }

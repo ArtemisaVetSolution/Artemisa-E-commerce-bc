@@ -19,7 +19,8 @@ public class ProductInventory {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long
+            id;
 
     @Column(name = "stock", nullable = false)
     private int stock;
