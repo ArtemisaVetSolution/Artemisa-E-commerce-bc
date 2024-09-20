@@ -6,15 +6,11 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class OrderResponse {
+public class ProductResponsePetshopPayments {
 
-    private Long id;
-
-    private float totalOrder;
-
-    private List<OrderDetailsResponse> orderDetails;
+    private String name;
 
 }

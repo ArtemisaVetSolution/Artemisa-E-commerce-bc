@@ -12,14 +12,15 @@ import java.util.List;
 @Table(name = "purchase_orders")
 @Getter
 @Setter
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class Order {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "id_user", nullable = false)
     private Long idUser;
@@ -27,14 +28,13 @@ public class Order {
     @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
 
-    @Column(name = "total_order", nullable = false)
+    @Column(name = "total_order")
     private Float totalOrder = 0.0f;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private StatesOrder statesOrder;
 
-    @OneToMany
-    @JoinColumn(name = "order_details")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderDetails> orderDetails;
 
 }
