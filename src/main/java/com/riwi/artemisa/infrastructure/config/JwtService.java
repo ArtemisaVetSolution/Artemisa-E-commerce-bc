@@ -41,22 +41,34 @@ public class JwtService {
         return null;
     }
 
-    public boolean validateTokenWithAuthService(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        try {
-            ResponseEntity<Boolean> response = restTemplate.exchange(
-                    "http://users-service:3001/api/auth/validate-jwt",
-                    HttpMethod.POST,
-                    entity,
-                    Boolean.class
-            );
+    // validar el token desde la solicitud en node
+//    public boolean validateTokenWithAuthService(String token) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setBearerAuth(token);
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//        try {
+//            ResponseEntity<Boolean> response = restTemplate.exchange(
+//                    "http://users-service:3001/api/auth/validate-jwt",
+//                    HttpMethod.POST,
+//                    entity,
+//                    Boolean.class
+//            );
+//
+//            return response.getBody() != null && response.getBody();
+//        } catch (Exception e) {
+//            logger.error("Error al validar el token con el servicio de autenticación", e);
+//            return false;
+//        }
+//    }
 
-            return response.getBody() != null && response.getBody();
+    //validar el token loclamente
+    public boolean validateTokenWithAuthService(String token) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true; // El token es válido
         } catch (Exception e) {
-            logger.error("Error al validar el token con el servicio de autenticación", e);
-            return false;
+            logger.error("Error al validar el token localmente", e);
+            return false; // El token es inválido o ha expirado
         }
     }
 

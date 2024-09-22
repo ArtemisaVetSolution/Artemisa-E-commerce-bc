@@ -29,10 +29,12 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("v1/api/category/admin/create").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/category/admin/readAll").permitAll()
 
-                        .requestMatchers("v1/api/category/user/readAll").hasRole("TUTOR")
+                        .requestMatchers("/v1/api/category/admin/create").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/category/user/readAll").hasRole("TUTOR")
                         .anyRequest().authenticated()
+
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

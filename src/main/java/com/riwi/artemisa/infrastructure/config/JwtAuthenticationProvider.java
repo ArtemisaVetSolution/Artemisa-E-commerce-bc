@@ -1,5 +1,7 @@
 package com.riwi.artemisa.infrastructure.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private JwtService jwtService;
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationProvider.class);
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -30,13 +34,21 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         Claims claims = jwtService.decodeJwt(token);
         String username = claims.getSubject();
-        List<String> roles = (List<String>) claims.get("roles");
 
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        String role = null;
+        if (claims.get("roles") instanceof List && !((List<?>) claims.get("roles")).isEmpty()) {
+            role = ((List<?>) claims.get("roles")).get(0).toString(); // Obtener el primer rol
+        } else {
+            logger.warn("El claim 'roles' está vacío o no es una lista en el token JWT");
+        }
+
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        if (role != null) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
 
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
+
     }
 
     @Override

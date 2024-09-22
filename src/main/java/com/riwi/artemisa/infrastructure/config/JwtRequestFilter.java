@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,20 +38,29 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (jwtToken != null && jwtService.validateTokenWithAuthService(jwtToken)) {
             Claims claims = jwtService.decodeJwt(jwtToken);
             String username = claims.getSubject();
-            List<String> roles = (List<String>) claims.get("roles"); // Extraer los roles del usuario
-            String userId = (String) claims.get("id"); // Extraer el ID del usuario
 
-            List<SimpleGrantedAuthority> authorities = roles.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+            String role = null;
+            if (claims.get("roles") instanceof List && !((List<?>) claims.get("roles")).isEmpty()) {
+                role = ((List<?>) claims.get("roles")).get(0).toString();
+            } else {
+                logger.warn("El claim 'roles' está vacío o no es una lista en el token JWT");
+            }
 
-            UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(
-                    username, null, authorities);
-            authenticationToken.setDetails(userId); // Agregar el ID al contexto de autenticación
+            String userId = (String) claims.get("id");
+
+            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            if (role != null) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                // Agregar el prefijo "ROLE_"
+            }
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+            authenticationToken.setDetails(userId);
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
+
         filterChain.doFilter(request, response);
     }
 }
