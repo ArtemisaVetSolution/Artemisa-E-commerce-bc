@@ -17,11 +17,6 @@ public class OrderService implements OrderServicePort {
     private final OrderPersistencePort order;
 
     @Override
-    public OrderModel save(OrderModel orderModel) {
-        return order.save(orderModel);
-    }
-
-    @Override
     public List<OrderModel> findAll() {
         return order.findAll();
     }
@@ -44,5 +39,10 @@ public class OrderService implements OrderServicePort {
     @Override
     public String deleteOrderDetails(Long idOrder, Long idOrderDetails) {
         return order.deleteOrderDetails(idOrder, idOrderDetails);
+    }
+
+    @Override
+    public OrderModel save(OrderModel orderModel) {
+        return order.save(orderModel);
     }
 }

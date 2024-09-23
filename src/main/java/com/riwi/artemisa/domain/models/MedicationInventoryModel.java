@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MedicationInventoryModel {
 
-    private long id;
+    private Long id;
     private Boolean prescribed;
     private Integer stock;
     private String methodUse;

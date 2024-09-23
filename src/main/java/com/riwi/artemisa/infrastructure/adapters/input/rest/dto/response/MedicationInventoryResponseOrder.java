@@ -7,12 +7,12 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductInventoryResponse {
+public class MedicationInventoryResponseOrder {
 
     private Long id;
 
     private float sellingPrice;
 
-    private ProductResponse product;
+    private MedicationResponseOrder medication;
 
 }

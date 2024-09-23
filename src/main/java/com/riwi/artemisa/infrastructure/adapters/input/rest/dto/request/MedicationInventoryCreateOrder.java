@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductInventoryCreateOrder {
+public class MedicationInventoryCreateOrder {
 
     private Long Id;
 

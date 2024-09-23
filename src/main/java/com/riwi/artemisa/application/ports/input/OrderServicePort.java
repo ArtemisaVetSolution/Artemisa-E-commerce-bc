@@ -7,9 +7,9 @@ import com.riwi.artemisa.utils.enums.StatesOrder;
 import java.time.LocalDate;
 
 public interface OrderServicePort extends
-        Save<OrderModel>,
         ReadAll<OrderModel>,
         ReadByIdUserAndOrderDate<OrderModel, Long, LocalDate>,
         ReadById<OrderModel, Long>,
         UpdateStatesOrder<Long, StatesOrder>,
-        DeleteOrderDetails<Long>{}
+        DeleteOrderDetails<Long>,
+        Save<OrderModel>{}

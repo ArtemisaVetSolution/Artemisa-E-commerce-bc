@@ -2,10 +2,12 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence;
 
 import com.riwi.artemisa.application.ports.out.OrderPersistencePort;
 import com.riwi.artemisa.domain.models.OrderModel;
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.MedicationInventory;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.Order;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.OrderDetails;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.ProductInventory;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.mapper.OrderPersistenceMapper;
+import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.MedicationInventoryRepository;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.OrderDetailsRepository;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.OrderRepository;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.repository.ProductInventoryRepository;
@@ -24,9 +26,9 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
     private final OrderRepository orderRepository;
     private final OrderDetailsRepository orderDetailsRepository;
     private final ProductInventoryRepository productInventoryRepository;
+    private final MedicationInventoryRepository medicationInventoryRepository;
 
     private final OrderPersistenceMapper orderPersistenceMapper;
-
 
     @Override
     public OrderModel save(OrderModel orderModel) {
@@ -40,51 +42,85 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
             List<OrderDetails> existingOrderDetails = order.getOrderDetails();
 
             orderModel.getOrderDetails().forEach(od -> {
-                ProductInventory product = productInventoryRepository.findById(od.getProduct().getId())
-                        .orElseThrow(() -> new RuntimeException("Product not found"));
+                ProductInventory product = od.getProduct() != null ? productInventoryRepository.findById(od.getProduct().getId())
+                        .orElseThrow(() -> new RuntimeException("Product not found")) : null;
 
-                OrderDetails findOrderDetails = existingOrderDetails.stream()
-                        .filter(detail -> detail.getProduct().getId().equals(product.getId()))
-                        .findFirst().orElse(null);
+                MedicationInventory medication = od.getMedication() != null ? medicationInventoryRepository.findById(od.getMedication().getId())
+                        .orElseThrow(() -> new RuntimeException("Medication not found")) : null;
+
+                OrderDetails findOrderDetails = product != null ? order.getOrderDetails().stream()
+                        .filter(detail -> detail.getProduct() != null && detail.getProduct().getId().equals(product.getId()))
+                        .findFirst().orElse(null) :
+                        medication != null ? order.getOrderDetails().stream()
+                                .filter(detail -> detail.getMedication() != null && detail.getMedication().getId().equals(medication.getId()))
+                                .findFirst().orElse(null) : null;
 
                 if (findOrderDetails != null) {
-                    if(product.getStock() - od.getQuantity() >= 0){
-                        // Actualiza el OrderDetails existente
-                        findOrderDetails.setQuantity(od.getQuantity());
-                        findOrderDetails.setTotalPriceProduct(od.getQuantity() * product.getSellingPrice());
-                    }else{
-                        throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
+                    if (product != null) {
+                        if (product.getStock() - od.getQuantity() >= 0) {
+                            // Actualiza el OrderDetails existente
+                            findOrderDetails.setQuantity(od.getQuantity());
+                            findOrderDetails.setTotalPriceProduct(od.getQuantity() * product.getSellingPrice());
+                            orderDetailsRepository.save(findOrderDetails);
+                        } else {
+                            throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
+                        }
+                    }
+                    if (medication != null) {
+                        if (medication.getStock() - od.getQuantity() >= 0) {
+                            // Actualiza el OrderDetails existente
+                            findOrderDetails.setQuantity(od.getQuantity());
+                            findOrderDetails.setTotalPriceProduct(od.getQuantity() * medication.getSellingPrice());
+                            orderDetailsRepository.save(findOrderDetails);
+                        } else {
+                            throw new RuntimeException("we count only a quantity of " + medication.getStock() + " medications");
+                        }
                     }
                 } else {
-                    if(product.getStock() - od.getQuantity() >= 0){
-                        // Agrega un nuevo OrderDetails si no existe
-                        OrderDetails newOrderDetail = OrderDetails.builder()
-                                .quantity(od.getQuantity())
-                                .unitPrice(product.getSellingPrice())
-                                .totalPriceProduct(od.getQuantity() * product.getSellingPrice())
-                                .product(product)
-                                .order(order)
-                                .build();
-                        existingOrderDetails.add(newOrderDetail);  // Agrega el nuevo detalle a la lista existente
-                    }else{
-                        throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
+                    if (product != null) {
+                        if (product.getStock() - od.getQuantity() >= 0) {
+                            // Agrega un nuevo OrderDetails si no existe
+                            findOrderDetails = OrderDetails.builder()
+                                    .quantity(od.getQuantity())
+                                    .unitPrice(product.getSellingPrice())
+                                    .totalPriceProduct(od.getQuantity() * product.getSellingPrice())
+                                    .product(product)
+                                    .order(order)
+                                    .build();
+                            orderDetailsRepository.save(findOrderDetails);
+                            existingOrderDetails.add(findOrderDetails);  // Agrega el nuevo detalle a la lista existente
+                        } else {
+                            throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
+                        }
+                    }
+                    if (medication != null) {
+                        if (medication.getStock() - od.getQuantity() >= 0) {
+                            // Agrega un nuevo OrderDetails si no existe
+                            findOrderDetails = OrderDetails.builder()
+                                    .quantity(od.getQuantity())
+                                    .unitPrice(medication.getSellingPrice())
+                                    .totalPriceProduct(od.getQuantity() * medication.getSellingPrice())
+                                    .medication(medication)
+                                    .order(order)
+                                    .build();
+                            orderDetailsRepository.save(findOrderDetails);
+                            existingOrderDetails.add(findOrderDetails);  // Agrega el nuevo detalle a la lista existente
+                        } else {
+                            throw new RuntimeException("we count only a quantity of " + medication.getStock() + " medications");
+                        }
                     }
                 }
             });
 
-            // Actualiza el total de la orden basado en los detalles existentes
             existingOrderDetails.forEach(detail ->
-                order.setTotalOrder(order.getTotalOrder() + detail.getTotalPriceProduct())
+                    order.setTotalOrder(order.getTotalOrder() + detail.getTotalPriceProduct())
             );
 
             order.setOrderDate(LocalDate.now());
-
-            // Guarda la orden actualizada con los detalles correctamente referenciados
             orderRepository.save(order);
 
-            return orderPersistenceMapper.toOrderModel(orderRepository.findById(order.getId()).orElseThrow());
+            return orderPersistenceMapper.toOrderModel(orderRepository.findById(order.getId()).orElseThrow(() -> new RuntimeException("Order not found")));
         } else {
-
             Order createOrder = orderRepository.save(Order.builder()
                     .idUser(orderModel.getIdUser())
                     .statesOrder(StatesOrder.PENDING)
@@ -92,28 +128,42 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
                     .orderDate(LocalDate.now())
                     .build());
 
-            orderModel.getOrderDetails().forEach(
-                    od -> {
-                        ProductInventory product = productInventoryRepository.findById(od.getProduct().getId())
-                                .orElseThrow(() -> new RuntimeException("Product not found"));
+            orderModel.getOrderDetails().forEach(od -> {
+                ProductInventory product = od.getProduct() != null ? productInventoryRepository.findById(od.getProduct().getId())
+                        .orElseThrow(() -> new RuntimeException("Product not found")) : null;
 
-                        if (product.getStock() - od.getQuantity() >= 0) {
+                MedicationInventory medication = od.getMedication() != null ? medicationInventoryRepository.findById(od.getMedication().getId())
+                        .orElseThrow(() -> new RuntimeException("Medication not found")) : null;
 
-                            orderDetailsRepository.save(OrderDetails.builder()
-                                    .quantity(od.getQuantity())
-                                    .unitPrice(product.getSellingPrice())
-                                    .totalPriceProduct(od.getQuantity() * product.getSellingPrice())
-                                    .product(product)
-                                    .order(createOrder)
-                                    .build());
+                if (product != null) {
+                    if (product.getStock() - od.getQuantity() >= 0) {
+                        orderDetailsRepository.save(OrderDetails.builder()
+                                .quantity(od.getQuantity())
+                                .unitPrice(product.getSellingPrice())
+                                .totalPriceProduct(od.getQuantity() * product.getSellingPrice())
+                                .product(product)
+                                .order(createOrder)
+                                .build());
+                    } else {
+                        throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
+                    }
+                }
+                if (medication != null) {
+                    if (medication.getStock() - od.getQuantity() >= 0) {
+                        orderDetailsRepository.save(OrderDetails.builder()
+                                .quantity(od.getQuantity())
+                                .unitPrice(medication.getSellingPrice())
+                                .totalPriceProduct(od.getQuantity() * medication.getSellingPrice())
+                                .medication(medication)
+                                .order(createOrder)
+                                .build());
+                    } else {
+                        throw new RuntimeException("we count only a quantity of " + medication.getStock() + " medications");
+                    }
+                }
+            });
 
-                        }else{
-                            throw new RuntimeException("we count only a quantity of " + product.getStock() + " products");
-                        }
-
-                    });
             List<OrderDetails> newOrderDetails = orderDetailsRepository.findAllByOrderId(createOrder.getId());
-
             createOrder.setOrderDetails(newOrderDetails);
 
             newOrderDetails.forEach(update -> createOrder.setTotalOrder(createOrder.getTotalOrder() + update.getTotalPriceProduct()));
@@ -121,7 +171,6 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
             return orderPersistenceMapper.toOrderModel(orderRepository.save(createOrder));
         }
     }
-
 
     @Override
     public List<OrderModel> findAll() {

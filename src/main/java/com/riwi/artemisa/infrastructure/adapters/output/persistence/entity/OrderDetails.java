@@ -32,11 +32,12 @@ public class OrderDetails {
     private ProductInventory product;
 
     @ManyToOne
+    @JoinColumn(name = "medication_id")
+    private MedicationInventory medication;
+
+    @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
-
-
-//        private List<Medication> medications;
 
 }
 

@@ -20,7 +20,7 @@ public class MedicationInventory {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "prescribed", nullable = false)
     private Boolean prescribed;
