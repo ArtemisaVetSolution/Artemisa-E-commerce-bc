@@ -29,7 +29,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         String token = authentication.getCredentials().toString();
 
         if (!jwtService.validateTokenWithAuthService(token)) {
-            throw new BadCredentialsException("Token JWT inválido");
+            throw new BadCredentialsException("Token JWT invalid");
         }
 
         Claims claims = jwtService.decodeJwt(token);
@@ -39,7 +39,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         if (claims.get("roles") instanceof List && !((List<?>) claims.get("roles")).isEmpty()) {
             role = ((List<?>) claims.get("roles")).get(0).toString(); // Obtener el primer rol
         } else {
-            logger.warn("El claim 'roles' está vacío o no es una lista en el token JWT");
+            logger.warn("The 'roles' claim is empty or not a list in the JWT token");
         }
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

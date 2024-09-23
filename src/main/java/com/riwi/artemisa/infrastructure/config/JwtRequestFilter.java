@@ -43,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (claims.get("roles") instanceof List && !((List<?>) claims.get("roles")).isEmpty()) {
                 role = ((List<?>) claims.get("roles")).get(0).toString();
             } else {
-                logger.warn("El claim 'roles' está vacío o no es una lista en el token JWT");
+                logger.warn("The 'roles' claim is empty or not a list in the JWT token");
             }
 
             String userId = (String) claims.get("id");

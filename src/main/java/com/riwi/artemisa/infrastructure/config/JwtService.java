@@ -56,7 +56,7 @@ public class JwtService {
 //
 //            return response.getBody() != null && response.getBody();
 //        } catch (Exception e) {
-//            logger.error("Error al validar el token con el servicio de autenticación", e);
+//            logger.error("Error validating token locally", e);
 //            return false;
 //        }
 //    }
@@ -67,7 +67,7 @@ public class JwtService {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true; // El token es válido
         } catch (Exception e) {
-            logger.error("Error al validar el token localmente", e);
+            logger.error("Error validating token locally", e);
             return false; // El token es inválido o ha expirado
         }
     }
@@ -76,15 +76,15 @@ public class JwtService {
         try {
             return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
         } catch (SignatureException e) {
-            logger.error("JWT signature inválida: {}", e.getMessage());
+            logger.error("JWT signature invalid: {}", e.getMessage());
         } catch (MalformedJwtException e) {
-            logger.error("JWT malformado: {}", e.getMessage());
+            logger.error("JWT malformed: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
-            logger.error("JWT expirado: {}", e.getMessage());
+            logger.error("JWT expiration: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            logger.error("JWT no soportado: {}", e.getMessage());
+            logger.error("JWT not supported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims vacío: {}", e.getMessage());
+            logger.error("JWT claims void: {}", e.getMessage());
         }
         return null;
     }
