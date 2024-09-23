@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class MediaController {
     //Admin controllers ---------------------------
 
     @PostMapping("admin/create")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "create a media",
             description = "create a media in the system.")
     @ApiResponses(value = {
@@ -42,6 +44,7 @@ public class MediaController {
     }
 
     @PutMapping("admin/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "update a media",
             description = "update a media in the system.")
     @ApiResponses(value = {
@@ -57,6 +60,7 @@ public class MediaController {
 
 
     @GetMapping("admin/read/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read a media",
             description = "read a media in the system.")
     @ApiResponses(value = {
@@ -71,6 +75,7 @@ public class MediaController {
 
 
     @GetMapping("admin/readAll")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read All media",
             description = "read All media in the system.")
     @ApiResponses(value = {
@@ -84,6 +89,7 @@ public class MediaController {
 
 
     @DeleteMapping("admin/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a media",
             description = "delete a media in the system.")
     @ApiResponses(value = {
@@ -98,6 +104,7 @@ public class MediaController {
     //User controllers ---------------------------
 
     @GetMapping("user/read/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read a media",
             description = "read a media in the system.")
     @ApiResponses(value = {
@@ -111,6 +118,7 @@ public class MediaController {
     }
 
     @GetMapping("user/readAll")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read All media",
             description = "read All media in the system.")
     @ApiResponses(value = {

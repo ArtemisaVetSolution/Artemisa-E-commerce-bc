@@ -62,6 +62,7 @@ public class CategoryController {
     }
 
     @GetMapping("admin/read/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read a category",
             description = "read a category in the system.")
     @ApiResponses(value = {
@@ -75,6 +76,7 @@ public class CategoryController {
     }
 
     @GetMapping("admin/readAll")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read All category",
             description = "read All category in the system.")
     @ApiResponses(value = {
@@ -88,6 +90,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("admin/delete/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a category",
             description = "Delete a category in the system.")
     @ApiResponses(value = {
@@ -102,6 +105,7 @@ public class CategoryController {
     //Controllers user------------------------
 
     @GetMapping("user/read/{name}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read a category",
             description = "read a category in the system.")
     @ApiResponses(value = {
@@ -115,7 +119,7 @@ public class CategoryController {
     }
 
     @GetMapping("user/readAll")
-    @PreAuthorize("hasRole('TUTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read All category",
             description = "read All category in the system.")
     @ApiResponses(value = {

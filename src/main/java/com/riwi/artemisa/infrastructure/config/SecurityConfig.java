@@ -29,10 +29,22 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/api/category/admin/readAll").permitAll()
+                        .requestMatchers("/v1/api/category/user/readAll").permitAll()
 
-                        .requestMatchers("/v1/api/category/admin/create").hasRole("ADMIN")
-                        .requestMatchers("/v1/api/category/user/readAll").hasRole("TUTOR")
+                        .requestMatchers("/v1/api/category/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/category/user/**").hasRole("TUTOR")
+
+                        .requestMatchers("/v1/api/media/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/media/user/**").hasRole("TUTOR")
+
+                        .requestMatchers("/v1/api/medication/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/medication/user/**").hasRole("TUTOR")
+
+                        .requestMatchers("/v1/api/medicationInventory/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/medicationInventory/user/**").hasRole("TUTOR")
+
+                        .requestMatchers("/v1/api/productInventory/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/productInventory/user/**").hasRole("TUTOR")
                         .anyRequest().authenticated()
 
                 )
