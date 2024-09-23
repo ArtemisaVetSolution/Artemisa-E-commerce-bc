@@ -45,6 +45,12 @@ public class SecurityConfig {
 
                         .requestMatchers("/v1/api/productInventory/admin/**").hasRole("ADMIN")
                         .requestMatchers("/v1/api/productInventory/user/**").hasRole("TUTOR")
+
+                        .requestMatchers("/v1/api/order/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/order/user/**").hasRole("TUTOR")
+
+                        .requestMatchers("/v1/api/petshopPayments/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/petshopPayments/user/**").hasRole("TUTOR")
                         .anyRequest().authenticated()
 
                 )
