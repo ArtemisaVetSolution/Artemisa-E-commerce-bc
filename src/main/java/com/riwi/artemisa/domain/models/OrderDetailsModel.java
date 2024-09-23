@@ -19,4 +19,7 @@ public class OrderDetailsModel {
     private float totalPriceProduct = 0.0f;
 
     private ProductInventoryModel product;
+
+    private MedicationInventoryModel medication;
+
 }

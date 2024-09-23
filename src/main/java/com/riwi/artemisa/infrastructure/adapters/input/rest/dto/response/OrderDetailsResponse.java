@@ -19,4 +19,6 @@ public class OrderDetailsResponse {
 
     private ProductInventoryResponse product;
 
+    private MedicationInventoryResponseOrder medication;
+
 }

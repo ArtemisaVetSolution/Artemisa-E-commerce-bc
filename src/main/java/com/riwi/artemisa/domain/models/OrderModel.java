@@ -25,4 +25,5 @@ public class OrderModel {
 
     private List<OrderDetailsModel> orderDetails;
 
+    
 }
