@@ -1,17 +1,16 @@
 package com.riwi.artemisa.application.ports.out;
 
-import com.riwi.artemisa.domain.models.Medication;
+import com.riwi.artemisa.application.ports.CRUD.*;
+import com.riwi.artemisa.domain.models.MedicationModel;
 
-import java.util.List;
-import java.util.Optional;
 
-public interface MedicationPersistencePort {
-
-    Optional<Medication> findByName(String name);
-
-    List<Medication> findAll();
-
-    Medication save(Medication medication);
+public interface MedicationPersistencePort extends
+        Save<MedicationModel>
+        , ReadByName<MedicationModel,String>
+        , ReadAll<MedicationModel>
+        , Update<MedicationModel, Long>
+        , Delete<String>
+        ,ReadAllByName<MedicationModel,String> {
 
 
 }

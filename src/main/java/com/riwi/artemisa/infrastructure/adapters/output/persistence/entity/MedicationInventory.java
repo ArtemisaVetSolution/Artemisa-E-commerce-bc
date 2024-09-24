@@ -2,33 +2,31 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity(name = "medication_inventory")
+@Entity
+@Table(name = "medication_inventory")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedicationInventory {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "update_date")
-    private Date updateDate;
+    private Long id;
 
     @Column(name = "prescribed", nullable = false)
-    private boolean prescribed;
+    private Boolean prescribed;
 
     @Column(name = "stock", nullable = false)
-    private int stock;
+    private Integer stock;
 
     @Column(name = "method_use", nullable = false)
     private String methodUse;
@@ -36,20 +34,33 @@ public class MedicationInventory {
     @Column(name = "supplier", nullable = false)
     private String supplier;
 
-
     @Column(name = "supplier_price", nullable = false)
-    private float supplierPrice;
+    private Float supplierPrice;
 
     @Column(name = "selling_price", nullable = false)
-    private float sellingPrice;
+    private Float sellingPrice;
 
-    @Column(name="due_date", nullable = false)
-    private Date dueDate;
+    @Column(name="due_date")
+    private LocalDate dueDate;
 
     @Column(name="state_medication", nullable = false)
-    private boolean stateMedication;
+    private Boolean isMedicationAvailable = true;
 
-    @OneToMany(mappedBy="medicationInventory", fetch = FetchType.EAGER)
-    private List<Medication> medication;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "medicationinventory_id")
+    private Medication medication;
+
+    //Auditable
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 
 }

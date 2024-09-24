@@ -1,42 +1,43 @@
-    package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
-    
-    
-    import jakarta.persistence.*;
-    import lombok.AllArgsConstructor;
-    import lombok.Getter;
-    import lombok.NoArgsConstructor;
-    import lombok.Setter;
-    
-    import java.util.List;
-    
-    @Entity(name = "order_details")
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public class OrderDetails {
-    
-        @Id
-        @GeneratedValue( strategy = GenerationType.UUID)
-        private String id;
-    
-        @Column(name = "quantity", nullable = false)
-        private int quantity;
-    
-        @Column(name = "unit_price", nullable = false)
-        private float unitPrice;
-    
-        @Column(name = "total_price_product", nullable = false)
-        private float totalPriceProduct;
+package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
-        @OneToMany(mappedBy = "orderDetails", fetch = FetchType.LAZY)
-        private List<Product> products;
-    
-        @OneToMany(mappedBy = "orderDetails", fetch = FetchType.LAZY)
-        private List<Medication> medications;
 
-        @ManyToOne
-        @JoinColumn(name = "order_id")
-        private Order order;
-    
-    }
+import jakarta.persistence.*;
+import lombok.*;
+
+
+@Entity
+@Table(name = "order_details")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class OrderDetails {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
+    @Column(name = "unit_price", nullable = false)
+    private Float unitPrice;
+
+    @Column(name = "total_price_product", nullable = false)
+    private Float totalPriceProduct;
+
+    @ManyToOne
+    @JoinColumn(name = "products_id")
+    private ProductInventory product;
+
+    @ManyToOne
+    @JoinColumn(name = "medication_id")
+    private MedicationInventory medication;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+}
+

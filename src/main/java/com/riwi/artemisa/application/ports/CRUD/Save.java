@@ -1,5 +1,5 @@
 package com.riwi.artemisa.application.ports.CRUD;
 
-public interface Create <Entity>{
+public interface Save<Entity>{
     public Entity save(Entity entity);
 }

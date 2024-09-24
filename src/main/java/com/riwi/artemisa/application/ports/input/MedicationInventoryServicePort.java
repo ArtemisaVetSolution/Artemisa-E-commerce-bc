@@ -1,15 +1,19 @@
 package com.riwi.artemisa.application.ports.input;
 
+import com.riwi.artemisa.application.ports.CRUD.*;
+import com.riwi.artemisa.domain.models.MedicationInventoryModel;
+import com.riwi.artemisa.domain.models.ProductInventoryModel;
 
 
-import com.riwi.artemisa.domain.models.MedicationInventory;
-
-import java.util.List;
-
-public interface MedicationInventoryServicePort {
-    MedicationInventory findById(Long id);
-    List<MedicationInventory> findAll();
-    MedicationInventory save(MedicationInventory medicationInventory);
-    MedicationInventory update(Long id, MedicationInventory medicationInventory);
-    void deleteById(Long id);
+public interface MedicationInventoryServicePort extends
+        Save<MedicationInventoryModel>,
+        Update<MedicationInventoryModel,Long>,
+        UpdateStatusProduct<Long>,
+        ReadAll<MedicationInventoryModel>,
+        ReadById<MedicationInventoryModel, Long>,
+        ReadAllCategory<MedicationInventoryModel, Long>,
+        ReadAllByName<MedicationInventoryModel,String>,
+        UpdateStock<Integer, Long>,
+        ReadAllProductStock<MedicationInventoryModel, Integer>,
+        ReadAllIfAvailable<MedicationInventoryModel> {
 }
