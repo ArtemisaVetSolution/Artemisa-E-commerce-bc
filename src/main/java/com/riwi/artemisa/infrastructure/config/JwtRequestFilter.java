@@ -10,9 +10,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.lang.NonNull;
+import java.util.ArrayList;
+
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -28,14 +32,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String jwtToken = jwtService.extractJwtFromRequest(request);
 
-        if (jwtToken != null && jwtService.validateTokenWithAuthService(jwtToken)) {
+        if (jwtToken != null) {
             Claims claims = jwtService.decodeJwt(jwtToken);
             if (claims != null) {
                 String name = jwtService.extractName(claims);
                 String id = jwtService.extractId(claims);
-                String roleUser = jwtService.extractRoleUser(claims).toUpperCase();
+                String roleUser = jwtService.extractRoleUser(claims);
+                List<Map<String, Object>> permissions = jwtService.extractPermissions(claims);
 
-                List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + roleUser));
+                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                
+                // Añadir el rol principal sin el prefijo "ROLE_"
+                authorities.add(new SimpleGrantedAuthority(roleUser.toUpperCase()));
+
+                // Añadir los permisos adicionales con el prefijo "ROLE_"
+                authorities.addAll(permissions.stream()
+                    .map(permission -> new SimpleGrantedAuthority("ROLE_" + permission.get("role").toString().toUpperCase()))
+                    .collect(Collectors.toList()));
 
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(name, null, authorities);
@@ -45,6 +58,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                 request.setAttribute("userId", id);
+                request.setAttribute("userPermissions", permissions);
             }
         }
 

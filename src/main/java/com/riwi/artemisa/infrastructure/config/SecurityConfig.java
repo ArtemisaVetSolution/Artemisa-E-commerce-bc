@@ -25,20 +25,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/v1/api/category/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/api/category/user/**").hasAnyRole("ADMIN", "TUTOR")
-                .requestMatchers("/v1/api/media/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/api/media/user/**").hasAnyRole("ADMIN", "TUTOR")
-                .requestMatchers("/v1/api/medication/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/api/medication/user/**").hasAnyRole("ADMIN", "TUTOR")
-                .requestMatchers("/v1/api/medicationInventory/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/api/medicationInventory/user/**").hasAnyRole("ADMIN", "TUTOR")
-                .requestMatchers("/v1/api/productInventory/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/api/productInventory/user/**").hasAnyRole("ADMIN", "TUTOR")
-                .requestMatchers("/v1/api/order/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/api/order/user/**").hasAnyRole("ADMIN", "TUTOR")
-                .requestMatchers("/v1/api/petshopPayments/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/api/petshopPayments/user/**").hasAnyRole("ADMIN", "TUTOR")
+                .requestMatchers("/v1/api/category/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/v1/api/category/user/**").hasAnyAuthority("ADMIN", "TUTOR")
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

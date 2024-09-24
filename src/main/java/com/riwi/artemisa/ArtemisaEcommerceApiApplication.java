@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 public class ArtemisaEcommerceApiApplication {
 
 	public static void main(String[] args) {
+		System.out.println("JWT_SECRET from environment: " + System.getenv("JWT_SECRET"));
 		SpringApplication.run(ArtemisaEcommerceApiApplication.class, args);
 		
 	}
