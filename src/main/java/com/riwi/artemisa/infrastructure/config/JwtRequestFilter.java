@@ -33,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (claims != null) {
                 String name = jwtService.extractName(claims);
                 String id = jwtService.extractId(claims);
-                String roleUser = jwtService.extractRoleUser(claims);
+                String roleUser = jwtService.extractRoleUser(claims).toUpperCase();
 
                 List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + roleUser));
 
