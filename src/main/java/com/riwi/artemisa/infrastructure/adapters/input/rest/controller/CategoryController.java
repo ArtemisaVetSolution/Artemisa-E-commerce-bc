@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class CategoryController {
     //Controllers admin------------------------
 
     @PostMapping("/admin/create")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new category",
             description = "Creates a new category in the system.")
     @ApiResponses(value = {
@@ -41,6 +43,7 @@ public class CategoryController {
     }
 
     @PutMapping("admin/update/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update a category",
             description = "Update a category in the system.")
     @ApiResponses(value = {
@@ -59,6 +62,7 @@ public class CategoryController {
     }
 
     @GetMapping("admin/read/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read a category",
             description = "read a category in the system.")
     @ApiResponses(value = {
@@ -72,6 +76,7 @@ public class CategoryController {
     }
 
     @GetMapping("admin/readAll")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read All category",
             description = "read All category in the system.")
     @ApiResponses(value = {
@@ -85,6 +90,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("admin/delete/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a category",
             description = "Delete a category in the system.")
     @ApiResponses(value = {
@@ -99,6 +105,7 @@ public class CategoryController {
     //Controllers user------------------------
 
     @GetMapping("user/read/{name}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read a category",
             description = "read a category in the system.")
     @ApiResponses(value = {
@@ -112,6 +119,7 @@ public class CategoryController {
     }
 
     @GetMapping("user/readAll")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read All category",
             description = "read All category in the system.")
     @ApiResponses(value = {

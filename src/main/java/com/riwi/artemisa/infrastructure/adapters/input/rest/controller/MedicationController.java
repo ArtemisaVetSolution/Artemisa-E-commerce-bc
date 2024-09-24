@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class MedicationController {
 
     //Controllers admin --------------------
     @PostMapping("admin/create")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a medication",
             description = "create a medication in the system.")
     @ApiResponses(value = {
@@ -39,6 +41,7 @@ public class MedicationController {
     }
 
     @PutMapping("admin/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update a medication",
             description = "update a medication in the system.")
     @ApiResponses(value = {
@@ -55,6 +58,7 @@ public class MedicationController {
     }
 
     @GetMapping("admin/read/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read a medication",
             description = "read a medication in the system.")
     @ApiResponses(value = {
@@ -68,6 +72,7 @@ public class MedicationController {
     }
 
     @GetMapping("admin/readAll")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read All medication",
             description = "read all medication in the system.")
     @ApiResponses(value = {
@@ -81,6 +86,7 @@ public class MedicationController {
     }
 
     @DeleteMapping("admin/delete/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a medication",
             description = "Delete a medication in the system.")
     @ApiResponses(value = {
@@ -94,6 +100,7 @@ public class MedicationController {
 
     //Controllers user------------------------
     @GetMapping("user/read/{name}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read a medication",
             description = "read a medication in the system.")
     @ApiResponses(value = {
@@ -107,6 +114,7 @@ public class MedicationController {
     }
 
     @GetMapping("user/readAll")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read All medication",
             description = "read all medication in the system.")
     @ApiResponses(value = {

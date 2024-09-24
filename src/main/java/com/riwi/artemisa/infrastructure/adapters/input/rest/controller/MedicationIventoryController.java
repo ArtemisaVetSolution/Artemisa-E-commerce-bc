@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class MedicationIventoryController {
     //Admin controllers ----------------------
 
     @PostMapping("admin/create")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a inventory medication",
             description = "create a inventory medication in the system.")
     @ApiResponses(value = {
@@ -54,6 +56,7 @@ public class MedicationIventoryController {
     }
 
     @DeleteMapping("admin/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a inventory medication",
             description = "Delete a inventory medication in the system.")
     @ApiResponses(value = {
@@ -65,6 +68,7 @@ public class MedicationIventoryController {
     }
 
     @GetMapping("admin/readAll")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read all inventory medications",
             description = "Read all inventory medications in the system.")
     @ApiResponses(value = {
@@ -77,6 +81,7 @@ public class MedicationIventoryController {
     }
 
     @GetMapping("admin/read/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read a inventory medication",
             description = "Read a inventory medication by id in the system.")
     @ApiResponses(value = {
@@ -89,6 +94,7 @@ public class MedicationIventoryController {
     }
 
     @GetMapping("admin/readAllCategory/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read all inventory medications by category",
             description = "Read all inventory medications by category in the system.")
     @ApiResponses(value = {
@@ -100,6 +106,7 @@ public class MedicationIventoryController {
     }
 
     @GetMapping("admin/readAllProductName")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read all product name",
             description = "read all product name in the system.")
     @ApiResponses(value = {
@@ -112,6 +119,7 @@ public class MedicationIventoryController {
     }
 
     @GetMapping("admin/readAllProductStock")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Read all Stock",
             description = "read all stock in the system.")
     @ApiResponses(value = {
@@ -126,6 +134,7 @@ public class MedicationIventoryController {
     //User Controllers -----------------------
 
     @GetMapping("user/readAll")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read all inventory medication",
             description = "read all inventory medication in the system.")
     @ApiResponses(value = {
@@ -138,6 +147,7 @@ public class MedicationIventoryController {
     }
 
     @GetMapping("user/readAvailable")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TUTOR')")
     @Operation(summary = "Read all available inventory medication",
             description = "read all available inventory medication in the system.")
     @ApiResponses(value = {
