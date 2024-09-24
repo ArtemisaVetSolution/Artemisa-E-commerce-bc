@@ -42,35 +42,35 @@ public class JwtService {
     }
 
     // validar el token desde la solicitud en node
-//    public boolean validateTokenWithAuthService(String token) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setBearerAuth(token);
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//        try {
-//            ResponseEntity<Boolean> response = restTemplate.exchange(
-//                    "http://users-service:3001/api/auth/validate-jwt",
-//                    HttpMethod.POST,
-//                    entity,
-//                    Boolean.class
-//            );
-//
-//            return response.getBody() != null && response.getBody();
-//        } catch (Exception e) {
-//            logger.error("Error validating token locally", e);
-//            return false;
-//        }
-//    }
-
-    //validar el token loclamente
     public boolean validateTokenWithAuthService(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-            return true; // El token es válido
+            ResponseEntity<Boolean> response = restTemplate.exchange(
+                    "http://users-service:3001/api/auth/validate-jwt",
+                    HttpMethod.POST,
+                    entity,
+                    Boolean.class
+            );
+
+            return response.getBody() != null && response.getBody();
         } catch (Exception e) {
-            logger.error("Error validating token locally", e);
-            return false; // El token es inválido o ha expirado
+            logger.error("Error validating token", e);
+            return false;
         }
     }
+
+    //validar el token loclamente
+//    public boolean validateTokenWithAuthService(String token) {
+//        try {
+//            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+//            return true; // El token es válido
+//        } catch (Exception e) {
+//            logger.error("Error validating token locally", e);
+//            return false; // El token es inválido o ha expirado
+//        }
+//    }
 
     public Claims decodeJwt(String token) {
         try {
