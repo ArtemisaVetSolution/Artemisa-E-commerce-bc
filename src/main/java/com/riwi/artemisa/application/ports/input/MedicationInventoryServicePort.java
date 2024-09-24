@@ -2,7 +2,6 @@ package com.riwi.artemisa.application.ports.input;
 
 import com.riwi.artemisa.application.ports.CRUD.*;
 import com.riwi.artemisa.domain.models.MedicationInventoryModel;
-import com.riwi.artemisa.domain.models.ProductInventoryModel;
 
 
 public interface MedicationInventoryServicePort extends

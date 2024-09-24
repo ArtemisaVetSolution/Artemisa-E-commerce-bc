@@ -21,6 +21,7 @@ public class MediaModel {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+    @Builder.Default
     private Boolean deleted = false;
 
 }

@@ -18,6 +18,7 @@ public class ProductInventoryModel {
     private float supplierPrice;
     private float sellingPrice;
     private LocalDate dueDate;
+    @Builder.Default
     private boolean stateProduct = true;
     private ProductModel product;
 
@@ -25,6 +26,7 @@ public class ProductInventoryModel {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+    @Builder.Default
     private Boolean deleted = false;
 
 

@@ -1,14 +1,9 @@
 package com.riwi.artemisa.infrastructure.config;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,14 +19,12 @@ public class JwtService {
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
     private final RestTemplate restTemplate;
+    private final String jwtSecret;
 
-    @Autowired // Inyecta RestTemplate en el constructor
-    public JwtService(RestTemplate restTemplate) {
+    public JwtService(RestTemplate restTemplate, @Value("${jwt.secret}") String jwtSecret) {
         this.restTemplate = restTemplate;
+        this.jwtSecret = jwtSecret;
     }
-
-    @Value("${jwt.secret}") // Inyecta el secreto JWT desde la configuración
-    private String jwtSecret;
 
     public String extractJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -41,7 +34,6 @@ public class JwtService {
         return null;
     }
 
-    // validar el token desde la solicitud en node
     public boolean validateTokenWithAuthService(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
@@ -49,43 +41,35 @@ public class JwtService {
         try {
             ResponseEntity<Boolean> response = restTemplate.exchange(
                     "http://users-service:3001/api/auth/validate-jwt",
-                    HttpMethod.POST,
+                    HttpMethod.GET,
                     entity,
                     Boolean.class
             );
-
-            return response.getBody() != null && response.getBody();
+            return Boolean.TRUE.equals(response.getBody());
         } catch (Exception e) {
             logger.error("Error validating token", e);
             return false;
         }
     }
 
-    //validar el token loclamente
-//    public boolean validateTokenWithAuthService(String token) {
-//        try {
-//            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-//            return true; // El token es válido
-//        } catch (Exception e) {
-//            logger.error("Error validating token locally", e);
-//            return false; // El token es inválido o ha expirado
-//        }
-//    }
-
     public Claims decodeJwt(String token) {
         try {
             return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        } catch (SignatureException e) {
-            logger.error("JWT signature invalid: {}", e.getMessage());
-        } catch (MalformedJwtException e) {
-            logger.error("JWT malformed: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT expiration: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT not supported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims void: {}", e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error decoding JWT: {}", e.getMessage());
+            return null;
         }
-        return null;
+    }
+
+    public String extractName(Claims claims) {
+        return claims.get("name", String.class);
+    }
+
+    public String extractId(Claims claims) {
+        return claims.get("id", String.class);
+    }
+
+    public String extractRoleUser(Claims claims) {
+        return claims.get("roleUser", String.class);
     }
 }

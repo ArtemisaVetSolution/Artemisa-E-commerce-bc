@@ -23,7 +23,7 @@ public class Order {
     private Long id;
 
     @Column(name = "id_user", nullable = false)
-    private Long idUser;
+    private String idUser;
 
     @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;

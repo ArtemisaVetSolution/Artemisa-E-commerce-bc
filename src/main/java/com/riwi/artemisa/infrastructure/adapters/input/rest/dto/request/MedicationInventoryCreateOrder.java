@@ -1,6 +1,5 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter

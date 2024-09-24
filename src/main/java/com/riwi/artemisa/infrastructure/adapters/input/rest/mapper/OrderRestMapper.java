@@ -4,7 +4,6 @@ import com.riwi.artemisa.domain.models.OrderModel;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.OrderCreateRequest;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.OrderResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
