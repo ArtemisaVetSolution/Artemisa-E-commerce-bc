@@ -22,7 +22,7 @@ public class OrderService implements OrderServicePort {
     }
 
     @Override
-    public OrderModel readByIdUserAndOrderDate(Long id, LocalDate date) {
+    public OrderModel readByIdUserAndOrderDate(String id, LocalDate date) {
         return order.readByIdUserAndOrderDate(id, date);
     }
 

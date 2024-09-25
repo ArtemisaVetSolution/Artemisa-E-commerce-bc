@@ -27,9 +27,7 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
     private final OrderDetailsRepository orderDetailsRepository;
     private final ProductInventoryRepository productInventoryRepository;
     private final MedicationInventoryRepository medicationInventoryRepository;
-
     private final OrderPersistenceMapper orderPersistenceMapper;
-
     @Override
     public OrderModel save(OrderModel orderModel) {
 
@@ -178,7 +176,7 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
     }
 
     @Override
-    public OrderModel readByIdUserAndOrderDate(Long id, LocalDate date) {
+    public OrderModel readByIdUserAndOrderDate(String id, LocalDate date) {
         return orderPersistenceMapper.toOrderModel(orderRepository.findByIdUserAndByOrderDate(id,date));
     }
 

@@ -3,7 +3,6 @@ package com.riwi.artemisa.application.services;
 import com.riwi.artemisa.application.ports.input.MedicationInventoryServicePort;
 import com.riwi.artemisa.application.ports.out.MedicationInventoryPersistencePort;
 import com.riwi.artemisa.domain.models.MedicationInventoryModel;
-import com.riwi.artemisa.domain.models.ProductInventoryModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

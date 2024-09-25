@@ -2,8 +2,6 @@ package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
 import lombok.*;
 
-import java.sql.Date;
-
 @Getter
 @Setter
 @Builder

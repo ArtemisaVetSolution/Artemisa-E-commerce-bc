@@ -1,12 +1,10 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request;
 
-import com.riwi.artemisa.domain.models.MedicationModel;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter

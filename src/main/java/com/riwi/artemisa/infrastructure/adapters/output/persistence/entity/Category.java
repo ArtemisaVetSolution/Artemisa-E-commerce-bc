@@ -1,7 +1,6 @@
 package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 

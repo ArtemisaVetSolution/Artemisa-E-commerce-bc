@@ -1,9 +1,7 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.mapper;
 
-import com.riwi.artemisa.domain.models.MedicationInventoryModel;
 import com.riwi.artemisa.domain.models.ProductInventoryModel;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.ProductInventoryCreateRequest;
-import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.MedicationInventoryResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.ProductInventoryResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.ProductResponseAdmin;
 import org.mapstruct.Mapper;

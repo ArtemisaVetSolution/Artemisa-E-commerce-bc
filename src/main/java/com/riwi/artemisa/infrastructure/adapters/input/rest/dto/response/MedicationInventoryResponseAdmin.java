@@ -1,6 +1,5 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
-import com.riwi.artemisa.domain.models.MedicationModel;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -20,13 +19,13 @@ public class MedicationInventoryResponseAdmin {
     private Float supplierPrice;
     private Float sellingPrice;
     private LocalDate dueDate;
-    private Boolean isMedicationAvailable = true;
+    private Boolean isMedicationAvailable;
     private MedicationResponseAdmin medication;
 
     //Auditable
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    private Boolean deleted = false;
+    private Boolean deleted;
 
 }

@@ -2,13 +2,11 @@ package com.riwi.artemisa.application.services;
 
 import com.riwi.artemisa.application.ports.input.MediaServicePort;
 import com.riwi.artemisa.application.ports.out.MediaPersistenPort;
-import com.riwi.artemisa.domain.exception.MedicationNotFoundException;
 import com.riwi.artemisa.domain.models.MediaModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -4,10 +4,8 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "medication_inventory")

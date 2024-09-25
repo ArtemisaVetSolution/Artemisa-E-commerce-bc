@@ -42,6 +42,7 @@ public class MedicationIventoryController {
     }
 
     @PutMapping("admin/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update a inventory medication",
             description = "Update a inventory medication in the system.")
     @ApiResponses(value = {

@@ -15,7 +15,8 @@ public class OrderDetailsModel {
     private int quantity;
 
     private float unitPrice;
-
+    
+    @Builder.Default
     private float totalPriceProduct = 0.0f;
 
     private ProductInventoryModel product;

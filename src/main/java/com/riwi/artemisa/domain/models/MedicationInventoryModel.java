@@ -2,7 +2,6 @@ package com.riwi.artemisa.domain.models;
 
 import lombok.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -21,6 +20,7 @@ public class MedicationInventoryModel {
     private Float supplierPrice;
     private Float sellingPrice;
     private LocalDate dueDate;
+    @Builder.Default
     private Boolean isMedicationAvailable = true;
     private MedicationModel medication;
 
@@ -28,6 +28,7 @@ public class MedicationInventoryModel {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+    @Builder.Default
     private Boolean deleted = false;
 
 }

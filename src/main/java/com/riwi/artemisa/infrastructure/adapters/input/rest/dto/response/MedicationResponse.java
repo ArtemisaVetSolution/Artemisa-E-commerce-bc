@@ -2,7 +2,6 @@ package com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response;
 
 import lombok.*;
 
-import java.util.List;
 @Getter
 @Setter
 @Builder

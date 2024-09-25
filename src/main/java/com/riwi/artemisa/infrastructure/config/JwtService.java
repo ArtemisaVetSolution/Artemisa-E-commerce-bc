@@ -1,22 +1,20 @@
 package com.riwi.artemisa.infrastructure.config;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import jakarta.servlet.http.HttpServletRequest;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -24,14 +22,19 @@ public class JwtService {
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
     private final RestTemplate restTemplate;
+    private final SecretKey key;
 
-    @Autowired // Inyecta RestTemplate en el constructor
-    public JwtService(RestTemplate restTemplate) {
+    public JwtService(@Value("${jwt.secret}") String secret, RestTemplate restTemplate) {
+        logger.info("Received secret: {}", secret);
+        logger.info("Secret length: {}", secret.length());
+        this.key = getSigningKey(secret);
         this.restTemplate = restTemplate;
     }
 
-    @Value("${jwt.secret}") // Inyecta el secreto JWT desde la configuración
-    private String jwtSecret;
+    private SecretKey getSigningKey(String secret) {
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public String extractJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -41,51 +44,35 @@ public class JwtService {
         return null;
     }
 
-    // validar el token desde la solicitud en node
-    public boolean validateTokenWithAuthService(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+    public Claims decodeJwt(String token) {
         try {
-            ResponseEntity<Boolean> response = restTemplate.exchange(
-                    "http://users-service:3001/api/auth/validate-jwt",
-                    HttpMethod.POST,
-                    entity,
-                    Boolean.class
-            );
-
-            return response.getBody() != null && response.getBody();
+            logger.info("Attempting to decode token: {}", token);
+            Claims claims = Jwts.parserBuilder()
+                       .setSigningKey(key)
+                       .build()
+                       .parseClaimsJws(token)
+                       .getBody();
+            logger.info("Successfully decoded token. Claims: {}", claims);
+            return claims;
         } catch (Exception e) {
-            logger.error("Error validating token", e);
-            return false;
+            logger.error("Error decoding JWT: {}", e.getMessage(), e);
+            return null;
         }
     }
 
-    //validar el token loclamente
-//    public boolean validateTokenWithAuthService(String token) {
-//        try {
-//            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-//            return true; // El token es válido
-//        } catch (Exception e) {
-//            logger.error("Error validating token locally", e);
-//            return false; // El token es inválido o ha expirado
-//        }
-//    }
+    public String extractName(Claims claims) {
+        return claims.get("name", String.class);
+    }
 
-    public Claims decodeJwt(String token) {
-        try {
-            return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        } catch (SignatureException e) {
-            logger.error("JWT signature invalid: {}", e.getMessage());
-        } catch (MalformedJwtException e) {
-            logger.error("JWT malformed: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT expiration: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT not supported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims void: {}", e.getMessage());
-        }
-        return null;
+    public String extractId(Claims claims) {
+        return claims.get("id", String.class);
+    }
+
+    public String extractRoleUser(Claims claims) {
+        return claims.get("roleUser", String.class);
+    }
+
+    public List<Map<String, Object>> extractPermissions(Claims claims) {
+        return claims.get("permisions", List.class);
     }
 }

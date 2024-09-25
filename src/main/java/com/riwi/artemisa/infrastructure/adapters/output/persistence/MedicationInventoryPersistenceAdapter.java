@@ -2,7 +2,6 @@ package com.riwi.artemisa.infrastructure.adapters.output.persistence;
 
 import com.riwi.artemisa.application.ports.out.MedicationInventoryPersistencePort;
 import com.riwi.artemisa.domain.models.MedicationInventoryModel;
-import com.riwi.artemisa.domain.models.MedicationModel;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.entity.*;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.mapper.MedicationInventoryPersistenceMapper;
 import com.riwi.artemisa.infrastructure.adapters.output.persistence.mapper.MedicationPersistenceMapper;
