@@ -27,9 +27,7 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
     private final OrderDetailsRepository orderDetailsRepository;
     private final ProductInventoryRepository productInventoryRepository;
     private final MedicationInventoryRepository medicationInventoryRepository;
-
     private final OrderPersistenceMapper orderPersistenceMapper;
-
     @Override
     public OrderModel save(OrderModel orderModel) {
 
@@ -122,7 +120,7 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
             return orderPersistenceMapper.toOrderModel(orderRepository.findById(order.getId()).orElseThrow(() -> new RuntimeException("Order not found")));
         } else {
             Order createOrder = orderRepository.save(Order.builder()
-                    .idUser(String.valueOf(orderModel.getIdUser()))
+                    .idUser(orderModel.getIdUser())
                     .statesOrder(StatesOrder.PENDING)
                     .totalOrder(0.0f)
                     .orderDate(LocalDate.now())
@@ -178,7 +176,7 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
     }
 
     @Override
-    public OrderModel readByIdUserAndOrderDate(Long id, LocalDate date) {
+    public OrderModel readByIdUserAndOrderDate(String id, LocalDate date) {
         return orderPersistenceMapper.toOrderModel(orderRepository.findByIdUserAndByOrderDate(id,date));
     }
 

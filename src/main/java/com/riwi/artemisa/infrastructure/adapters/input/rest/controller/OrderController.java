@@ -1,18 +1,24 @@
 package com.riwi.artemisa.infrastructure.adapters.input.rest.controller;
 
 import com.riwi.artemisa.application.ports.input.OrderServicePort;
+import com.riwi.artemisa.domain.models.OrderModel;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.request.OrderCreateRequest;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.dto.response.OrderResponse;
 import com.riwi.artemisa.infrastructure.adapters.input.rest.mapper.OrderRestMapper;
+import com.riwi.artemisa.infrastructure.config.UserContext;
 import com.riwi.artemisa.utils.enums.StatesOrder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +31,10 @@ public class OrderController {
     private final OrderServicePort servicePort;
     private final OrderRestMapper orderRestMapper;
 
+    @Autowired
+    @Lazy
+    private final UserContext userContext;
+
     @PostMapping("/user/create")
     @PreAuthorize("hasRole('TUTOR') or hasRole('ADMIN')")
     @Operation(summary = "Create a new order",
@@ -35,7 +45,9 @@ public class OrderController {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
     public ResponseEntity<OrderResponse> save(@RequestBody OrderCreateRequest orderCreateRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderRestMapper.orderModelToOrderResponse(servicePort.save(orderRestMapper.orderCreateRequestToOrderModel(orderCreateRequest))));
+        OrderModel orderModel = orderRestMapper.orderCreateRequestToOrderModel(orderCreateRequest);
+        orderModel.setIdUser(userContext.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderRestMapper.orderModelToOrderResponse(servicePort.save(orderModel)));
     }
 
     @GetMapping("/admin/findByUserIdAndDate/{id}/{date}")
@@ -47,7 +59,7 @@ public class OrderController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Admin access required")
     })
-    public ResponseEntity<OrderResponse> readAll(@PathVariable Long id, @PathVariable LocalDate date){
+    public ResponseEntity<OrderResponse> readAllByUse(@PathVariable String id, @PathVariable LocalDate date){
         return ResponseEntity.ok(orderRestMapper.orderModelToOrderResponse(servicePort.readByIdUserAndOrderDate(id, date)));
     }
 

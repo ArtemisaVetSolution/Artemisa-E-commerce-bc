@@ -15,7 +15,7 @@ public class OrderModel {
 
     private long id;
 
-    private long idUser;
+    private String idUser;
 
     private LocalDate orderDate;
 

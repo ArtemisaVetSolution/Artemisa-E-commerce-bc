@@ -12,8 +12,8 @@ import java.util.List;
 @Builder
 public class OrderCreateRequest {
 
-    @NotNull(message = "The id user is required")
-    private Long idUser;
+   
+    private String idUser;
 
     @NotNull(message = "the order details us required")
     private List<OrderDetailsCreateRequest> orderDetails;

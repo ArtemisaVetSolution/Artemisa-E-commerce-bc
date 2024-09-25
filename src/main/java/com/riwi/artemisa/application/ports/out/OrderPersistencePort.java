@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public interface OrderPersistencePort extends
         ReadAll<OrderModel>,
-        ReadByIdUserAndOrderDate<OrderModel, Long, LocalDate>,
+        ReadByIdUserAndOrderDate<OrderModel, String, LocalDate>,
         ReadById<OrderModel, Long>,
         UpdateStatesOrder<Long, StatesOrder>,
         DeleteOrderDetails<Long>,
