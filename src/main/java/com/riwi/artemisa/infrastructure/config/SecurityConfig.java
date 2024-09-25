@@ -27,6 +27,24 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/v1/api/category/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/v1/api/category/user/**").hasAnyAuthority("ADMIN", "TUTOR")
+                
+                .requestMatchers("/v1/api/media/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/v1/api/media/user/**").hasAnyAuthority("ADMIN", "TUTOR")
+
+                .requestMatchers("/v1/api/medication/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/v1/api/medication/user/**").hasAnyAuthority("ADMIN", "TUTOR")
+
+                .requestMatchers("/v1/api/medicationInventory/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/v1/api/medicationInventory/user/**").hasAnyAuthority("ADMIN", "TUTOR")
+                
+                .requestMatchers("/v1/api/order/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/v1/api/order/user/**").hasAnyAuthority("ADMIN", "TUTOR")
+                
+                .requestMatchers("/v1/api/petshopPayments/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/v1/api/petshopPayments/user/**").hasAnyAuthority("ADMIN", "TUTOR")
+                
+                .requestMatchers("/v1/api/productInventory/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/v1/api/productInventory/user/**").hasAnyAuthority("ADMIN", "TUTOR")
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
